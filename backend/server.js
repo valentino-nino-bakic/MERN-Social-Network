@@ -5,6 +5,8 @@ require('dotenv').config();
 const PORT = process.env.PORT;
 const DB_CONNECTION_STRING = process.env.DB_CONNECTION_STRING;
 
+const userRouter = require('./routes/userRoutes');
+
 
 const connectWithDB = async () => {
     try {
@@ -15,6 +17,12 @@ const connectWithDB = async () => {
     }
 }
 connectWithDB();
+
+
+
+app.use(express.json());
+
+app.use('/api', userRouter);
 
 
 
