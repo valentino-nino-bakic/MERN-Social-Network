@@ -8,16 +8,16 @@ const SignupForm = () => {
                 <form>
                     <h4 className="fw-normal mb-3 pb-3" /* style="letter-spacing: 1px;" */>Sign Up</h4>
                     <div data-mdb-input-init className="form-outline mb-4">
-                        <label className="form-label" htmlFor="username">Username</label>
-                        <input type="text" id="username" className="form-control form-control-lg" />
+                        <label className="form-label" htmlFor="signup-username">Username</label>
+                        <input type="text" id="signup-username" className="form-control form-control-lg" />
                     </div>
                     <div data-mdb-input-init className="form-outline mb-4">
-                        <label className="form-label" htmlFor="email">Email address</label>
-                        <input type="email" id="email" className="form-control form-control-lg" />
+                        <label className="form-label" htmlFor="signup-email">Email address</label>
+                        <input type="email" id="signup-email" className="form-control form-control-lg" />
                     </div>
                     <div data-mdb-input-init className="form-outline mb-4">
-                        <label className="form-label" htmlFor="password">Password</label>
-                        <input type="password" id="password" className="form-control form-control-lg" />
+                        <label className="form-label" htmlFor="signup-password">Password</label>
+                        <input type="password" id="signup-password" className="form-control form-control-lg" />
                     </div>
                     <div className="pt-1 mb-4">
                         <Button type="submit" className="btn btn-primary btn-lg btn-block w-100">SIGNUP</Button>
