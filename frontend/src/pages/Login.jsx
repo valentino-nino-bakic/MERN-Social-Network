@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
 import { useState } from 'react';
 
 import Button from '../components/Button';
@@ -12,7 +12,7 @@ const Login = () => {
         'login-username-or-email': '',
         'login-password': ''
     });
-    const { login, loading, error } = useAuth();
+    const { user, login, loading, error } = useAuth();
 
 
     const handleChange = e => {
@@ -33,6 +33,10 @@ const Login = () => {
         }
     }
 
+
+    if (user) {
+        return <Navigate to='/profile' />
+    }
 
     return (
         <>
