@@ -6,7 +6,10 @@ const AuthContext = createContext();
 
 
 const AuthProvider = ({ children }) => {
-    const [user, setUser] = useState(null);
+    const [user, setUser] = useState(() => {
+        const token = localStorage.getItem('token');
+        return token ? token : null;
+    });
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
 
@@ -17,6 +20,8 @@ const AuthProvider = ({ children }) => {
         try {
             const data = await loginUser(usernameOrEmail, password);
             setUser(data.token);
+            alert(data.message);
+            localStorage.setItem('token', data.token);
             setLoading(false);
         } catch (error) {
             setError(error.message);
@@ -30,7 +35,7 @@ const AuthProvider = ({ children }) => {
         setError(null);
         try {
             const data = await signupUser(username, email, password);
-            setUser(data.token);
+            alert(data.message);
             setLoading(false);
         } catch (error) {
             setError(error.message);
@@ -41,6 +46,7 @@ const AuthProvider = ({ children }) => {
 
     const logout = () => {
         setUser(null);
+        localStorage.removeItem('token');
     }
 
 

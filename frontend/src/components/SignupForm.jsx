@@ -1,26 +1,91 @@
+import { useState } from 'react';
+import { Navigate, useNavigate } from 'react-router-dom';
+
 import Button from '../components/Button';
+import { isUsernameValid, isEmailValid, isPasswordValid } from '../utils/validation';
+import useAuth from '../hooks/useAuth';
+
 
 
 const SignupForm = () => {
+    const { user, signup, loading, error } = useAuth();
+    const [formData, setFormData] = useState({
+        'signup-username': '',
+        'signup-email': '',
+        'signup-password': ''
+    });
+    const navigate = useNavigate();
+
+
+    const handleChange = e => {
+        const { name, value } = e.target;
+        setFormData(prev => ({
+            ...prev,
+            [name]: value
+        }));
+    }
+
+
+    const handleSubmit = async e => {
+        e.preventDefault();
+        try {
+            if (isUsernameValid(formData['signup-username']) && isEmailValid(formData['signup-email']) && isPasswordValid(formData['signup-password'])) {
+                await signup(formData['signup-username'], formData['signup-email'], formData['signup-password']);
+                navigate('/login');
+            } else {
+                alert('Make sure your inputs are valid');
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+
+    if (user) {
+        return <Navigate to='/profile' />
+    }
+
     return (
         <>
             <div className="d-flex align-items-center justify-content-center h-custom-2 px-5 ms-xl-4 mt-5 pt-5 pt-xl-0 mt-xl-n5">
-                <form>
-                    <h4 className="fw-normal mb-3 pb-3" /* style="letter-spacing: 1px;" */>Sign Up</h4>
+                <form onSubmit={handleSubmit}>
+                    <h4 className="fw-normal mb-3 pb-3">Sign Up</h4>
+                    {error && <p className="text-danger">{error}</p>}
                     <div data-mdb-input-init className="form-outline mb-4">
                         <label className="form-label" htmlFor="signup-username">Username</label>
-                        <input type="text" id="signup-username" className="form-control form-control-lg" />
+                        <input
+                            type="text"
+                            id="signup-username"
+                            name="signup-username"
+                            value={formData['signup-username']}
+                            onChange={handleChange}
+                            className="form-control form-control-lg"
+                        />
                     </div>
                     <div data-mdb-input-init className="form-outline mb-4">
                         <label className="form-label" htmlFor="signup-email">Email address</label>
-                        <input type="email" id="signup-email" className="form-control form-control-lg" />
+                        <input
+                            type="email"
+                            id="signup-email"
+                            name="signup-email"
+                            value={formData['signup-email']}
+                            onChange={handleChange}
+                            className="form-control form-control-lg"
+                        />
                     </div>
                     <div data-mdb-input-init className="form-outline mb-4">
                         <label className="form-label" htmlFor="signup-password">Password</label>
-                        <input type="password" id="signup-password" className="form-control form-control-lg" />
+                        <input
+                            type="password"
+                            id="signup-password"
+                            name="signup-password"
+                            value={formData['signup-password']}
+                            onChange={handleChange}
+                            className="form-control form-control-lg"
+                        />
                     </div>
                     <div className="pt-1 mb-4">
-                        <Button type="submit" className="btn btn-primary btn-lg btn-block w-100">SIGNUP</Button>
+                        <Button type="submit" className="btn btn-primary btn-lg btn-block w-100" disabled={loading}>SIGNUP</Button>
                     </div>
                 </form>
             </div>
