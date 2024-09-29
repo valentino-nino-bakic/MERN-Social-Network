@@ -9,7 +9,7 @@ const Home = () => {
                 <div className="row">
                     <div className="col-md-6 text-black">
                         <div className="px-5 ms-xl-4 mt-5">
-                            <h1>LONDBOOK</h1>
+                            <h1 style={{fontFamily: 'serif'}}>LONDBOOK</h1>
                         </div>
                         <SignupForm />
                     </div>
