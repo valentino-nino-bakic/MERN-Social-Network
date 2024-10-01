@@ -6,7 +6,7 @@ const postController = {
 
     getAllPosts: async (req, res) => {
         try {
-            const posts = await Post.find();
+            const posts = await Post.find().populate('author', 'username profileImageUrl');
             return res.status(200).json({ posts: posts });
         } catch (error) {
             console.log(error);

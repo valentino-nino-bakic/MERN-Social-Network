@@ -16,7 +16,7 @@ const AllPosts = () => {
 
 
 
-     if (loading) {
+    if (loading) {
         return <p>Loading...</p>;
     }
 
@@ -25,18 +25,29 @@ const AllPosts = () => {
     }
 
     return (
-        <>
+        <div className="container mt-5">
             {posts.length > 0 ? (
                 posts.map(post => (
-                    <div className="my-5" key={post._id}>
-                        <p>Title: {post.title}</p>
-                        <p>Content: {post.content}</p>
+                    <div className="card my-3" key={post._id}>
+                        <div className="card-body">
+                            <div className="d-flex align-items-center">
+                                <img
+                                    src={post.author.profileImageUrl}
+                                    alt="User"
+                                    className="rounded-circle me-2"
+                                    style={{ width: '40px', height: '40px' }}
+                                />
+                                <h5 className="card-title me-auto">{post.title}</h5>
+                                <span className="text-muted">{post.author.username}</span>
+                            </div>
+                            <p className="card-text">{post.content}</p>
+                        </div>
                     </div>
                 ))
             ) : (
-                <div className="container vh-100">nema postova u bazi</div>
+                <div className="alert alert-info">Nema postova u bazi</div>
             )}
-        </>
+        </div>
     )
 
 
