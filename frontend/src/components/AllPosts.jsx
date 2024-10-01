@@ -3,9 +3,9 @@ import { useEffect } from 'react';
 import usePost from '../hooks/usePost';
 
 
-const AllPosts = () => {
-    const { posts, getPosts } = usePost();
 
+const AllPosts = () => {
+    const { posts, getPosts, loading, error } = usePost();
 
     useEffect(() => {
         const fetchAllPosts = async () => {
@@ -16,20 +16,30 @@ const AllPosts = () => {
 
 
 
-    return posts.length > 0 ? (
-        <ul>
-            {posts.map(post => (
-                <div key={post._id}>
-                    <p>{post.title}</p>
-                    <p>{post.content}</p>
-                </div>
-            ))}
-        </ul>
-    ) : (
-        <div className="container vh-100">
-            <p>nema postova u bazi</p>
-        </div>
+     if (loading) {
+        return <p>Loading...</p>;
+    }
+
+    if (error) {
+        return <p>Error: {error}</p>;
+    }
+
+    return (
+        <>
+            {posts.length > 0 ? (
+                posts.map(post => (
+                    <div className="my-5" key={post._id}>
+                        <p>Title: {post.title}</p>
+                        <p>Content: {post.content}</p>
+                    </div>
+                ))
+            ) : (
+                <div className="container vh-100">nema postova u bazi</div>
+            )}
+        </>
     )
+
+
 }
 
 

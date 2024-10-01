@@ -9,7 +9,6 @@ import AllPosts from '../components/AllPosts';
 const Profile = () => {
     const { user } = useAuth();
 
-
     if (!user) {
         return <Navigate to='/' />
     }

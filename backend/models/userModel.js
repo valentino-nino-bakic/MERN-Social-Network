@@ -8,7 +8,8 @@ const User = mongoose.model('User', {
         type: String,
         enum: ['user', 'admin'],
         default: 'user'
-    }
+    },
+    profileImageUrl: { type: String, default: 'assets/images/user_avatar.png'}
 });
 
 

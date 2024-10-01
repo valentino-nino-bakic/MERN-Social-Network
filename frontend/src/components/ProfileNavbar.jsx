@@ -40,7 +40,7 @@ const ProfileNavbar = () => {
                     <ul className="navbar-nav align-items-center gap-3">
                         <li className="nav-item d-flex align-items-center mx-2">
                             <img
-                                src="https://e7.pngegg.com/pngimages/178/595/png-clipart-user-profile-computer-icons-login-user-avatars-monochrome-black-thumbnail.png"
+                                src="assets/images/user_avatar.png"
                                 alt="User Avatar"
                                 className="rounded-circle me-2"
                                 style={{ width: '30px', height: '30px' }}

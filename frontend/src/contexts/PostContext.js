@@ -1,4 +1,4 @@
-import { createContext, useState } from 'react';
+import { createContext, useState, useCallback } from 'react';
 import { getAllPosts } from '../api/post';
 
 
@@ -7,26 +7,26 @@ const PostContext = createContext();
 
 const PostProvider = ({ children }) => {
     const [posts, setPosts] = useState(() => {
-        const posts = localStorage.getItem('allPosts');
-        return posts ? JSON.parse(posts) : [];
+        const allPosts = localStorage.getItem('allPosts');
+        return allPosts ? JSON.parse(allPosts) : [];
     });
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
 
 
-    const getPosts = async () => {
+    const getPosts = useCallback(async () => {
         setLoading(true);
         setError(null);
         try {
             const data = await getAllPosts();
             setPosts(data.posts);
-            localStorage.setItem('posts', JSON.stringify(data.posts));
-            setLoading(false);
+            localStorage.setItem('allPosts', JSON.stringify(data.posts));
         } catch (error) {
             setError(error.message);
+        } finally {
             setLoading(false);
         }
-    }
+    }, []);
 
 
     return (
