@@ -4,7 +4,7 @@ const Footer = () => {
     return (
         <footer className="bg-light text-center text-lg-start p-5">
             <div className="container">
-                <span className="text-dark">Londbook</span>
+                <span className="text-dark">Loremipsumia</span>
                 <div className="social-icons mt-2">
                     <a href="#!" className="text-dark mx-2">
                         <i className="fab fa-facebook-f"></i>

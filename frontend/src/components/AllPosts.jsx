@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 
 import usePost from '../hooks/usePost';
-
+import formatDate from '../utils/formatDate';
 
 
 const AllPosts = () => {
@@ -30,16 +30,21 @@ const AllPosts = () => {
                 posts.map(post => (
                     <div className="card my-3" key={post._id}>
                         <div className="card-body">
-                            <div className="d-flex align-items-center">
-                                <img
-                                    src={post.author.profileImageUrl}
-                                    alt="User"
-                                    className="rounded-circle me-2"
-                                    style={{ width: '40px', height: '40px' }}
-                                />
-                                <h5 className="card-title me-auto">{post.title}</h5>
-                                <span className="text-muted">{post.author.username}</span>
+                            <div className="d-flex align-items-center gap-3 mb-3">
+                                <div className="d-flex align-items-center">
+                                    <img
+                                        src={post.author.profileImageUrl}
+                                        alt="User"
+                                        className="rounded-circle me-2"
+                                        style={{ width: '40px', height: '40px' }}
+                                    />
+                                    <span>{post.author.username}</span>
+                                </div>
+                                <span className="text-muted" style={{ fontSize: '0.9rem' }}>
+                                    {formatDate(post.createdAt)}
+                                </span>
                             </div>
+                            <h5 className="card-title">{post.title}</h5>
                             <p className="card-text">{post.content}</p>
                         </div>
                     </div>
