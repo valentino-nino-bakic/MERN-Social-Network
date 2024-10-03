@@ -15,10 +15,17 @@ const commentController = {
     },
 
     createComment: async (req, res) => {
+        const { postId, author, content } = req.body;
         try {
-            const newComment = new Comment(req.body);
+            const newComment = new Comment({
+                postId,
+                author,
+                content
+            });
             await newComment.save();
-            return res.status(201).json({ message: 'Your comment has been successfully created!', comment: newComment });
+
+            const populatedComment = await newComment.populate('author', 'username profileImageUrl');
+            return res.status(201).json(populatedComment);
         } catch (error) {
             console.log(error);
             res.status(500).json({ message: error.message });
