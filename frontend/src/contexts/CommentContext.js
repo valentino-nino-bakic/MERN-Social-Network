@@ -1,5 +1,5 @@
 import { createContext, useState, useCallback } from 'react';
-import { getPostSpecificComments } from '../api/comment';
+import { getPostSpecificComments, createComment } from '../api/comment';
 
 
 const CommentContext = createContext();
@@ -29,8 +29,26 @@ const CommentProvider = ({ children }) => {
 
 
 
+    const addNewComment = useCallback(async (token, postId, author, content) => {
+        setLoading(true);
+        setError(null);
+        try {
+            const data = await createComment(token, postId, author, content);
+            setComments(prev => ({
+                ...prev,
+                [postId]: [...(prev[postId] || []), data]
+            }));
+        } catch (error) {
+            setError(error.message);
+        } finally {
+            setLoading(false);
+        }
+    }, []);
+
+
+
     return (
-        <CommentContext.Provider value={{ comments, getComments, loading, error }}>
+        <CommentContext.Provider value={{ comments, getComments, addNewComment, loading, error }}>
             {children}
         </CommentContext.Provider>
     )

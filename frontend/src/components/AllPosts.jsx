@@ -1,11 +1,30 @@
-import { useEffect } from 'react';
+import { useState, useEffect } from 'react';
 
+import useAuth from '../hooks/useAuth';
 import usePost from '../hooks/usePost';
+import useComment from '../hooks/useComment';
 import formatDate from '../utils/formatDate';
 
 
 const AllPosts = () => {
-    const { posts, getPosts, loading, error } = usePost();
+    const { user } = useAuth();
+    const [currentUserId, setCurrentUserId] = useState(null);
+
+    const { posts, getPosts, loading: postLoading, error: postError } = usePost();
+    const { comments, getComments, addNewComment, loading: commentLoading, error: commentError } = useComment();
+
+
+    useEffect(() => {
+        if (user) {
+            try {
+                const decoded = window.jwt_decode(user);
+                setCurrentUserId(decoded.id);
+            } catch (error) {
+                console.log(error);
+            }
+        }
+    }, [user]);
+
 
     useEffect(() => {
         const fetchAllPosts = async () => {
@@ -15,13 +34,32 @@ const AllPosts = () => {
     }, [getPosts]);
 
 
+    useEffect(() => {
+        if (posts.length > 0) {
+            posts.forEach(post => {
+                getComments(post._id);
+            });
+        }
+    }, [posts, getComments]);
 
-    if (loading) {
-        return <p>Loading...</p>;
+
+    useEffect(() => {
+        console.log('component rendered.')
+    });
+
+
+    const handleAddComment = async (token, postId, author, content) => {
+        await addNewComment(token, postId, author, content);
+    };
+
+
+
+    if (postLoading) {
+        return <p>Loading posts...</p>;
     }
 
-    if (error) {
-        return <p>Error: {error}</p>;
+    if (postError) {
+        return <p>Error loading posts: {postError}</p>;
     }
 
     return (
@@ -46,11 +84,29 @@ const AllPosts = () => {
                             </div>
                             <h5 className="card-title">{post.title}</h5>
                             <p className="card-text">{post.content}</p>
+
+
+                            <div>
+                                <h6>Comments:</h6>
+                                {commentLoading && <p>Loading comments...</p>}
+                                {comments[post._id] && comments[post._id].map(comment => (
+                                    <div key={comment._id}>
+                                        <strong>{comment.author.username}:</strong> {comment.content}
+                                    </div>
+                                ))}
+                                <form onSubmit={(e) => {
+                                    e.preventDefault();
+                                    handleAddComment(user, post._id, currentUserId, e.target.elements.commentText.value);
+                                }}>
+                                    <input name="commentText" placeholder="Add a comment" />
+                                    <button type="submit">Submit</button>
+                                </form>
+                            </div>
                         </div>
                     </div>
                 ))
             ) : (
-                <div className="alert alert-info">Nema postova u bazi</div>
+                <div className="alert alert-info">There are no posts currently</div>
             )}
         </div>
     )

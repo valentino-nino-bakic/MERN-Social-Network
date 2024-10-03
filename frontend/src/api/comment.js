@@ -9,7 +9,7 @@ const getPostSpecificComments = async (postId) => {
             throw new Error(data.message);
         }
         const data = await response.json();
-        return data;
+        return data.comments;
     } catch (error) {
         throw error;
     }
