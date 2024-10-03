@@ -1,9 +1,9 @@
 import API_ENDPOINTS from './constants';
 
 
-const getPostSpecificComments = async () => {
+const getPostSpecificComments = async (postId) => {
     try {
-        const response = await fetch(`${API_ENDPOINTS.COMMENTS}/postId`);
+        const response = await fetch(`${API_ENDPOINTS.COMMENTS}/${postId}`);
         if (!response.ok) {
             const data = await response.json();
             throw new Error(data.message);
