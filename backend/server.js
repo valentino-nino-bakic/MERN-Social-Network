@@ -9,6 +9,9 @@ const DB_CONNECTION_STRING = process.env.DB_CONNECTION_STRING;
 const userRouter = require('./routes/userRoutes');
 const postRouter = require('./routes/postRoutes');
 const commentRouter = require('./routes/commentRoutes');
+const likeRouter = require('./routes/likeRoutes');
+
+
 
 const connectWithDB = async () => {
     try {
@@ -29,6 +32,7 @@ app.use(cors());
 app.use('/api', userRouter);
 app.use('/api', postRouter);
 app.use('/api', commentRouter);
+app.use('/api', likeRouter);
 
 
 
