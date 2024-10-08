@@ -9,6 +9,7 @@ import App from './App';
 import { AuthProvider } from './contexts/AuthContext';
 import { PostProvider } from './contexts/PostContext';
 import { CommentProvider } from './contexts/CommentContext';
+import { LikeProvider } from './contexts/LikeContext';
 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
@@ -17,7 +18,9 @@ root.render(
         <AuthProvider>
             <PostProvider>
                 <CommentProvider>
-                    <App />
+                    <LikeProvider>
+                        <App />
+                    </LikeProvider>
                 </CommentProvider>
             </PostProvider>
         </AuthProvider>
