@@ -4,7 +4,7 @@ const Comment = require('../models/commentModel');
 
 const commentController = {
 
-    getComments: async (req, res) => {
+    getCommentsByPostId: async (req, res) => {
         try {
             const comments = await Comment.find({ postId: req.params.postId }).populate('author', 'username profileImageUrl');;
             return res.status(200).json({ comments });

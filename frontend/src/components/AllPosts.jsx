@@ -6,6 +6,8 @@ import useComment from '../hooks/useComment';
 import formatDate from '../utils/formatDate';
 
 
+
+
 const AllPosts = () => {
     const { user } = useAuth();
     const [currentUserId, setCurrentUserId] = useState(null);
@@ -43,11 +45,6 @@ const AllPosts = () => {
     }, [posts, getComments]);
 
 
-    useEffect(() => {
-        console.log('component rendered.')
-    });
-
-
     const handleAddComment = async (token, postId, author, content) => {
         await addNewComment(token, postId, author, content);
     };
@@ -76,7 +73,7 @@ const AllPosts = () => {
                                         className="rounded-circle me-2"
                                         style={{ width: '40px', height: '40px' }}
                                     />
-                                    <span>{post.author.username}</span>
+                                    <strong>{post.author.username}</strong>
                                 </div>
                                 <span className="text-muted" style={{ fontSize: '0.9rem' }}>
                                     {formatDate(post.createdAt)}
@@ -91,7 +88,14 @@ const AllPosts = () => {
                                 {commentLoading && <p>Loading comments...</p>}
                                 {comments[post._id] && comments[post._id].map(comment => (
                                     <div key={comment._id}>
-                                        <strong>{comment.author.username}:</strong> {comment.content}
+                                        <img
+                                            src={comment.author.profileImageUrl}
+                                            alt="User"
+                                            className="rounded-circle me-2"
+                                            style={{ width: '25px', height: '25px' }}
+                                        />
+                                        <strong>{comment.author.username}</strong>
+                                        <p>{comment.content}</p> 
                                     </div>
                                 ))}
                                 <form onSubmit={(e) => {

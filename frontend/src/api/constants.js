@@ -4,7 +4,8 @@ const API_ENDPOINTS = {
     LOGIN: `${BASE_URL}/login`,
     SIGNUP: `${BASE_URL}/signup`,
     POSTS: `${BASE_URL}/posts`,
-    COMMENTS: `${BASE_URL}/comments`
+    COMMENTS: `${BASE_URL}/comments`,
+    LIKES: `${BASE_URL}/likes`
 }
 
 
