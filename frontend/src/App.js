@@ -9,6 +9,8 @@ import NotFound from './pages/NotFound';
 import Profile from './pages/Profile';
 import ProfileLayout from './components/ProfileLayout';
 
+import ProtectedRoute from './components/ProtectedRoute';
+
 
 const App = () => {
     return (
@@ -20,7 +22,7 @@ const App = () => {
                     <Route path="signup" element={<Signup />} />
                     <Route path="*" element={<NotFound />} />
                 </Route>
-                <Route path="/profile" element={<ProfileLayout />}>
+                <Route path="/profile" element={<ProtectedRoute><ProfileLayout /></ProtectedRoute>}>
                     <Route index element={<Profile />} />
                     <Route path="*" element={<NotFound />} />
                 </Route>

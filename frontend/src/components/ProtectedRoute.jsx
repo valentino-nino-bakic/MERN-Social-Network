@@ -3,8 +3,8 @@ import useAuth from '../hooks/useAuth';
 
 
 const ProtectedRoute = ({ children }) => {
-    const { isAuthenticated } = useAuth();
-    return isAuthenticated ? children : <Navigate to='/' />;
+    const { user } = useAuth();
+    return user && user !== null ? children : <Navigate to='/' />;
 };
 
 
