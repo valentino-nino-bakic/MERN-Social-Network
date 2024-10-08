@@ -1,9 +1,11 @@
 import { useState, useEffect } from 'react';
 
+import formatDate from '../utils/formatDate';
+
 import useAuth from '../hooks/useAuth';
 import usePost from '../hooks/usePost';
 import useComment from '../hooks/useComment';
-import formatDate from '../utils/formatDate';
+import useLike from '../hooks/useLike';
 
 
 
@@ -14,6 +16,7 @@ const AllPosts = () => {
 
     const { posts, getPosts, loading: postLoading, error: postError } = usePost();
     const { comments, getComments, addNewComment, loading: commentLoading, error: commentError } = useComment();
+    const { likes, getLikes, addNewLike, loading: likeLoading, error: likeError } = useLike();
 
 
     useEffect(() => {
@@ -40,15 +43,18 @@ const AllPosts = () => {
         if (posts.length > 0) {
             posts.forEach(post => {
                 getComments(post._id);
+                getLikes(post._id);
             });
         }
-    }, [posts, getComments]);
+    }, [posts, getComments, getLikes]);
 
 
     const handleAddComment = async (token, postId, author, content) => {
         await addNewComment(token, postId, author, content);
     };
-
+    const handleAddLike = async (token, postId, author) => {
+        await addNewLike(token, postId, author);
+    };
 
 
     if (postLoading) {
@@ -63,7 +69,7 @@ const AllPosts = () => {
         <div className="container mt-5">
             {posts.length > 0 ? (
                 posts.map(post => (
-                    <div className="card my-3" key={post._id}>
+                    <div className="single-post card my-3" key={post._id}>
                         <div className="card-body">
                             <div className="d-flex align-items-center gap-3 mb-3">
                                 <div className="d-flex align-items-center">
@@ -82,9 +88,17 @@ const AllPosts = () => {
                             <h5 className="card-title">{post.title}</h5>
                             <p className="card-text">{post.content}</p>
 
+                            <form onSubmit={(e) => {
+                                e.preventDefault();
+                                handleAddLike(user, post._id, currentUserId);
+                            }}>
+                                <button type="submit">Like</button>
+                            </form>
 
-                            <div>
-                                <h6>Comments:</h6>
+                            <p>Likes: {likes[post._id] ? likes[post._id].length : 0}</p>
+
+
+                            <div className="comments px-4">
                                 {commentLoading && <p>Loading comments...</p>}
                                 {comments[post._id] && comments[post._id].map(comment => (
                                     <div key={comment._id}>
@@ -95,7 +109,10 @@ const AllPosts = () => {
                                             style={{ width: '25px', height: '25px' }}
                                         />
                                         <strong>{comment.author.username}</strong>
-                                        <p>{comment.content}</p> 
+                                        <span className="text-muted mx-3" style={{ fontSize: '0.9rem' }}>
+                                            {formatDate(comment.createdAt)}
+                                        </span>
+                                        <p>{comment.content}</p>
                                     </div>
                                 ))}
                                 <form onSubmit={(e) => {
