@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 
+import Button from '../components/Button';
 import formatDate from '../utils/formatDate';
 
 import useAuth from '../hooks/useAuth';
@@ -100,12 +101,23 @@ const AllPosts = () => {
                             </div>
 
 
-                            <form onSubmit={(e) => {
-                                e.preventDefault();
-                                handleAddLike(user, post._id, currentUserId);
-                            }}>
-                                <button type="submit">Like</button>
-                            </form>
+
+                            <div className="container my-4">
+                                <div className="row">
+                                    <div className="col text-center">
+                                        <Button 
+                                            className="btn text-muted w-100 btn-custom"
+                                            onClick={() => handleAddLike(user, post._id, currentUserId)}
+                                        > <i className="fa fa-thumbs-up"></i> Like
+                                        </Button>
+                                    </div>
+                                    <div className="col text-center">
+                                        <Button className="btn text-muted w-100 btn-custom">
+                                            <i className="fa fa-comment"></i> Comment
+                                        </Button>
+                                    </div>
+                                </div>
+                            </div>
 
 
 
