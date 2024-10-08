@@ -4,11 +4,11 @@ import { Link, useNavigate } from 'react-router-dom';
 import { jwtDecode } from 'jwt-decode';
 
 import useAuth from '../hooks/useAuth';
-import Button from '../components/Button';
+import Button from './Button';
 
 
 
-const ProfileNavbar = () => {
+const HomeNavbar = () => {
     const { user, logout } = useAuth();
     const navigate = useNavigate();
 
@@ -30,7 +30,7 @@ const ProfileNavbar = () => {
     return (
         <nav className="navbar navbar-expand-lg navbar-light bg-light">
             <div className="container">
-                <Link className="navbar-brand" to="/profile">
+                <Link className="navbar-brand" to="/home">
                     <img src="https://image.similarpng.com/very-thumbnail/2020/12/Lorem-ipsum-logo-isolated-clipart-PNG.png" alt="Logo" style={{ height: '60px' }} />
                 </Link>
                 <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -57,4 +57,6 @@ const ProfileNavbar = () => {
     )
 }
 
-export default ProfileNavbar;
+
+
+export default HomeNavbar;

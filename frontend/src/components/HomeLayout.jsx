@@ -1,12 +1,12 @@
 import { Outlet } from 'react-router-dom';
-import ProfileNavbar from './ProfileNavbar';
+import HomeNavbar from './HomeNavbar';
 import Footer from './Footer';
 
 
-const ProfileLayout = () => {
+const HomeLayout = () => {
     return (
         <>
-            <ProfileNavbar />
+            <HomeNavbar />
 
             <Outlet />
 
@@ -16,4 +16,4 @@ const ProfileLayout = () => {
 };
 
 
-export default ProfileLayout;
+export default HomeLayout;

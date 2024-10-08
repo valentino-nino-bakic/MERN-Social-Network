@@ -1,26 +1,22 @@
-import SignupForm from '../components/SignupForm';
+
+import { Navigate } from 'react-router-dom';
+
+import useAuth from '../hooks/useAuth';
+import AllPosts from '../components/AllPosts';
 
 
 
 const Home = () => {
-    return (
-        <>
-            <div className="container-fluid">
-                <div className="row">
-                    <div className="col-md-6 text-black">
-                        <div className="px-5 ms-xl-4 mt-5">
-                            <h1 style={{fontFamily: 'serif'}}>LOREMIPSUMIA</h1>
-                        </div>
-                        <SignupForm />
-                    </div>
-                    <div className="col-md-6 px-0 d-none d-md-block">
-                        <img src="/assets/images/login-background.png"
-                            alt="login-background" className="w-100 vh-100 london-image" />
-                    </div>
-                </div>
-            </div>
-        </>
-    )
+    const { user } = useAuth();
+
+    if (!user) {
+        return <Navigate to='/' />
+    }
+    
+
+    return <AllPosts />;
 }
+
+
 
 export default Home;

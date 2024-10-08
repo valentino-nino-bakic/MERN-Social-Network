@@ -1,13 +1,13 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 import Layout from './components/Layout';
-import Home from './pages/Home';
+import JoinUs from './pages/JoinUs';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
 import NotFound from './pages/NotFound';
 
-import Profile from './pages/Profile';
-import ProfileLayout from './components/ProfileLayout';
+import Home from './pages/Home';
+import HomeLayout from './components/HomeLayout';
 
 import ProtectedRoute from './components/ProtectedRoute';
 
@@ -17,13 +17,13 @@ const App = () => {
         <BrowserRouter>
             <Routes>
                 <Route path="/" element={<Layout />}>
-                    <Route index element={<Home />} />
+                    <Route index element={<JoinUs />} />
                     <Route path="login" element={<Login />} />
                     <Route path="signup" element={<Signup />} />
                     <Route path="*" element={<NotFound />} />
                 </Route>
-                <Route path="/profile" element={<ProtectedRoute><ProfileLayout /></ProtectedRoute>}>
-                    <Route index element={<Profile />} />
+                <Route path="/home" element={<ProtectedRoute><HomeLayout /></ProtectedRoute>}>
+                    <Route index element={<Home />} />
                     <Route path="*" element={<NotFound />} />
                 </Route>
             </Routes>

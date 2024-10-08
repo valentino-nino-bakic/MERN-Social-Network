@@ -7,7 +7,7 @@ import useAuth from '../hooks/useAuth';
 
 
 
-const SignupForm = () => {
+const SignupForm = ({greeting = 'Sign Up'}) => {
     const { user, signup, loading, error } = useAuth();
     const [formData, setFormData] = useState({
         'signup-username': '',
@@ -42,14 +42,14 @@ const SignupForm = () => {
 
 
     if (user) {
-        return <Navigate to='/profile' />
+        return <Navigate to='/home' />
     }
 
     return (
         <>
             <div className="d-flex align-items-center justify-content-center h-custom-2 px-5 ms-xl-4 mt-5 pt-5 pt-xl-0 mt-xl-n5">
                 <form onSubmit={handleSubmit}>
-                    <h4 className="fw-normal mb-3 pb-3">Sign Up</h4>
+                    <h4 className="fw-normal mb-3 pb-3">{greeting}</h4>
                     {error && <p className="text-danger">{error}</p>}
                     <div data-mdb-input-init className="form-outline mb-4">
                         <label className="form-label" htmlFor="signup-username">Username</label>
