@@ -66,11 +66,12 @@ const AllPosts = () => {
     }
 
     return (
-        <div className="container mt-5">
+        <div className="container mt-5" style={{ width: 750 }}>
             {posts.length > 0 ? (
                 posts.map(post => (
                     <div className="single-post card my-3" key={post._id}>
                         <div className="card-body">
+
                             <div className="d-flex align-items-center gap-3 mb-3">
                                 <div className="d-flex align-items-center">
                                     <img
@@ -88,6 +89,17 @@ const AllPosts = () => {
                             <h5 className="card-title">{post.title}</h5>
                             <p className="card-text">{post.content}</p>
 
+
+                            <div className="container d-flex justify-content-between">
+                                <div>
+                                    {likes[post._id] && likes[post._id].length > 0 ? <><i className="fa-solid fa-thumbs-up" style={{ color: '#0073e6' }} ></i> <span className="text-muted">{likes[post._id].length}</span></> : ''}
+                                </div>
+                                <div>
+                                    {comments[post._id] && comments[post._id].length > 0 ? <p className="text-muted">{comments[post._id].length} comments</p> : <p></p>}
+                                </div>
+                            </div>
+
+
                             <form onSubmit={(e) => {
                                 e.preventDefault();
                                 handleAddLike(user, post._id, currentUserId);
@@ -95,7 +107,6 @@ const AllPosts = () => {
                                 <button type="submit">Like</button>
                             </form>
 
-                            <p>Likes: {likes[post._id] ? likes[post._id].length : 0}</p>
 
 
                             <div className="comments px-4">
@@ -118,6 +129,7 @@ const AllPosts = () => {
                                 <form onSubmit={(e) => {
                                     e.preventDefault();
                                     handleAddComment(user, post._id, currentUserId, e.target.elements.commentText.value);
+                                    e.target.elements.commentText.value = '';
                                 }}>
                                     <input name="commentText" placeholder="Add a comment" />
                                     <button type="submit">Submit</button>
