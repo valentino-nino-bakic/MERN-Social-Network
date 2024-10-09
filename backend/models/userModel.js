@@ -9,7 +9,7 @@ const User = mongoose.model('User', {
         enum: ['user', 'admin'],
         default: 'user'
     },
-    profileImageUrl: { type: String, default: 'assets/images/user_avatar.png'}
+    profileImageUrl: { type: String, default: '/assets/images/user_avatar.png'}
 });
 
 

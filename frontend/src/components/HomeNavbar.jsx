@@ -1,5 +1,5 @@
 
-
+import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { jwtDecode } from 'jwt-decode';
 
@@ -12,14 +12,18 @@ const HomeNavbar = () => {
     const { user, logout } = useAuth();
     const navigate = useNavigate();
 
-    let username;
-    if (user) {
-        try {
-            username = jwtDecode(user).username;
-        } catch (error) {
-            console.error(error);
+    const [userInfo, setUserInfo] = useState({});
+
+    useEffect(() => {
+        if (user) {
+            try {
+                const decoded = jwtDecode(user);
+                setUserInfo(decoded);
+            } catch (error) {
+                console.error(error);
+            }
         }
-    }
+    }, [user]);
 
     const handleLogout = async () => {
         await logout();
@@ -41,12 +45,12 @@ const HomeNavbar = () => {
                         <Link className="navbar-brand" to="/home/profile">
                             <li className="nav-item d-flex align-items-center mx-2 li-custom">
                                 <img
-                                    src="assets/images/user_avatar.png"
+                                    src={userInfo.profileImageUrl}
                                     alt="User Avatar"
                                     className="rounded-circle me-2"
                                     style={{ width: '30px', height: '30px' }}
                                 />
-                                <span className="navbar-text me-2">{username}</span>
+                                <span className="navbar-text me-2">{userInfo.username}</span>
                             </li>
                         </Link>
                         <li className="nav-item">
