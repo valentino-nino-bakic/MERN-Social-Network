@@ -8,6 +8,7 @@ import NotFound from './pages/NotFound';
 
 import Home from './pages/Home';
 import HomeLayout from './components/HomeLayout';
+import Profile from './pages/Profile';
 
 import ProtectedRoute from './components/ProtectedRoute';
 
@@ -24,6 +25,7 @@ const App = () => {
                 </Route>
                 <Route path="/home" element={<ProtectedRoute><HomeLayout /></ProtectedRoute>}>
                     <Route index element={<Home />} />
+                    <Route path="profile" element={<Profile />} />
                     <Route path="*" element={<NotFound />} />
                 </Route>
             </Routes>

@@ -24,3 +24,9 @@ form {
 .btn-custom:hover {
     background-color: #f5f5f5;
 }
+
+
+
+.li-custom:hover {
+    cursor: pointer;
+}

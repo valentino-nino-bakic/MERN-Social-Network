@@ -38,15 +38,17 @@ const HomeNavbar = () => {
                 </button>
                 <div className="collapse navbar-collapse justify-content-end" id="navbarNav">
                     <ul className="navbar-nav align-items-center gap-3">
-                        <li className="nav-item d-flex align-items-center mx-2">
-                            <img
-                                src="assets/images/user_avatar.png"
-                                alt="User Avatar"
-                                className="rounded-circle me-2"
-                                style={{ width: '30px', height: '30px' }}
-                            />
-                            <span className="navbar-text me-2">{username}</span>
-                        </li>
+                        <Link className="navbar-brand" to="/home/profile">
+                            <li className="nav-item d-flex align-items-center mx-2 li-custom">
+                                <img
+                                    src="assets/images/user_avatar.png"
+                                    alt="User Avatar"
+                                    className="rounded-circle me-2"
+                                    style={{ width: '30px', height: '30px' }}
+                                />
+                                <span className="navbar-text me-2">{username}</span>
+                            </li>
+                        </Link>
                         <li className="nav-item">
                             <Button type="button" onClick={handleLogout} className="btn btn-primary">Logout</Button>
                         </li>
