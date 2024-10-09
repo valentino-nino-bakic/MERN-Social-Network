@@ -42,3 +42,13 @@ form {
 .li-custom:hover {
     cursor: pointer;
 }
+
+
+
+
+.bg-image-holder {
+    height: 450px;
+    background-image: url('../public/assets/images/loremipsumia.png');
+    background-position: center;
+    background-size: contain;
+}

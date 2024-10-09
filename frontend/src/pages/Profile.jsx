@@ -27,12 +27,12 @@ const Profile = () => {
     return (
         <div className="container-fluid p-0">
 
-            <div className="position-relative d-flex align-items-center" style={{ height: '40vh', backgroundColor: '#525252'}}>
+            <div className="position-relative d-flex align-items-center bg-image-holder">
                 <div className="position-absolute d-flex align-items-center px-5" style={{ bottom: '-80px'}}>
                     <img
                         src={userInfo.profileImageUrl}
                         alt="User"
-                        className="rounded-circle border border-1 border-white"
+                        className=""
                         style={{ width: '200px', height: '200px', objectFit: 'cover' }}
                     />
                     <h1 className="ms-3 text-white pb-5">{userInfo.username}</h1>
