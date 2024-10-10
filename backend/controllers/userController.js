@@ -84,7 +84,7 @@ const UserController = {
         }
     },
 
-    
+
 
     modify: async (req, res) => {
         try {
@@ -108,6 +108,26 @@ const UserController = {
 
         } catch (error) {
             console.log(error);
+            res.status(500).json({ message: error.message });
+        }
+    },
+
+
+
+    uploadProfileImage: async (req, res) => {
+        try {
+            const userId = req.params.id;
+            const user = await User.findById(userId);
+
+            if (!user) {
+                return res.status(404).json({ message: 'User not found' });
+            }
+
+            user.profileImageUrl = `/uploads/profileImages/${req.file.filename}`;
+            await user.save();
+
+            return res.status(200).json({ message: 'Your profile image has been successfully uploaded!', profileImageUrl: user.profileImageUrl });
+        } catch (error) {
             res.status(500).json({ message: error.message });
         }
     }
