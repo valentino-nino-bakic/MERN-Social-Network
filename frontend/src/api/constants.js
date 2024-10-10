@@ -5,7 +5,8 @@ const API_ENDPOINTS = {
     SIGNUP: `${BASE_URL}/signup`,
     POSTS: `${BASE_URL}/posts`,
     COMMENTS: `${BASE_URL}/comments`,
-    LIKES: `${BASE_URL}/likes`
+    LIKES: `${BASE_URL}/likes`,
+    UPLOAD_PROFILE_IMAGE: `${BASE_URL}/upload-profile-image`
 }
 
 

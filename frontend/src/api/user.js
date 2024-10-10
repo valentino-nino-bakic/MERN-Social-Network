@@ -1,6 +1,7 @@
 import API_ENDPOINTS from './constants';
 
 
+
 const loginUser = async (usernameOrEmail, password) => {
     const requestBody = {
         usernameOrEmail,
@@ -27,6 +28,7 @@ const loginUser = async (usernameOrEmail, password) => {
         throw error;
     }
 }
+
 
 
 const signupUser = async (username, email, password) => {
@@ -58,4 +60,24 @@ const signupUser = async (username, email, password) => {
 }
 
 
-export { loginUser, signupUser };
+
+const uploadProfileImage = async (formData) => {
+    const options = {
+        method: 'POST',
+        body: formData
+    }
+    try {
+        const response = await fetch(API_ENDPOINTS.UPLOAD_PROFILE_IMAGE, options);
+        if (!response.ok) {
+            const data = await response.json();
+            throw new Error(data.message);
+        }
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        throw error;
+    }
+}
+
+
+export { loginUser, signupUser, uploadProfileImage };
