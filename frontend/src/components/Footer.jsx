@@ -2,7 +2,7 @@
 
 const Footer = () => {
     return (
-        <footer className="bg-light text-center text-lg-start p-5">
+        <footer className="bg-white text-center text-lg-start p-5">
             <div className="container">
                 <span className="text-dark">Loremipsumia</span>
                 <div className="social-icons mt-2">
@@ -23,5 +23,7 @@ const Footer = () => {
         </footer>
     )
 }
+
+
 
 export default Footer;

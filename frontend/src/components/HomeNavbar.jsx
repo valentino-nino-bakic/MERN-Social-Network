@@ -22,7 +22,7 @@ const HomeNavbar = () => {
         }
     }, [setPicture, user]);
 
-    
+
 
     const handleLogout = async () => {
         await logout();
@@ -32,7 +32,7 @@ const HomeNavbar = () => {
 
 
     return (
-        <nav className="navbar navbar-expand-lg navbar-light bg-light">
+        <nav className="navbar navbar-expand-lg navbar-light bg-white sticky-top">
             <div className="container">
                 <Link className="navbar-brand" to="/home">
                     <img src="https://image.similarpng.com/very-thumbnail/2020/12/Lorem-ipsum-logo-isolated-clipart-PNG.png" alt="Logo" style={{ height: '60px' }} />
