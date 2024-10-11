@@ -17,10 +17,10 @@ const CreatePost = () => {
                     src={picture}
                     alt="User"
                     className="rounded-circle"
-                    style={{ width: '50px' }}
+                    style={{ width: '70px', height: '70px', objectFit: 'cover' }}
                 />
                 <Button
-                    className="btn btn-light w-100 text-start mb-3 p-2 text-muted"
+                    className="btn btn-light rounded-pill w-100 text-start mb-3 mx-3 p-2 text-muted"
                     onClick={() => setIsOpen(!isOpen)}
                     aria-expanded={isOpen}
                     aria-controls="collapseCreatePost"

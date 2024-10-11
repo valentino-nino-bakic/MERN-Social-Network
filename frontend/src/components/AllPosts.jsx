@@ -68,10 +68,10 @@ const AllPosts = () => {
                 <div className="col-3">
                     <div className="sticky-top" style={{ top: '86px' }}>
                         <div className="list-group">
-                            <Link className="list-group-item list-group-item-action border-0 p-3 btn-custom" to="profile">Profile</Link>
-                            <Link className="list-group-item list-group-item-action border-0 p-3 btn-custom" to="#!">Friends</Link>
-                            <Link className="list-group-item list-group-item-action border-0 p-3 btn-custom" to="#!">Lorem</Link>
-                            <Link className="list-group-item list-group-item-action border-0 p-3 btn-custom" to="#!">Ipsum</Link>
+                            <Link className="list-group-item list-group-item-action border-0 p-3 rounded btn-custom" to="profile">Profile</Link>
+                            <Link className="list-group-item list-group-item-action border-0 p-3 rounded btn-custom" to="#!">Friends</Link>
+                            <Link className="list-group-item list-group-item-action border-0 p-3 rounded btn-custom" to="#!">Lorem</Link>
+                            <Link className="list-group-item list-group-item-action border-0 p-3 rounded btn-custom" to="#!">Ipsum</Link>
                         </div>
                     </div>
                 </div>
@@ -88,7 +88,7 @@ const AllPosts = () => {
                                                 src={post.author.profileImageUrl}
                                                 alt="User"
                                                 className="rounded-circle me-2"
-                                                style={{ width: '40px', height: '40px' }}
+                                                style={{ width: '40px', height: '40px', objectFit: 'cover' }}
                                             />
                                             <strong>{post.author.username}</strong>
                                         </div>
@@ -142,7 +142,7 @@ const AllPosts = () => {
                                                     src={comment.author.profileImageUrl}
                                                     alt="User"
                                                     className="rounded-circle me-2"
-                                                    style={{ width: '25px', height: '25px' }}
+                                                    style={{ width: '25px', height: '25px', objectFit: 'cover' }}
                                                 />
                                                 <strong>{comment.author.username}</strong>
                                                 <span className="text-muted mx-3" style={{ fontSize: '0.9rem' }}>

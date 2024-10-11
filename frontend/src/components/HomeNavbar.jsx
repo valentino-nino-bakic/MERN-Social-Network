@@ -48,7 +48,7 @@ const HomeNavbar = () => {
                                     src={picture}
                                     alt="User Avatar"
                                     className="rounded-circle me-2"
-                                    style={{ width: '30px', height: '30px' }}
+                                    style={{ width: '30px', height: '30px', objectFit: 'cover' }}
                                 />
                                 <span className="navbar-text me-2">{jwtDecode(user).username}</span>
                             </li>
