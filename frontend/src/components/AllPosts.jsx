@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 
 import Button from '../components/Button';
 import formatDate from '../utils/formatDate';
@@ -47,7 +47,7 @@ const AllPosts = () => {
         await addNewLike(token, postId, author);
     };
 
-    
+
 
     if (postLoading) {
         return <p>Loading posts...</p>;
@@ -84,6 +84,8 @@ const AllPosts = () => {
 
                             <div className="container d-flex justify-content-between">
                                 <div>
+                                    {likeLoading && <p>Loading likes...</p>}
+                                    {likeError && <p>Error loading likes: {likeError}</p>}
                                     {likes[post._id] && likes[post._id].length > 0 ? <><i className="fa-solid fa-thumbs-up" style={{ color: '#0073e6' }} ></i> <span className="text-muted">{likes[post._id].length}</span></> : ''}
                                 </div>
                                 <div>
@@ -96,7 +98,7 @@ const AllPosts = () => {
                             <div className="container my-4">
                                 <div className="row">
                                     <div className="col text-center">
-                                        <Button 
+                                        <Button
                                             className="btn text-muted w-100 btn-custom"
                                             onClick={() => handleAddLike(user, post._id, user.id)}
                                         > <i className="fa fa-thumbs-up"></i> Like
@@ -114,6 +116,8 @@ const AllPosts = () => {
 
                             <div className="comments px-4">
                                 {commentLoading && <p>Loading comments...</p>}
+                                {commentError && <p>Error loading comments: {commentError}</p>}
+
                                 {comments[post._id] && comments[post._id].map(comment => (
                                     <div key={comment._id}>
                                         <img

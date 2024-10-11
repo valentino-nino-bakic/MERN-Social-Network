@@ -36,9 +36,9 @@ const Profile = () => {
     const handleUpload = async e => {
         e.preventDefault();
         const jwt = localStorage.getItem('token');
-        setLoading(true);
         if (file) {
             try {
+                setLoading(true);
                 await updateProfileImage(jwt, file);
                 setFile(null);
             } catch (error) {
@@ -46,11 +46,13 @@ const Profile = () => {
             } finally {
                 setLoading(false);
             }
+        } else {
+            setError(`You didn't choose any file yet`);
         }
     };
 
 
-    
+
     return (
         <div className="container-fluid p-0">
 
@@ -72,9 +74,11 @@ const Profile = () => {
 
                 <input type="file" onChange={handleChooseFile} className="form-control mb-3" />
 
-                <button onClick={handleUpload} className="btn btn-primary">
+                <button onClick={handleUpload} className="btn btn-primary" disabled={loading}>
                     {loading ? 'Uploading...' : 'Upload Profile Image'}
                 </button>
+
+                {error && <p className="text-danger">{error}</p>}
 
                 {!file && <p className="mt-2">Choose profile image</p>}
             </div>

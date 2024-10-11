@@ -19,7 +19,7 @@ const AuthProvider = ({ children }) => {
     const [error, setError] = useState(null);
 
 
-    
+
     const login = async (usernameOrEmail, password) => {
         setLoading(true);
         setError(null);
@@ -52,8 +52,12 @@ const AuthProvider = ({ children }) => {
 
     const logout = () => {
         setUser(null);
+        setPicture('');
         localStorage.removeItem('token');
         localStorage.removeItem('allPosts');
+        if (localStorage.getItem('profile-image')) {
+            localStorage.removeItem('profile-image');
+        }
     }
 
 
