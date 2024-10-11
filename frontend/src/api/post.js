@@ -33,7 +33,7 @@ const createPost = async (token, postData) => {
             throw new Error(data.message);
         }
         const data = await response.json();
-        return data;
+        return data.post;
     } catch (error) {
         throw error;
     }
