@@ -13,23 +13,11 @@ import useLike from '../hooks/useLike';
 
 const AllPosts = () => {
     const { user } = useAuth();
-    const [currentUserId, setCurrentUserId] = useState(null);
 
     const { posts, getPosts, loading: postLoading, error: postError } = usePost();
     const { comments, getComments, addNewComment, loading: commentLoading, error: commentError } = useComment();
     const { likes, getLikes, addNewLike, loading: likeLoading, error: likeError } = useLike();
 
-
-    useEffect(() => {
-        if (user) {
-            try {
-                const decoded = window.jwt_decode(user);
-                setCurrentUserId(decoded.id);
-            } catch (error) {
-                console.log(error);
-            }
-        }
-    }, [user]);
 
 
     useEffect(() => {
@@ -38,6 +26,7 @@ const AllPosts = () => {
         }
         fetchAllPosts();
     }, [getPosts]);
+
 
 
     useEffect(() => {
@@ -50,6 +39,7 @@ const AllPosts = () => {
     }, [posts, getComments, getLikes]);
 
 
+
     const handleAddComment = async (token, postId, author, content) => {
         await addNewComment(token, postId, author, content);
     };
@@ -57,6 +47,7 @@ const AllPosts = () => {
         await addNewLike(token, postId, author);
     };
 
+    
 
     if (postLoading) {
         return <p>Loading posts...</p>;
@@ -107,7 +98,7 @@ const AllPosts = () => {
                                     <div className="col text-center">
                                         <Button 
                                             className="btn text-muted w-100 btn-custom"
-                                            onClick={() => handleAddLike(user, post._id, currentUserId)}
+                                            onClick={() => handleAddLike(user, post._id, user.id)}
                                         > <i className="fa fa-thumbs-up"></i> Like
                                         </Button>
                                     </div>
@@ -140,7 +131,7 @@ const AllPosts = () => {
                                 ))}
                                 <form onSubmit={(e) => {
                                     e.preventDefault();
-                                    handleAddComment(user, post._id, currentUserId, e.target.elements.commentText.value);
+                                    handleAddComment(user, post._id, user.id, e.target.elements.commentText.value);
                                     e.target.elements.commentText.value = '';
                                 }}>
                                     <input name="commentText" placeholder="Add a comment" />

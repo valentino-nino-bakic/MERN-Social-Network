@@ -1,46 +1,82 @@
 
 import { useState, useEffect } from 'react';
-
+import { jwtDecode } from 'jwt-decode';
 import useAuth from '../hooks/useAuth';
 
 
 
-
 const Profile = () => {
-    const { user } = useAuth();
-    const [userInfo, setUserInfo] = useState({});
+    const { user, updateProfileImage, picture, setPicture } = useAuth();
+
+    const [file, setFile] = useState(null);
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(null);
 
 
     useEffect(() => {
-        if (user) {
+        const savedPicture = localStorage.getItem('profile-image');
+        if (savedPicture) {
+            setPicture(savedPicture);
+        } else {
+            setPicture(jwtDecode(user).profileImageUrl);
+        }
+    }, [setPicture, user]);
+
+
+
+    const handleChooseFile = e => {
+        const selectedFile = e.target.files[0];
+        if (selectedFile) {
+            setFile(selectedFile);
+            setError(null);
+        };
+    }
+
+
+    const handleUpload = async e => {
+        e.preventDefault();
+        const jwt = localStorage.getItem('token');
+        setLoading(true);
+        if (file) {
             try {
-                const decoded = window.jwt_decode(user);
-                setUserInfo(decoded);
+                await updateProfileImage(jwt, file);
+                setFile(null);
             } catch (error) {
-                console.log(error);
+                setError(error.message);
+            } finally {
+                setLoading(false);
             }
         }
-    }, [user]);
+    };
 
 
-
+    
     return (
         <div className="container-fluid p-0">
 
             <div className="position-relative d-flex align-items-center bg-image-holder">
-                <div className="position-absolute d-flex align-items-center px-5" style={{ bottom: '-80px'}}>
+                <div className="position-absolute d-flex align-items-center px-5" style={{ bottom: '-80px' }}>
                     <img
-                        src={userInfo.profileImageUrl}
+                        src={picture}
                         alt="User"
-                        className=""
+                        className="rounded-circle border border-3"
                         style={{ width: '200px', height: '200px', objectFit: 'cover' }}
                     />
-                    <h1 className="ms-3 text-white pb-5">{userInfo.username}</h1>
+                    <h1 className="ms-3 text-white pb-5">{jwtDecode(user).username}</h1>
                 </div>
             </div>
 
-            <div className="container vh-100 d-flex justify-content-center align-items-center">
-                <p>PRofile page</p>
+
+            <div className="container vh-100 d-flex flex-column justify-content-center align-items-center">
+                <p>Profile page</p>
+
+                <input type="file" onChange={handleChooseFile} className="form-control mb-3" />
+
+                <button onClick={handleUpload} className="btn btn-primary">
+                    {loading ? 'Uploading...' : 'Upload Profile Image'}
+                </button>
+
+                {!file && <p className="mt-2">Choose profile image</p>}
             </div>
 
         </div>

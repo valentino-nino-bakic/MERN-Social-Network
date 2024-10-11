@@ -61,9 +61,12 @@ const signupUser = async (username, email, password) => {
 
 
 
-const uploadProfileImage = async (formData) => {
+const uploadProfileImage = async (token, formData) => {
     const options = {
         method: 'POST',
+        headers: {
+            Authorization: `Bearer ${token}`
+        },
         body: formData
     }
     try {

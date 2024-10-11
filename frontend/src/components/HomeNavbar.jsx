@@ -1,5 +1,5 @@
 
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { jwtDecode } from 'jwt-decode';
 
@@ -9,26 +9,26 @@ import Button from './Button';
 
 
 const HomeNavbar = () => {
-    const { user, logout } = useAuth();
+    const { user, logout, picture, setPicture } = useAuth();
     const navigate = useNavigate();
 
-    const [userInfo, setUserInfo] = useState({});
 
     useEffect(() => {
-        if (user) {
-            try {
-                const decoded = jwtDecode(user);
-                setUserInfo(decoded);
-            } catch (error) {
-                console.error(error);
-            }
+        const savedPicture = localStorage.getItem('profile-image');
+        if (savedPicture) {
+            setPicture(savedPicture);
+        } else {
+            setPicture(jwtDecode(user).profileImageUrl);
         }
-    }, [user]);
+    }, [setPicture, user]);
+
+    
 
     const handleLogout = async () => {
         await logout();
         navigate('/');
     }
+
 
 
     return (
@@ -45,12 +45,12 @@ const HomeNavbar = () => {
                         <Link className="navbar-brand" to="/home/profile">
                             <li className="nav-item d-flex align-items-center mx-2 li-custom">
                                 <img
-                                    src={userInfo.profileImageUrl}
+                                    src={picture}
                                     alt="User Avatar"
                                     className="rounded-circle me-2"
                                     style={{ width: '30px', height: '30px' }}
                                 />
-                                <span className="navbar-text me-2">{userInfo.username}</span>
+                                <span className="navbar-text me-2">{jwtDecode(user).username}</span>
                             </li>
                         </Link>
                         <li className="nav-item">
