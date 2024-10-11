@@ -2,7 +2,9 @@ import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { jwtDecode } from 'jwt-decode';
 
-import Button from '../components/Button';
+import CreatePost from './CreatePost';
+import Button from './Button';
+
 import formatDate from '../utils/formatDate';
 
 import useAuth from '../hooks/useAuth';
@@ -73,7 +75,8 @@ const AllPosts = () => {
                         </div>
                     </div>
                 </div>
-                <div className="col-5">
+                <div className="col-6">
+                    <CreatePost />
                     {posts.length > 0 ? (
                         posts.map(post => (
                             <div className="single-post card my-3" key={post._id}>
