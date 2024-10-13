@@ -12,6 +12,9 @@ import Profile from './pages/Profile';
 
 import ProtectedRoute from './components/ProtectedRoute';
 
+import SearchResults from './pages/SearchResults';
+
+
 
 const App = () => {
     return (
@@ -26,11 +29,14 @@ const App = () => {
                 <Route path="/home" element={<ProtectedRoute><HomeLayout /></ProtectedRoute>}>
                     <Route index element={<Home />} />
                     <Route path="profile" element={<Profile />} />
+                    <Route path="search-results" element={<SearchResults />} />
                     <Route path="*" element={<NotFound />} />
                 </Route>
             </Routes>
         </BrowserRouter>
     )
 }
+
+
 
 export default App;

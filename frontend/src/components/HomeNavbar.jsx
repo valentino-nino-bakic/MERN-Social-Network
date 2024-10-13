@@ -1,5 +1,5 @@
 
-import { useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { jwtDecode } from 'jwt-decode';
 
@@ -12,6 +12,7 @@ const HomeNavbar = () => {
     const { user, logout, picture, setPicture } = useAuth();
     const navigate = useNavigate();
 
+    const [searchQuery, setSearchQuery] = useState('');
 
     useEffect(() => {
         const savedPicture = localStorage.getItem('profile-image');
@@ -31,6 +32,16 @@ const HomeNavbar = () => {
 
 
 
+    const handleSearch = e => {
+        e.preventDefault();
+        if (searchQuery.trim() !== '') {
+            navigate(`/home/search-results?query=${searchQuery}`);
+        }
+        setSearchQuery('');
+    }
+
+
+
     return (
         <nav className="navbar navbar-expand-lg navbar-light bg-white sticky-top">
             <div className="container">
@@ -40,6 +51,17 @@ const HomeNavbar = () => {
                 <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                     <span className="navbar-toggler-icon"></span>
                 </button>
+                <form onSubmit={handleSearch} className="d-flex">
+                    <input
+                        className="form-control me-2"
+                        type="search"
+                        placeholder="Search Loremipsumia"
+                        value={searchQuery}
+                        onChange={e => setSearchQuery(e.target.value)}
+                        aria-label="Search"
+                    />
+                    <button className="btn btn-outline-primary" type="submit">Search</button>
+                </form>
                 <div className="collapse navbar-collapse justify-content-end" id="navbarNav">
                     <ul className="navbar-nav align-items-center gap-3">
                         <Link className="navbar-brand" to="/home/profile">

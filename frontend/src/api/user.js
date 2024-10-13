@@ -83,4 +83,21 @@ const uploadProfileImage = async (token, formData) => {
 }
 
 
-export { loginUser, signupUser, uploadProfileImage };
+
+const fetchUsersByUsername = async (query) => {
+    try {
+        const response = await fetch(`${API_ENDPOINTS.SEARCH_RESULTS}?query=${encodeURIComponent(query)}`);
+        if (!response.ok) {
+            const data = await response.json();
+            throw new Error(data.message);
+        }
+        const data = await response.json();
+        return data.users;
+    } catch (error) {
+        throw error;
+    }
+}
+
+
+
+export { loginUser, signupUser, uploadProfileImage, fetchUsersByUsername };

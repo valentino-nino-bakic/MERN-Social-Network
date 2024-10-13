@@ -5,6 +5,7 @@ const userAuth = require('../middlewares/userAuth');
 const upload = require('../middlewares/multer');
 
 
+router.get('/search-results', UserController.searchUsers);
 router.post('/signup', UserController.signup);
 router.post('/login', UserController.login);
 router.post('/upload-profile-image', userAuth, upload.single('profile-image'), UserController.uploadProfileImage);

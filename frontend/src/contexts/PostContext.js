@@ -19,7 +19,7 @@ const PostProvider = ({ children }) => {
         setError(null);
         try {
             const data = await getAllPosts();
-            setPosts(data.posts);
+            setPosts(data.posts.reverse());
             localStorage.setItem('allPosts', JSON.stringify(data.posts));
         } catch (error) {
             setError(error.message);

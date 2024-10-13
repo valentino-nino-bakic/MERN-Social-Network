@@ -1,7 +1,10 @@
 
 import { useState, useEffect } from 'react';
 import { jwtDecode } from 'jwt-decode';
+
 import useAuth from '../hooks/useAuth';
+import CreatePost from '../components/CreatePost';
+
 
 
 
@@ -58,30 +61,66 @@ const Profile = () => {
 
             <div className="position-relative d-flex align-items-center bg-image-holder">
                 <div className="position-absolute d-flex align-items-center px-5" style={{ bottom: '-80px' }}>
-                    <img
-                        src={picture}
-                        alt="User"
-                        className="rounded-circle border border-3"
-                        style={{ width: '200px', height: '200px', objectFit: 'cover' }}
-                    />
+                    <div className="position-relative" style={{ width: '200px', height: '200px' }}>
+                        <img
+                            src={picture}
+                            alt="User"
+                            className="rounded-circle border border-3"
+                            style={{ width: '200px', height: '200px', objectFit: 'cover' }}
+                        />
+                        <i className="fa-solid fa-upload"
+                            data-bs-toggle="modal" data-bs-target="#upload-modal"
+                            style={{
+                                position: 'absolute',
+                                bottom: '10px',
+                                right: '10px',
+                                color: 'white',
+                                fontSize: '15px',
+                                backgroundColor: 'rgba(0, 0, 0, 0.5)',
+                                borderRadius: '50%',
+                                padding: '10px',
+                                cursor: 'pointer'
+                            }}
+                        />
+                    </div>
                     <h1 className="ms-3 text-white pb-5">{jwtDecode(user).username}</h1>
                 </div>
             </div>
 
 
-            <div className="container vh-100 d-flex flex-column justify-content-center align-items-center">
-                <p>Profile page</p>
+            <div className="modal" id="upload-modal">
+                <div className="modal-dialog">
+                    <div className="modal-content">
 
-                <input type="file" onChange={handleChooseFile} className="form-control mb-3" />
+                        <div className="modal-header">
+                            <h4 className="modal-title">Upload Image</h4>
+                            <button type="button" className="btn-close" data-bs-dismiss="modal"></button>
+                        </div>
 
-                <button onClick={handleUpload} className="btn btn-primary" disabled={loading}>
-                    {loading ? 'Uploading...' : 'Upload Profile Image'}
-                </button>
+                        <div className="modal-body">
+                            <div className="container d-flex flex-column justify-content-center align-items-center">
 
-                {error && <p className="text-danger">{error}</p>}
+                                <input type="file" onChange={handleChooseFile} className="form-control mb-3" />
 
-                {!file && <p className="mt-2">Choose profile image</p>}
+                                <button onClick={handleUpload} className="btn btn-primary" disabled={loading}>
+                                    {loading ? 'Uploading...' : 'Upload Profile Image'}
+                                </button>
+
+                                {error && <p className="text-danger">{error}</p>}
+
+                                {!file && <p className="mt-2">Choose profile image</p>}
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
             </div>
+
+            <div className="p-5">
+                <CreatePost />
+            </div>
+
+
 
         </div>
     )

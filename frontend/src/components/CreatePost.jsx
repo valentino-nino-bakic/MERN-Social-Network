@@ -54,7 +54,7 @@ const CreatePost = () => {
                     aria-expanded={isOpen}
                     aria-controls="collapseCreatePost"
                 >
-                    What's on your mind?
+                    What's on your mind, {jwtDecode(user).username}?
                 </Button>
             </div>
 

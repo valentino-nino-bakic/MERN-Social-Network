@@ -125,13 +125,24 @@ const UserController = {
 
             user.profileImageUrl = `http://localhost:8080/uploads/${req.file.filename}`;
             await user.save();
-            
+
             return res.status(200).json({ message: 'Your profile image has been successfully uploaded!', profileImageUrl: user.profileImageUrl });
         } catch (error) {
             res.status(500).json({ message: error.message });
         }
-    }
+    },
 
+
+
+    searchUsers: async (req, res) => {
+        const { query } = req.query;
+        try {
+            const users = await User.find({ username: { $regex: query, $options: 'i' } });
+            res.status(200).json({ users: users });
+        } catch (error) {
+            res.status(500).json({ message: error.message });
+        }
+    }
 
 }
 
