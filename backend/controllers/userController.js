@@ -240,6 +240,24 @@ const UserController = {
         } catch (error) {
             res.status(400).json({ message: error.message });
         }
+    },
+
+
+
+    isUserFriend: async (req, res) => {
+        const { userId, friendId } = req.params;
+
+        try {
+            const user = await User.findById(userId);
+            if (!user) {
+                return res.status(404).json({ message: 'User not found' });
+            }
+
+            const isFriend = user.friends.includes(friendId);
+            res.status(200).json({ isFriend: isFriend });
+        } catch (error) {
+            res.status(400).json({ message: error.message });
+        }
     }
 
 }

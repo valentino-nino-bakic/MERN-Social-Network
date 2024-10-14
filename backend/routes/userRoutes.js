@@ -6,6 +6,10 @@ const upload = require('../middlewares/multer');
 
 
 router.get('/search-results', UserController.searchUsers);
+router.get('/users/:userId/friends/:friendId', UserController.isUserFriend);
+router.post('/friend-requests', UserController.sendFriendRequest);
+router.put('/friend-requests/:senderId/accept', UserController.acceptFriendRequest);
+router.put('/friend-requests/:senderId/decline', UserController.declineFriendRequest);
 router.get('/user', UserController.getUserByUsername);
 router.post('/signup', UserController.signup);
 router.post('/login', UserController.login);
