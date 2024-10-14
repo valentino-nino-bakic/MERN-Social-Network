@@ -157,6 +157,89 @@ const UserController = {
         } catch (error) {
             res.status(500).json({ message: error.message });
         }
+    },
+
+
+
+    sendFriendRequest: async (req, res) => {
+        const { senderId, receiverId } = req.body;
+
+        try {
+            const receiver = await User.findById(receiverId);
+            if (!receiver) {
+                return res.status(404).json({ message: 'Receiver not found' });
+            }
+
+            const existingRequest = receiver.friendRequests.find(req => req.senderId.toString() === senderId);
+            if (existingRequest) {
+                return res.status(400).json({ message: 'Friend request already sent' });
+            }
+
+            receiver.friendRequests.push({ senderId, status: 'pending' });
+            await receiver.save();
+
+            res.status(201).json({ message: 'Friend request sent successfully' });
+        } catch (error) {
+            res.status(400).json({ message: error.message });
+        }
+    },
+
+
+
+    acceptFriendRequest: async (req, res) => {
+        const { senderId } = req.params;
+        const { receiverId } = req.body;
+
+        try {
+            const receiver = await User.findById(receiverId);
+            const sender = await User.findById(senderId);
+
+            if (!receiver || !sender) {
+                return res.status(404).json({ message: 'User not found' });
+            }
+
+            const friendRequest = receiver.friendRequests.find(req => req.senderId.toString() === senderId);
+            if (!friendRequest) {
+                return res.status(404).json({ message: 'Friend request not found' });
+            }
+
+            friendRequest.status = 'accepted';
+
+            receiver.friends.push(senderId);
+            sender.friends.push(receiverId);
+
+            await receiver.save();
+            await sender.save();
+
+            res.status(200).json({ message: 'Friend request accepted' });
+        } catch (error) {
+            res.status(400).json({ message: error.message });
+        }
+    },
+
+
+
+    declineFriendRequest: async (req, res) => {
+        const { senderId } = req.params;
+        const { receiverId } = req.body;
+
+        try {
+            const receiver = await User.findById(receiverId);
+            if (!receiver) {
+                return res.status(404).json({ message: 'Receiver not found' });
+            }
+
+            const friendRequest = receiver.friendRequests.find(req => req.senderId.toString === senderId);
+            if (!friendRequest) {
+                return res.status(404).json({ message: 'Friend request not found' });
+            }
+
+            friendRequest.status = 'declined';
+            await receiver.save();
+            res.status(200).json({ message: 'Friend request declined' });
+        } catch (error) {
+            res.status(400).json({ message: error.message });
+        }
     }
 
 }

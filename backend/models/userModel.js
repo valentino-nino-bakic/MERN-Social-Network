@@ -9,7 +9,26 @@ const User = mongoose.model('User', {
         enum: ['user', 'admin'],
         default: 'user'
     },
-    profileImageUrl: { type: String, default: '/assets/images/user_avatar.png'}
+    profileImageUrl: { type: String, default: '/assets/images/user_avatar.png' },
+    friends: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+    }],
+    friendRequests: [{
+        senderId: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'User',
+        },
+        status: {
+            type: String,
+            enum: ['pending', 'accepted', 'declined'],
+            default: 'pending',
+        },
+        createdAt: {
+            type: Date,
+            default: Date.now,
+        }
+    }]
 });
 
 
