@@ -1,11 +1,13 @@
 import { useEffect, useState } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams, useNavigate } from 'react-router-dom';
 
 import useAuth from '../hooks/useAuth';
 
 
 
 const SearchResults = () => {
+    const navigate = useNavigate();
+
     const { getUsersByUsername } = useAuth();
     const [searchParams] = useSearchParams();
     const query = searchParams.get('query');
@@ -38,6 +40,13 @@ const SearchResults = () => {
 
 
 
+    const handleClick = e => {
+        const username = e.target.getAttribute('data-user-username');
+        navigate(`/home/user/${username}`);
+    }
+
+
+
     if (loading) {
         return <p>Loading...</p>
     }
@@ -53,8 +62,8 @@ const SearchResults = () => {
                 <ul>
                     {results.map(user => (
                         <li key={user._id} className="my-4">
-                            <img src={user.profileImageUrl} alt={user.username} style={{ width: '50px', height: '50px', borderRadius: '50%' }} />
-                            <span>{user.username}</span>
+                            <img  className="rounded-circle" src={user.profileImageUrl} alt={user.username} style={{ width: '50px', height: '50px', objectFit: 'cover' }} />
+                            <button data-user-username={user.username} onClick={handleClick} className="btn btn-link">{user.username}</button>
                         </li>
                     ))}
                 </ul>

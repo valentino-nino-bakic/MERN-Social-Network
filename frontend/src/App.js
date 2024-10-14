@@ -16,6 +16,8 @@ import SearchResults from './pages/SearchResults';
 
 import Chat from './pages/Chat';
 
+import OtherUserProfile from './pages/OtherUserProfile';
+
 
 
 const App = () => {
@@ -31,6 +33,7 @@ const App = () => {
                 <Route path="/home" element={<ProtectedRoute><HomeLayout /></ProtectedRoute>}>
                     <Route index element={<Home />} />
                     <Route path="profile" element={<Profile />} />
+                    <Route path="user/:username" element={<OtherUserProfile />} />
                     <Route path="search-results" element={<SearchResults />} />
                     <Route path="chat" element={<Chat />} />
                     <Route path="*" element={<NotFound />} />

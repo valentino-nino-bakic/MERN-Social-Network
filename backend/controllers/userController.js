@@ -142,6 +142,21 @@ const UserController = {
         } catch (error) {
             res.status(500).json({ message: error.message });
         }
+    },
+
+
+
+    getUserByUsername: async (req, res) => {
+        const { username } = req.query;
+        try {
+            const user = await User.findOne({ username: username });
+            if (!user) {
+                return res.status(400).json({ message: `User ${username} doesn't exist` });
+            }
+            res.status(200).json({ user: user });
+        } catch (error) {
+            res.status(500).json({ message: error.message });
+        }
     }
 
 }

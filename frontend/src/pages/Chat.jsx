@@ -1,36 +1,26 @@
 
-// import { useEffect } from 'react';
-// import { io } from 'socket.io-client';
+import { useEffect } from 'react';
 
-// const BASE_URL = process.env.REACT_APP_BASE_URL;
-// const socket = io(BASE_URL);
+import useSocket from '../hooks/useSocket';
 
 
 
 const Chat = () => {
-    // useEffect(() => {
-    //     socket.on('connect', () => {
-    //         console.log(`Connected ${socket.id}`);
-    //     });
+    const socket = useSocket();
 
-    //     socket.on('disconnect', () => {
-    //         console.log('Disconnected from server');
-    //     });
+    useEffect(() => {
+        if (!socket) return;
 
-    //     socket.on('receive_message', data => {
-    //         console.log(`Message from ${data.fromUserId}: ${data.message}`);
-    //     });
+        socket.on('receive_message', (data) => {
+            console.log(`Message from ${data.fromUserId}: ${data.message}`);
+        });
 
-    //     const sendMessage = (message, toUserId) => {
-    //         socket.emit('private_message', { message, toUserId });
-    //     };
+        return () => {
+            socket.off('receive_message');
+        };
+    }, [socket]);
 
-    //     return () => {
-    //         socket.disconnect();
-    //     };
-    // }, []);
 
-    
     return (
         <div>
             <div className="vh-100">

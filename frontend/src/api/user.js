@@ -100,4 +100,20 @@ const fetchUsersByUsername = async (query) => {
 
 
 
-export { loginUser, signupUser, uploadProfileImage, fetchUsersByUsername };
+const fetchUserByUsername = async (query) => {
+    try {
+        const response = await fetch(`${API_ENDPOINTS.USER}?username=${encodeURIComponent(query)}`);
+        if (!response.ok) {
+            const data = await response.json();
+            throw new Error(data.message);
+        }
+        const data = await response.json();
+        return data.user;
+    } catch (error) {
+        throw error;
+    }
+}
+
+
+
+export { loginUser, signupUser, uploadProfileImage, fetchUsersByUsername, fetchUserByUsername };

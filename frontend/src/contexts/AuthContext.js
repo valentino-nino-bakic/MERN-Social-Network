@@ -1,6 +1,6 @@
 
 import { createContext, useState } from 'react';
-import { loginUser, signupUser, uploadProfileImage, fetchUsersByUsername } from '../api/user';
+import { loginUser, signupUser, uploadProfileImage, fetchUsersByUsername, fetchUserByUsername } from '../api/user';
 
 
 
@@ -90,9 +90,19 @@ const AuthProvider = ({ children }) => {
     }
 
 
+    const getUserByUsername = async (query) => {
+        try {
+            const data = await fetchUserByUsername(query);
+            return data;
+        } catch (error) {
+            throw new Error(error.message);
+        }
+    }
+
+
 
     return (
-        <AuthContext.Provider value={{ user, updateProfileImage, getUsersByUsername, picture, setPicture, login, signup, logout, loading, error }}>
+        <AuthContext.Provider value={{ user, updateProfileImage, getUsersByUsername, getUserByUsername, picture, setPicture, login, signup, logout, loading, error }}>
             {children}
         </AuthContext.Provider>
     )
