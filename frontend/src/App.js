@@ -14,6 +14,8 @@ import ProtectedRoute from './components/ProtectedRoute';
 
 import SearchResults from './pages/SearchResults';
 
+import Chat from './pages/Chat';
+
 
 
 const App = () => {
@@ -30,6 +32,7 @@ const App = () => {
                     <Route index element={<Home />} />
                     <Route path="profile" element={<Profile />} />
                     <Route path="search-results" element={<SearchResults />} />
+                    <Route path="chat" element={<Chat />} />
                     <Route path="*" element={<NotFound />} />
                 </Route>
             </Routes>

@@ -69,9 +69,8 @@ const AllPosts = () => {
                     <div className="sticky-top" style={{ top: '86px' }}>
                         <div className="list-group">
                             <Link className="list-group-item list-group-item-action border-0 p-3 rounded btn-custom" to="profile">Profile</Link>
+                            <Link className="list-group-item list-group-item-action border-0 p-3 rounded btn-custom" to="chat">Chat</Link>
                             <Link className="list-group-item list-group-item-action border-0 p-3 rounded btn-custom" to="#!">Friends</Link>
-                            <Link className="list-group-item list-group-item-action border-0 p-3 rounded btn-custom" to="#!">Lorem</Link>
-                            <Link className="list-group-item list-group-item-action border-0 p-3 rounded btn-custom" to="#!">Ipsum</Link>
                         </div>
                     </div>
                 </div>

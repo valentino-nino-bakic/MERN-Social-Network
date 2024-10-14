@@ -47,12 +47,12 @@ const SearchResults = () => {
     }
 
     return (
-        <div>
-            <h1>Search results for: {query}</h1>
+        <div className="container p-5 vh-100">
+            <h1 className="mb-5">Search results for: {query}</h1>
             {results.length > 0 ? (
                 <ul>
                     {results.map(user => (
-                        <li key={user.id}>
+                        <li key={user._id} className="my-4">
                             <img src={user.profileImageUrl} alt={user.username} style={{ width: '50px', height: '50px', borderRadius: '50%' }} />
                             <span>{user.username}</span>
                         </li>

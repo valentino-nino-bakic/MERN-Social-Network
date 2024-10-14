@@ -1,4 +1,5 @@
 const express = require('express');
+const http = require('http');
 const app = express();
 const cors = require('cors');
 const mongoose = require('mongoose');
@@ -10,6 +11,17 @@ const userRouter = require('./routes/userRoutes');
 const postRouter = require('./routes/postRoutes');
 const commentRouter = require('./routes/commentRoutes');
 const likeRouter = require('./routes/likeRoutes');
+
+
+
+const server = http.createServer(app);
+const { Server } = require('socket.io');
+const io = new Server(server, {
+    cors: {
+        origin: '*',
+        methods: ['GET', 'POST']
+    }
+})
 
 
 
@@ -37,6 +49,25 @@ app.use('/api', likeRouter);
 
 
 
-app.listen(PORT, () => {
+io.on('connection', socket => {
+    console.log(`New user connected: ${socket.id}`);
+
+    socket.on('private_message', ({ message, toUserId }) => {
+        console.log(`Message: ${message}, To: ${toUserId}`);
+
+        io.to(toUserId).emit('receive_message', {
+            message: message,
+            fromUserId: socket.id
+        });
+    });
+
+    socket.on('disconnect', () => {
+        console.log(`User disconnected ${socket.id}`);
+    });
+});
+
+
+
+server.listen(PORT, () => {
     console.log(`Server up and running on port ${PORT}`);
 });
