@@ -11,21 +11,25 @@ import { PostProvider } from './contexts/PostContext';
 import { CommentProvider } from './contexts/CommentContext';
 import { LikeProvider } from './contexts/LikeContext';
 import { ThemeProvider } from './contexts/ThemeContext';
+import { SocketProvider } from './contexts/SocketContext';
+
 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
     <React.StrictMode>
         <ThemeProvider>
-            <AuthProvider>
-                <PostProvider>
-                    <CommentProvider>
-                        <LikeProvider>
-                            <App />
-                        </LikeProvider>
-                    </CommentProvider>
-                </PostProvider>
-            </AuthProvider>
+            <SocketProvider>
+                <AuthProvider>
+                    <PostProvider>
+                        <CommentProvider>
+                            <LikeProvider>
+                                <App />
+                            </LikeProvider>
+                        </CommentProvider>
+                    </PostProvider>
+                </AuthProvider>
+            </SocketProvider>
         </ThemeProvider>
     </React.StrictMode>
 );
