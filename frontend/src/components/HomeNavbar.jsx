@@ -50,7 +50,7 @@ const HomeNavbar = () => {
 
 
     return (
-        <nav className="navbar navbar-expand-lg navbar-light bg-white sticky-top">
+        <nav className="navbar navbar-expand-lg sticky-top">
             <div className="container">
                 <div className="d-flex justify-content-between w-100">
                     <div className="d-flex align-items-center flex-grow-1">
@@ -81,7 +81,7 @@ const HomeNavbar = () => {
                                         className="rounded-circle me-2"
                                         style={{ width: '30px', height: '30px', objectFit: 'cover' }}
                                     />
-                                    <span className="navbar-text me-2">{jwtDecode(user).username}</span>
+                                    <span className="me-2">{jwtDecode(user).username}</span>
                                 </li>
                             </Link>
                             <li className="nav-item">

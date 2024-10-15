@@ -41,7 +41,7 @@ const CreatePost = () => {
     return (
         <div className="my-5 create-post">
 
-            <div className="container d-flex bg-white align-items-center justify-content-center rounded" style={{ height: '100px' }}>
+            <div className="container d-flex align-items-center justify-content-center rounded" style={{ height: '100px' }}>
                 <img
                     src={picture}
                     alt="User"
@@ -49,7 +49,7 @@ const CreatePost = () => {
                     style={{ width: '70px', height: '70px', objectFit: 'cover' }}
                 />
                 <Button
-                    className="btn btn-light rounded-pill w-100 text-start mb-3 mx-3 p-2 text-muted"
+                    className="btn rounded-pill w-100 text-start mb-3 mx-3 p-2 btn-custom"
                     onClick={() => setIsOpen(!isOpen)}
                     aria-expanded={isOpen}
                     aria-controls="collapseCreatePost"
