@@ -18,6 +18,9 @@ import Chat from './pages/Chat';
 
 import OtherUserProfile from './pages/OtherUserProfile';
 
+import { SocketProvider } from './contexts/SocketContext';
+
+
 
 
 const App = () => {
@@ -30,7 +33,7 @@ const App = () => {
                     <Route path="signup" element={<Signup />} />
                     <Route path="*" element={<NotFound />} />
                 </Route>
-                <Route path="/home" element={<ProtectedRoute><HomeLayout /></ProtectedRoute>}>
+                <Route path="/home" element={<ProtectedRoute><SocketProvider><HomeLayout /></SocketProvider></ProtectedRoute>}>
                     <Route index element={<Home />} />
                     <Route path="profile" element={<Profile />} />
                     <Route path="user/:username" element={<OtherUserProfile />} />
