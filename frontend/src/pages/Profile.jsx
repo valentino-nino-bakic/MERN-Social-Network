@@ -9,11 +9,13 @@ import CreatePost from '../components/CreatePost';
 
 
 const Profile = () => {
-    const { user, updateProfileImage, picture, setPicture } = useAuth();
+    const { user, updateProfileImage, picture, setPicture, acceptFriendshipRequest, declineFriendshipRequest, getFriendRequests } = useAuth();
 
     const [file, setFile] = useState(null);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
+
+    const [friendRequests, setFriendRequests] = useState([]);
 
 
     useEffect(() => {
@@ -24,6 +26,21 @@ const Profile = () => {
             setPicture(jwtDecode(user).profileImageUrl);
         }
     }, [setPicture, user]);
+
+
+    useEffect(() => {
+        const fetchRequests = async (userId) => {
+            try {
+                const requests = await getFriendRequests(userId);
+                setFriendRequests(requests);
+            } catch (err) {
+                alert(err);
+            }
+        };
+        if (user) {
+            fetchRequests(jwtDecode(user).id);
+        }
+    }, [user, getFriendRequests]);
 
 
 
@@ -51,6 +68,24 @@ const Profile = () => {
             }
         } else {
             setError(`You didn't choose any file yet`);
+        }
+    };
+
+
+
+    const handleAcceptRequest = async (currentUserId, senderId) => {
+        try {
+            await acceptFriendshipRequest(currentUserId, senderId);
+        } catch (err) {
+            console.log(err)
+        }
+    };
+
+    const handleDeclineRequest = async (currentUserId, senderId) => {
+        try {
+            await declineFriendshipRequest(currentUserId, senderId);
+        } catch (err) {
+            console.log(err);
         }
     };
 
@@ -118,6 +153,21 @@ const Profile = () => {
 
             <div className="p-5">
                 <CreatePost />
+
+                <div className="friend-requests mt-5">
+                    <h2>Friend Requests</h2>
+                    {friendRequests.length > 0 ? (
+                        friendRequests.map(request => (
+                            <div key={request._id} className="d-flex align-items-center my-3">
+                                <p>{request.senderUsername}</p>
+                                <button className="btn btn-success mx-2" onClick={() => handleAcceptRequest(jwtDecode(user).id, request.senderId)}>Accept</button>
+                                <button className="btn btn-danger" onClick={() => handleDeclineRequest(jwtDecode(user).id, request.senderId)}>Decline</button>
+                            </div>
+                        ))
+                    ) : (
+                        <p>No friend requests</p>
+                    )}
+                </div>
             </div>
 
 

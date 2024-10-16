@@ -1,6 +1,17 @@
 
 import { createContext, useState } from 'react';
-import { loginUser, signupUser, uploadProfileImage, fetchUsersByUsername, fetchUserByUsername, isUserFriend, sendFriendRequest } from '../api/user';
+import {
+    loginUser,
+    signupUser,
+    uploadProfileImage,
+    fetchUsersByUsername,
+    fetchUserByUsername,
+    isUserFriend,
+    sendFriendRequest,
+    acceptFriendRequest,
+    declineFriendRequest,
+    fetchFriendRequests
+} from '../api/user';
 
 
 
@@ -125,8 +136,63 @@ const AuthProvider = ({ children }) => {
 
 
 
+
+    const acceptFriendshipRequest = async (currentUserId, senderId) => {
+        try {
+            const data = await acceptFriendRequest(currentUserId, senderId);
+            alert(data.message);
+        } catch (error) {
+            throw new Error(error.message);
+        }
+    };
+
+
+
+
+    const declineFriendshipRequest = async (currentUserId, senderId) => {
+        try {
+            const data = await declineFriendRequest(currentUserId, senderId);
+            alert(data.message);
+        } catch (error) {
+            throw new Error(error.message);
+        }
+    };
+
+
+
+    const getFriendRequests = async (userId) => {
+        try {
+            const data = await fetchFriendRequests(userId);
+            return data;
+        } catch (error) {
+            throw new Error(error.message);
+        }
+    };
+
+
+
+
     return (
-        <AuthContext.Provider value={{ user, updateProfileImage, getUsersByUsername, getUserByUsername, isOtherUserFriend, sendFriendshipRequest, picture, setPicture, login, signup, logout, loading, error }}>
+        <AuthContext.Provider
+            value={{
+                user,
+                updateProfileImage,
+                getUsersByUsername,
+                getUserByUsername,
+                isOtherUserFriend,
+                sendFriendshipRequest,
+                acceptFriendshipRequest,
+                declineFriendshipRequest,
+                getFriendRequests,
+                picture,
+                setPicture,
+                login,
+                signup,
+                logout,
+                loading,
+                error
+            }}
+        >
             {children}
         </AuthContext.Provider>
     )

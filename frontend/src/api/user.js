@@ -132,9 +132,9 @@ const isUserFriend = async (currentUserId, otherUserId) => {
 
 
 
-const sendFriendRequest = async (userId, otherUserId) => {
+const sendFriendRequest = async (currentUserId, otherUserId) => {
     const requestBody = {
-        senderId: userId,
+        senderId: currentUserId,
         receivedId: otherUserId
     }
     const options = {
@@ -158,4 +158,84 @@ const sendFriendRequest = async (userId, otherUserId) => {
 
 
 
-export { loginUser, signupUser, uploadProfileImage, fetchUsersByUsername, fetchUserByUsername, isUserFriend, sendFriendRequest };
+const acceptFriendRequest = async (currentUserId, senderId) => {
+    const requestBody = {
+        receiverId: currentUserId
+    }
+    const options = {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(requestBody)
+    }
+    try {
+        const response = await fetch(`${API_ENDPOINTS.BASE_URL}/friend-requests/${senderId}/accept`, options);
+        if (!response.ok) {
+            const data = await response.json();
+            throw new Error(data.message);
+        }
+        const data = await response.json();
+        return data.message;
+    } catch (error) {
+        throw error;
+    }
+};
+
+
+
+const declineFriendRequest = async (currentUserId, senderId) => {
+    const requestBody = {
+        receiverId: currentUserId
+    }
+    const options = {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(requestBody)
+    }
+    try {
+        const response = await fetch(`${API_ENDPOINTS.BASE_URL}/friend-requests/${senderId}/decline`, options);
+        if (!response.ok) {
+            const data = await response.json();
+            throw new Error(data.message);
+        }
+        const data = await response.json();
+        return data.message;
+    } catch (error) {
+        throw error;
+    }
+};
+
+
+
+
+const fetchFriendRequests = async (userId) => {
+    try {
+        const response = await fetch(`${API_ENDPOINTS.BASE_URL}/friend-requests/${userId}`);
+        if (!response.ok) {
+            const data = await response.json();
+            throw new Error(data.message);
+        }
+        const data = await response.json();
+        return data.friendRequests;
+    } catch (error) {
+        throw error;
+    }
+};
+
+
+
+export {
+    loginUser,
+    signupUser,
+    uploadProfileImage,
+    fetchUsersByUsername,
+    fetchUserByUsername,
+    isUserFriend,
+    sendFriendRequest,
+    acceptFriendRequest,
+    declineFriendRequest,
+    fetchFriendRequests
+};
