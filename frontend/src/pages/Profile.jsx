@@ -159,7 +159,12 @@ const Profile = () => {
                     {friendRequests.length > 0 ? (
                         friendRequests.map(request => (
                             <div key={request._id} className="d-flex align-items-center my-3">
-                                <p>{request.senderUsername}</p>
+                                <p>{request.senderId.username}</p>
+                                <img
+                                    src={request.senderId.profileImageUrl}
+                                    alt={request.senderId.username}
+                                    style={{width: '50px', height: '50px', borderRadius: '50%', objectFit: 'cover'}}
+                                />
                                 <button className="btn btn-success mx-2" onClick={() => handleAcceptRequest(jwtDecode(user).id, request.senderId)}>Accept</button>
                                 <button className="btn btn-danger" onClick={() => handleDeclineRequest(jwtDecode(user).id, request.senderId)}>Decline</button>
                             </div>

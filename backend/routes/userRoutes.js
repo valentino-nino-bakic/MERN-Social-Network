@@ -6,7 +6,8 @@ const upload = require('../middlewares/multer');
 
 
 router.get('/search-results', UserController.searchUsers);
-router.get('/users/:userId/friends/:friendId', UserController.isUserFriend);
+router.get('/users/:userId/friends/:otherUserId', UserController.isUserFriend);
+router.get('/friend-requests/:currentUserId/to/:otherUserId', UserController.isRequestAlreadySent);
 router.get('/friend-requests/:userId', UserController.fetchFriendRequests);
 router.post('/friend-requests', UserController.sendFriendRequest);
 router.put('/friend-requests/:senderId/accept', UserController.acceptFriendRequest);

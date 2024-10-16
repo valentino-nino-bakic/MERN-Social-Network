@@ -135,7 +135,7 @@ const isUserFriend = async (currentUserId, otherUserId) => {
 const sendFriendRequest = async (currentUserId, otherUserId) => {
     const requestBody = {
         senderId: currentUserId,
-        receivedId: otherUserId
+        receiverId: otherUserId
     }
     const options = {
         method: 'POST',
@@ -227,6 +227,24 @@ const fetchFriendRequests = async (userId) => {
 
 
 
+
+const isRequestAlreadySent = async (currentUserId, otherUserId) => {
+    try {
+        const response = await fetch(`${API_ENDPOINTS.BASE_URL}/friend-requests/${currentUserId}/to/${otherUserId}`);
+        if (!response.ok) {
+            const data = await response.json();
+            throw new Error(data.message);
+        }
+        const data = await response.json();
+        return data.isRequestSent;
+    } catch (error) {
+        throw error;
+    }
+};
+
+
+
+
 export {
     loginUser,
     signupUser,
@@ -237,5 +255,6 @@ export {
     sendFriendRequest,
     acceptFriendRequest,
     declineFriendRequest,
-    fetchFriendRequests
+    fetchFriendRequests,
+    isRequestAlreadySent
 };

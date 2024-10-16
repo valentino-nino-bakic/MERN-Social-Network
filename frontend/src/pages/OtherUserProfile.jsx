@@ -9,7 +9,7 @@ import useAuth from '../hooks/useAuth';
 
 
 const OtherUserProfile = () => {
-    const { getUserByUsername, user, isOtherUserFriend, sendFriendshipRequest } = useAuth();
+    const { getUserByUsername, user, isOtherUserFriend, sendFriendshipRequest, hasRequestAlreadyBeenSent } = useAuth();
     const { username } = useParams();
 
     const [profileData, setProfileData] = useState(null);
@@ -19,6 +19,9 @@ const OtherUserProfile = () => {
     const [isFriend, setIsFriend] = useState(false);
     const [friendRequestLoading, setFriendRequestLoading] = useState(false);
 
+    const [isRequestSent, setIsRequestSent] = useState(false);
+
+
 
     useEffect(() => {
         const fetchUser = async () => {
@@ -27,9 +30,11 @@ const OtherUserProfile = () => {
             try {
                 const data = await getUserByUsername(username);
                 setProfileData(data);
-                if (user && data) {
+                if (user) {
                     const friendshipStatus = await isOtherUserFriend(jwtDecode(user).id, data._id);
                     setIsFriend(friendshipStatus);
+                    const sentRequest = await hasRequestAlreadyBeenSent(jwtDecode(user).id, data._id);
+                    setIsRequestSent(sentRequest);
                 }
             } catch (err) {
                 setError(err.message);
@@ -43,16 +48,20 @@ const OtherUserProfile = () => {
             setProfileData(null);
             setLoading(false);
         }
-    }, [username, getUserByUsername, isOtherUserFriend, user]);
+    }, [username, getUserByUsername, isOtherUserFriend, user, hasRequestAlreadyBeenSent]);
 
 
 
-    const handleSendFriendRequest = async () => {
+
+
+
+    const handleSendFriendRequest = async (currentUserId, otherUserId) => {
         if (profileData) {
             setFriendRequestLoading(true);
             try {
-                await sendFriendshipRequest(jwtDecode(user).id, profileData._id);
+                await sendFriendshipRequest(currentUserId, otherUserId);
                 alert('Friend request sent!');
+                setIsRequestSent(true);
             } catch (err) {
                 alert(err.message);
             } finally {
@@ -94,14 +103,24 @@ const OtherUserProfile = () => {
                 {isFriend ? (
                     <p>You are friends</p>
                 ) : (
-                    <button
-                        className="btn btn-primary"
-                        onClick={handleSendFriendRequest}
-                        disabled={friendRequestLoading}
-                    >
-                        {friendRequestLoading ? 'Sending request...' : 'Add friend'}
-                    </button>
+                    <>
+                        {isRequestSent ? (
+                            <button className="btn btn-secondary" disabled>
+                                Friend request sent
+                            </button>
+                        ) : (
+                            <button
+                                className="btn btn-primary"
+                                onClick={() => handleSendFriendRequest(jwtDecode(user).id, profileData._id)}
+                                disabled={friendRequestLoading}
+                            >
+                                {friendRequestLoading ? 'Sending request...' : 'Add friend'}
+                            </button>
+                        )}
+                    </>
                 )}
+
+
             </div>
 
 

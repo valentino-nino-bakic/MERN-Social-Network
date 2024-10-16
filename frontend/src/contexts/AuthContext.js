@@ -10,7 +10,8 @@ import {
     sendFriendRequest,
     acceptFriendRequest,
     declineFriendRequest,
-    fetchFriendRequests
+    fetchFriendRequests,
+    isRequestAlreadySent
 } from '../api/user';
 
 
@@ -172,6 +173,18 @@ const AuthProvider = ({ children }) => {
 
 
 
+    const hasRequestAlreadyBeenSent = async (currentUserId, otherUserId) => {
+        try {
+            const data = await isRequestAlreadySent(currentUserId, otherUserId);
+            return data;
+        } catch (error) {
+            throw new Error(error.message);
+        }
+    };
+
+
+
+
     return (
         <AuthContext.Provider
             value={{
@@ -184,6 +197,7 @@ const AuthProvider = ({ children }) => {
                 acceptFriendshipRequest,
                 declineFriendshipRequest,
                 getFriendRequests,
+                hasRequestAlreadyBeenSent,
                 picture,
                 setPicture,
                 login,
