@@ -2,17 +2,22 @@
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 
+import { jwtDecode } from 'jwt-decode';
+
 import useAuth from '../hooks/useAuth';
 
 
 
 const OtherUserProfile = () => {
-    const { getUserByUsername } = useAuth();
+    const { getUserByUsername, user, isOtherUserFriend, sendFriendshipRequest } = useAuth();
     const { username } = useParams();
 
     const [profileData, setProfileData] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+
+    const [isFriend, setIsFriend] = useState(false);
+    const [friendRequestLoading, setFriendRequestLoading] = useState(false);
 
 
     useEffect(() => {
@@ -22,6 +27,10 @@ const OtherUserProfile = () => {
             try {
                 const data = await getUserByUsername(username);
                 setProfileData(data);
+                if (user && data) {
+                    const friendshipStatus = await isOtherUserFriend(jwtDecode(user).id, data._id);
+                    setIsFriend(friendshipStatus);
+                }
             } catch (err) {
                 setError(err.message);
             } finally {
@@ -34,10 +43,23 @@ const OtherUserProfile = () => {
             setProfileData(null);
             setLoading(false);
         }
+    }, [username, getUserByUsername, isOtherUserFriend, user]);
 
-        fetchUser();
-    }, [username, getUserByUsername]);
 
+
+    const handleSendFriendRequest = async () => {
+        if (profileData) {
+            setFriendRequestLoading(true);
+            try {
+                await sendFriendshipRequest(jwtDecode(user).id, profileData._id);
+                alert('Friend request sent!');
+            } catch (err) {
+                alert(err.message);
+            } finally {
+                setFriendRequestLoading(false);
+            }
+        }
+    };
 
 
 
@@ -64,6 +86,22 @@ const OtherUserProfile = () => {
                     </div>
                     <h1 className="ms-3 text-white pb-5">{profileData.username}</h1>
                 </div>
+            </div>
+
+            <div className="vh-100 d-flex align-items-center justify-content-center">
+                <h1>Profile Page of {profileData.username}</h1>
+
+                {isFriend ? (
+                    <p>You are friends</p>
+                ) : (
+                    <button
+                        className="btn btn-primary"
+                        onClick={handleSendFriendRequest}
+                        disabled={friendRequestLoading}
+                    >
+                        {friendRequestLoading ? 'Sending request...' : 'Add friend'}
+                    </button>
+                )}
             </div>
 
 

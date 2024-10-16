@@ -31,10 +31,10 @@ body {
     color: $dark;
 
 
-    div {
-        background-color: $light;
-        color: $dark;
-    }
+    // div {
+    //     background-color: $light;
+    //     color: $dark;
+    // }
 
     .navbar {
         background-color: $light;
@@ -74,10 +74,10 @@ body.dark-theme {
     color: $light;
 
 
-    div {
-        background-color: $dark;
-        color: $light;
-    }
+    // div {
+    //     background-color: $dark;
+    //     color: $light;
+    // }
 
     .navbar {
         background-color: $dark

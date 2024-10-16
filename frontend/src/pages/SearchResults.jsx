@@ -70,8 +70,19 @@ const SearchResults = () => {
                 <ul>
                     {results.map(result => (
                         <li key={result._id} className="my-4">
-                            <img className="rounded-circle" src={result.profileImageUrl} alt={result.username} style={{ width: '50px', height: '50px', objectFit: 'cover' }} />
-                            <button data-user-username={result.username} onClick={handleClick} className="btn btn-link">{result.username}</button>
+                            <img
+                                className="rounded-circle"
+                                src={result.profileImageUrl}
+                                alt={result.username}
+                                style={{ width: '50px', height: '50px', objectFit: 'cover' }}
+                            />
+                            <button
+                                data-user-username={result.username}
+                                onClick={handleClick}
+                                className="btn btn-link"
+                            >
+                                {result.username}
+                            </button>
                         </li>
                     ))}
                 </ul>

@@ -1,6 +1,6 @@
 
 import { createContext, useState } from 'react';
-import { loginUser, signupUser, uploadProfileImage, fetchUsersByUsername, fetchUserByUsername } from '../api/user';
+import { loginUser, signupUser, uploadProfileImage, fetchUsersByUsername, fetchUserByUsername, isUserFriend, sendFriendRequest } from '../api/user';
 
 
 
@@ -101,8 +101,32 @@ const AuthProvider = ({ children }) => {
 
 
 
+
+    const isOtherUserFriend = async (currentUserId, otherUserId) => {
+        try {
+            const isFriend = await isUserFriend(currentUserId, otherUserId);
+            return isFriend;
+        } catch (error) {
+            throw new Error(error.message);
+        }
+    };
+
+
+
+
+    const sendFriendshipRequest = async (userId, otherUserId) => {
+        try {
+            const result = await sendFriendRequest(userId, otherUserId);
+            return result;
+        } catch (error) {
+            throw new Error(error.message);
+        }
+    };
+
+
+
     return (
-        <AuthContext.Provider value={{ user, updateProfileImage, getUsersByUsername, getUserByUsername, picture, setPicture, login, signup, logout, loading, error }}>
+        <AuthContext.Provider value={{ user, updateProfileImage, getUsersByUsername, getUserByUsername, isOtherUserFriend, sendFriendshipRequest, picture, setPicture, login, signup, logout, loading, error }}>
             {children}
         </AuthContext.Provider>
     )

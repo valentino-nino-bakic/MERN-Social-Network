@@ -116,4 +116,46 @@ const fetchUserByUsername = async (query) => {
 
 
 
-export { loginUser, signupUser, uploadProfileImage, fetchUsersByUsername, fetchUserByUsername };
+const isUserFriend = async (currentUserId, otherUserId) => {
+    try {
+        const response = await fetch(`${API_ENDPOINTS.USERS}/${currentUserId}/friends/${otherUserId}`);
+        if (!response.ok) {
+            const data = await response.json();
+            throw new Error(data.message);
+        }
+        const data = await response.json();
+        return data.isFriend;
+    } catch (error) {
+        throw error;
+    }
+}
+
+
+
+const sendFriendRequest = async (userId, otherUserId) => {
+    const requestBody = {
+        senderId: userId,
+        receivedId: otherUserId
+    }
+    const options = {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(requestBody)
+    }
+    try {
+        const response = await fetch(`${API_ENDPOINTS.BASE_URL}/friend-requests`, options);
+        if (!response.ok) {
+            const data = await response.json();
+            throw new Error(data.message);
+        }
+        return await response.json();
+    } catch (error) {
+        throw error;
+    }
+}
+
+
+
+export { loginUser, signupUser, uploadProfileImage, fetchUsersByUsername, fetchUserByUsername, isUserFriend, sendFriendRequest };
