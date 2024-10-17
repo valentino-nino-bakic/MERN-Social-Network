@@ -13,6 +13,9 @@ const commentRouter = require('./routes/commentRoutes');
 const likeRouter = require('./routes/likeRoutes');
 
 
+const SocketController = require('./controllers/socketController');
+
+
 
 const server = http.createServer(app);
 const { Server } = require('socket.io');
@@ -52,14 +55,22 @@ app.use('/api', likeRouter);
 io.on('connection', socket => {
     console.log(`New user connected: ${socket.id}`);
 
-    socket.on('private_message', ({ message, toUserId }) => {
-        console.log(`Message: ${message}, To: ${toUserId}`);
+    // socket.on('private_message', ({ message, toUserId }) => {
+    //     console.log(`Message: ${message}, To: ${toUserId}`);
 
-        io.to(toUserId).emit('receive_message', {
-            message: message,
-            fromUserId: socket.id
-        });
-    });
+    //     io.to(toUserId).emit('receive_message', {
+    //         message: message,
+    //         fromUserId: socket.id
+    //     });
+    // });
+
+    socket.on('isUserFriend', data => SocketController.isUserFriend(socket, data));
+    socket.on('sendFriendRequest', data => SocketController.sendFriendRequest(socket, data));
+    socket.on('acceptFriendRequest', data => SocketController.acceptFriendRequest(socket, data));
+    socket.on('declineFriendRequest', data => SocketController.declineFriendRequest(socket, data));
+    socket.on('fetchFriendRequests', data => SocketController.fetchFriendRequests(socket, data));
+    socket.on('isRequestAlreadySent', data => SocketController.isRequestAlreadySent(socket, data));
+
 
     socket.on('disconnect', () => {
         console.log(`User disconnected ${socket.id}`);

@@ -6,12 +6,6 @@ import {
     uploadProfileImage,
     fetchUsersByUsername,
     fetchUserByUsername,
-    isUserFriend,
-    sendFriendRequest,
-    acceptFriendRequest,
-    declineFriendRequest,
-    fetchFriendRequests,
-    isRequestAlreadySent
 } from '../api/user';
 
 
@@ -113,78 +107,6 @@ const AuthProvider = ({ children }) => {
 
 
 
-
-    const isOtherUserFriend = async (currentUserId, otherUserId) => {
-        try {
-            const isFriend = await isUserFriend(currentUserId, otherUserId);
-            return isFriend;
-        } catch (error) {
-            throw new Error(error.message);
-        }
-    };
-
-
-
-
-    const sendFriendshipRequest = async (userId, otherUserId) => {
-        try {
-            const result = await sendFriendRequest(userId, otherUserId);
-            return result;
-        } catch (error) {
-            throw new Error(error.message);
-        }
-    };
-
-
-
-
-    const acceptFriendshipRequest = async (currentUserId, senderId) => {
-        try {
-            const data = await acceptFriendRequest(currentUserId, senderId);
-            alert(data.message);
-        } catch (error) {
-            throw new Error(error.message);
-        }
-    };
-
-
-
-
-    const declineFriendshipRequest = async (currentUserId, senderId) => {
-        try {
-            const data = await declineFriendRequest(currentUserId, senderId);
-            alert(data.message);
-        } catch (error) {
-            throw new Error(error.message);
-        }
-    };
-
-
-
-    const getFriendRequests = async (userId) => {
-        try {
-            const data = await fetchFriendRequests(userId);
-            return data;
-        } catch (error) {
-            throw new Error(error.message);
-        }
-    };
-
-
-
-
-    const hasRequestAlreadyBeenSent = async (currentUserId, otherUserId) => {
-        try {
-            const data = await isRequestAlreadySent(currentUserId, otherUserId);
-            return data;
-        } catch (error) {
-            throw new Error(error.message);
-        }
-    };
-
-
-
-
     return (
         <AuthContext.Provider
             value={{
@@ -192,12 +114,6 @@ const AuthProvider = ({ children }) => {
                 updateProfileImage,
                 getUsersByUsername,
                 getUserByUsername,
-                isOtherUserFriend,
-                sendFriendshipRequest,
-                acceptFriendshipRequest,
-                declineFriendshipRequest,
-                getFriendRequests,
-                hasRequestAlreadyBeenSent,
                 picture,
                 setPicture,
                 login,
