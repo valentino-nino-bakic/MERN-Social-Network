@@ -1,15 +1,17 @@
 
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-
 import { jwtDecode } from 'jwt-decode';
 
 import useAuth from '../hooks/useAuth';
+import useSocket from '../hooks/useSocket';
 
 
 
 const OtherUserProfile = () => {
-    const { getUserByUsername, user, isOtherUserFriend, sendFriendshipRequest, hasRequestAlreadyBeenSent } = useAuth();
+    const { getUserByUsername, user } = useAuth();
+    const { isOtherUserFriend, sendFriendshipRequest, hasRequestAlreadyBeenSent } = useSocket();
+    
     const { username } = useParams();
 
     const [profileData, setProfileData] = useState(null);
@@ -121,11 +123,6 @@ const OtherUserProfile = () => {
                 )}
 
 
-            </div>
-
-
-            <div className="vh-100 d-flex align-items-center justify-content-center">
-                <h1>Random Profile Page</h1>
             </div>
 
 

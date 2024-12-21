@@ -16,7 +16,7 @@ import { ThemeProvider } from './contexts/ThemeContext';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-    <React.StrictMode>
+    // <React.StrictMode>
         <ThemeProvider>
             <AuthProvider>
                 <PostProvider>
@@ -28,5 +28,5 @@ root.render(
                 </PostProvider>
             </AuthProvider>
         </ThemeProvider>
-    </React.StrictMode>
+    // </React.StrictMode>
 );

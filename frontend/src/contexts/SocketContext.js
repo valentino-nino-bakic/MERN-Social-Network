@@ -1,4 +1,4 @@
-import { createContext, useEffect, useState } from 'react';
+import { createContext, useEffect, useMemo, useState, useCallback } from 'react';
 import { io } from 'socket.io-client';
 
 import {
@@ -10,39 +10,33 @@ import {
     isRequestAlreadySent
 } from '../api/socket';
 
-const BASE_URL = process.env.REACT_APP_BASE_URL;
+
+const SOCKET_URL = process.env.REACT_APP_BASE_URL;
+
 
 
 const SocketContext = createContext();
-const socket = io(BASE_URL);
-
-
 
 const SocketProvider = ({ children }) => {
-    const [connected, setConnected] = useState(false);
-
+    const socket = useMemo(() => io(SOCKET_URL, { reconnectionAttempts: 5, reconnectionDelay: 1000 }), []);
 
     useEffect(() => {
-        socket.on('connect', () => {
-            setConnected(true);
-            console.log('User connected');
-        });
-
-        socket.on('disconnect', () => {
-            setConnected(false);
-            console.log('User disconnected');
-        });
-        
-
-        return () => {
-            socket.off('connect');
-            socket.off('disconnect');
-        };
-    }, []);
-
-
-
+        const handleConnect = () => console.log('User connected');
+        const handleDisconnect = () => console.log('User disconnected');
     
+        socket.on('connect', handleConnect);
+        socket.on('disconnect', handleDisconnect);
+    
+        return () => {
+            socket.off('connect', handleConnect);
+            socket.off('disconnect', handleDisconnect);
+        };
+
+    }, [socket]);
+
+
+
+
     const isOtherUserFriend = (currentUserId, otherUserId) => {
         return isUserFriend(socket, currentUserId, otherUserId);
     }
@@ -62,21 +56,36 @@ const SocketProvider = ({ children }) => {
         return declineFriendRequest(socket, currentUserId, senderId);
     }
 
+    // const getComments = useCallback(async (postId) => {
+    //     setLoading(true);
+    //     setError(null);
+    //     try {
+    //         const data = await getPostSpecificComments(postId);
+    //         setComments(prev => ({
+    //             ...prev,
+    //             [postId]: data
+    //         }));
+    //     } catch (error) {
+    //         setError(error.message);
+    //     } finally {
+    //         setLoading(false);
+    //     }
+    // }, []);
 
-    const getFriendRequests = (userId) => {
+    const getFriendRequests = useCallback((userId) => {
         return fetchFriendRequests(socket, userId);
-    }
+    }, [socket]);
 
-    
+
     const hasRequestAlreadyBeenSent = (currentUserId, otherUserId) => {
         return isRequestAlreadySent(socket, currentUserId, otherUserId);
     }
 
-    
+
 
     return (
         <SocketContext.Provider value={{
-            connected,
+            socket,
             isOtherUserFriend,
             sendFriendshipRequest,
             acceptFriendshipRequest,

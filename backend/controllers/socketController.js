@@ -123,12 +123,12 @@ const SocketController = {
         const { currentUserId, otherUserId } = data;
 
         try {
-            const user = await User.findById(currentUserId);
-            if (!user) {
+            const otherUser = await User.findById(otherUserId);
+            if (!otherUser) {
                 throw new Error('User not found');
             }
 
-            const isSent = user.friendRequests.some(request => request.senderId.toString() === otherUserId);
+            const isSent = otherUser.friendRequests.some(request => request.senderId.toString() === currentUserId);
             socket.emit('isRequestAlreadySentResponse', { success: true, isRequestSent: isSent });
         } catch (error) {
             socket.emit('isRequestAlreadySentResponse', { success: false, message: error.message });
