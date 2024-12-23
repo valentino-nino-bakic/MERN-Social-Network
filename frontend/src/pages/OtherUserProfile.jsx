@@ -10,7 +10,7 @@ import useSocket from '../hooks/useSocket';
 
 const OtherUserProfile = () => {
     const { getUserByUsername, user } = useAuth();
-    const { isOtherUserFriend, sendFriendshipRequest, hasRequestAlreadyBeenSent } = useSocket();
+    const { socket, getFriendRequests, isOtherUserFriend, sendFriendshipRequest, hasRequestAlreadyBeenSent } = useSocket();
     
     const { username } = useParams();
 
@@ -23,6 +23,12 @@ const OtherUserProfile = () => {
 
     const [isRequestSent, setIsRequestSent] = useState(false);
 
+    const [thisUserInYourFriendRequestList, setThisUserInYourFriendRequestList] = useState(false);
+
+
+    useEffect(() => {
+        console.log(thisUserInYourFriendRequestList);
+    })
 
 
     useEffect(() => {
@@ -35,8 +41,13 @@ const OtherUserProfile = () => {
                 if (user) {
                     const friendshipStatus = await isOtherUserFriend(jwtDecode(user).id, data._id);
                     setIsFriend(friendshipStatus);
+
                     const sentRequest = await hasRequestAlreadyBeenSent(jwtDecode(user).id, data._id);
                     setIsRequestSent(sentRequest);
+
+                    const requests = await getFriendRequests(socket, jwtDecode(user).id);
+                    const isThere = requests.some(request => request.senderId._id === data._id);
+                    setThisUserInYourFriendRequestList(isThere);
                 }
             } catch (err) {
                 setError(err.message);
@@ -50,8 +61,7 @@ const OtherUserProfile = () => {
             setProfileData(null);
             setLoading(false);
         }
-    }, [username, getUserByUsername, isOtherUserFriend, user, hasRequestAlreadyBeenSent]);
-
+    }, [username, getUserByUsername, isOtherUserFriend, user, hasRequestAlreadyBeenSent, getFriendRequests, socket]);
 
 
 
@@ -101,8 +111,9 @@ const OtherUserProfile = () => {
 
             <div className="vh-100 d-flex align-items-center justify-content-center">
                 <h1>Profile Page of {profileData.username}</h1>
-
-                {isFriend ? (
+                {thisUserInYourFriendRequestList ? (
+                    <p>You have a pending friend request from this user</p>
+                ) : isFriend ? (
                     <p>You are friends</p>
                 ) : (
                     <>

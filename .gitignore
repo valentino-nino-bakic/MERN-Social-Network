@@ -4,7 +4,7 @@ backend/node_modules
 frontend/.env
 backend/.env
 
-# backend/uploads
+backend/uploads
 
 
 .vscode/

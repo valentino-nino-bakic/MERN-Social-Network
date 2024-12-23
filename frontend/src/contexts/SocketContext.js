@@ -72,7 +72,7 @@ const SocketProvider = ({ children }) => {
     //     }
     // }, []);
 
-    const getFriendRequests = useCallback((userId) => {
+    const getFriendRequests = useCallback((socket, userId) => {
         return fetchFriendRequests(socket, userId);
     }, [socket]);
 

@@ -71,6 +71,7 @@ const fetchFriendRequests = (socket, userId) => {
         socket.on('fetchFriendRequestsResponse', response => {
             if (response.success) {
                 resolve(response.friendRequests);
+                console.log(response);
             } else {
                 reject(new Error(response.message));
             }
