@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { jwtDecode } from 'jwt-decode';
 
 import CreatePost from './CreatePost';
@@ -18,6 +18,7 @@ import useLike from '../hooks/useLike';
 
 const AllPosts = () => {
     const { user } = useAuth();
+    const navigate = useNavigate();
 
     const { posts, getPosts, loading: postLoading, error: postError } = usePost();
     const { comments, getComments, addNewComment, loading: commentLoading, error: commentError } = useComment();
@@ -53,6 +54,16 @@ const AllPosts = () => {
     };
 
 
+    const handleGoToClickedImageProfile = e => {
+        const username = e.target.getAttribute('data-user-username');
+        const decodedUser = jwtDecode(user);
+        if (decodedUser && username === decodedUser.username) {
+            navigate('/home/profile');
+        } else {
+            navigate(`/home/user/${username}`);
+        }
+    }
+
 
     if (postLoading) {
         return <p>Loading posts...</p>;
@@ -84,10 +95,12 @@ const AllPosts = () => {
                                     <div className="d-flex align-items-center gap-3 mb-3">
                                         <div className="d-flex align-items-center">
                                             <img
+                                                data-user-username={post.author.username}
+                                                onClick={handleGoToClickedImageProfile}
                                                 src={post.author.profileImageUrl}
                                                 alt="User"
                                                 className="rounded-circle me-2"
-                                                style={{ width: '40px', height: '40px', objectFit: 'cover' }}
+                                                style={{ width: '40px', height: '40px', objectFit: 'cover', cursor: 'pointer' }}
                                             />
                                             <strong>{post.author.username}</strong>
                                         </div>
@@ -138,10 +151,12 @@ const AllPosts = () => {
                                         {comments[post._id] && comments[post._id].map(comment => (
                                             <div key={comment._id}>
                                                 <img
+                                                    data-user-username={comment.author.username}
+                                                    onClick={handleGoToClickedImageProfile}
                                                     src={comment.author.profileImageUrl}
                                                     alt="User"
                                                     className="rounded-circle me-2"
-                                                    style={{ width: '25px', height: '25px', objectFit: 'cover' }}
+                                                    style={{ width: '25px', height: '25px', objectFit: 'cover', cursor: 'pointer' }}
                                                 />
                                                 <strong>{comment.author.username}</strong>
                                                 <span className="text-muted mx-3" style={{ fontSize: '0.9rem' }}>
