@@ -1,18 +1,18 @@
 
 
-const isUserFriend = (socket, currentUserId, otherUserId) => {
-    return new Promise((resolve, reject) => {
-        socket.emit('isUserFriend', { currentUserId, otherUserId });
+// const isUserFriend = (socket, currentUserId, otherUserId) => {
+//     return new Promise((resolve, reject) => {
+//         socket.emit('isUserFriend', { currentUserId, otherUserId });
 
-        socket.on('isUserFriendResponse', response => {
-            if (response.success) {
-                resolve(response.isFriend);
-            } else {
-                reject(new Error(response.message));
-            }
-        });
-    });
-}
+//         socket.on('isUserFriendResponse', response => {
+//             if (response.success) {
+//                 resolve(response.isFriend);
+//             } else {
+//                 reject(new Error(response.message));
+//             }
+//         });
+//     });
+// }
 
 
 
@@ -64,6 +64,24 @@ const declineFriendRequest = (socket, currentUserId, senderId) => {
 
 
 
+const fetchFriendshipInfo = (socket, data) => {
+    return new Promise((resolve, reject) => {
+        socket.emit('fetchFriendshipInfo', data);
+
+        socket.on('fetchFriendshipInfoResponse', response => {
+            if (response.success !== false) {
+                resolve(response);
+                console.log(response);
+            } else {
+                reject(new Error(response.message));
+            }
+        });
+    });
+}
+
+
+
+
 const fetchFriendRequests = (socket, userId) => {
     return new Promise((resolve, reject) => {
         socket.emit('fetchFriendRequests', { userId });
@@ -81,29 +99,30 @@ const fetchFriendRequests = (socket, userId) => {
 
 
 
-const isRequestAlreadySent = (socket, currentUserId, otherUserId) => {
-    return new Promise((resolve, reject) => {
-        socket.emit('isRequestAlreadySent', { currentUserId, otherUserId });
+// const isRequestAlreadySent = (socket, currentUserId, otherUserId) => {
+//     return new Promise((resolve, reject) => {
+//         socket.emit('isRequestAlreadySent', { currentUserId, otherUserId });
 
-        socket.on('isRequestAlreadySentResponse', response => {
-            if (response.success) {
-                resolve(response.isRequestSent);
-            } else {
-                reject(new Error(response.message));
-            }
-        });
-    });
-}
+//         socket.on('isRequestAlreadySentResponse', response => {
+//             if (response.success) {
+//                 resolve(response.isRequestSent);
+//             } else {
+//                 reject(new Error(response.message));
+//             }
+//         });
+//     });
+// }
 
 
 
 
 
 export {
-    isUserFriend,
+    // isUserFriend,
     sendFriendRequest,
     acceptFriendRequest,
     declineFriendRequest,
-    fetchFriendRequests,
-    isRequestAlreadySent
+    fetchFriendshipInfo,
+    fetchFriendRequests
+    // isRequestAlreadySent
 };

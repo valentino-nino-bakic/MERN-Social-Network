@@ -10,25 +10,19 @@ import useSocket from '../hooks/useSocket';
 
 const OtherUserProfile = () => {
     const { getUserByUsername, user } = useAuth();
-    const { socket, getFriendRequests, isOtherUserFriend, sendFriendshipRequest, hasRequestAlreadyBeenSent } = useSocket();
-    
+    const { socket, getFriendshipInfo, /* isOtherUserFriend, */ sendFriendshipRequest, /* hasRequestAlreadyBeenSent */ } = useSocket();
+
     const { username } = useParams();
 
     const [profileData, setProfileData] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
-    const [isFriend, setIsFriend] = useState(false);
     const [friendRequestLoading, setFriendRequestLoading] = useState(false);
 
+    const [isFriend, setIsFriend] = useState(false);
     const [isRequestSent, setIsRequestSent] = useState(false);
-
     const [thisUserInYourFriendRequestList, setThisUserInYourFriendRequestList] = useState(false);
-
-
-    useEffect(() => {
-        console.log(thisUserInYourFriendRequestList);
-    })
 
 
     useEffect(() => {
@@ -38,30 +32,56 @@ const OtherUserProfile = () => {
             try {
                 const data = await getUserByUsername(username);
                 setProfileData(data);
-                if (user) {
-                    const friendshipStatus = await isOtherUserFriend(jwtDecode(user).id, data._id);
-                    setIsFriend(friendshipStatus);
+                // if (user) {
+                // const friendshipStatus = await isOtherUserFriend(jwtDecode(user).id, data._id);
+                // setIsFriend(friendshipStatus);
 
-                    const sentRequest = await hasRequestAlreadyBeenSent(jwtDecode(user).id, data._id);
-                    setIsRequestSent(sentRequest);
-
-                    const requests = await getFriendRequests(socket, jwtDecode(user).id);
-                    const isThere = requests.some(request => request.senderId._id === data._id);
-                    setThisUserInYourFriendRequestList(isThere);
-                }
+                // const sentRequest = await hasRequestAlreadyBeenSent(jwtDecode(user).id, data._id);
+                // setIsRequestSent(sentRequest);
+                //     const bothUserIDS = {
+                //         currentUserId: jwtDecode(user).id,
+                //         otherUserId: data._id
+                //     }
+                //     const requests = await getFriendshipInfo(socket, bothUserIDS);
+                //     const isThere = requests.some(request => request.senderId._id === data._id);
+                //     setThisUserInYourFriendRequestList(isThere);
+                // }
             } catch (err) {
                 setError(err.message);
             } finally {
                 setLoading(false);
             }
-        };
+        }
         if (username) {
             fetchUser();
         } else {
             setProfileData(null);
             setLoading(false);
         }
-    }, [username, getUserByUsername, isOtherUserFriend, user, hasRequestAlreadyBeenSent, getFriendRequests, socket]);
+    }, [username, getUserByUsername /* isOtherUserFriend, user, hasRequestAlreadyBeenSent, getFriendshipInfo, socket */]);
+
+
+
+    useEffect(() => {
+        const fetchFriendshipStatus = async () => {
+            if (user && profileData) {
+                const bothUserIDS = {
+                    currentUserId: jwtDecode(user).id,
+                    otherUserId: profileData._id
+                }
+                try {
+                    const status = await getFriendshipInfo(socket, bothUserIDS);
+                    setIsFriend(status.isFriend);
+                    setIsRequestSent(status.isRequestSent);
+                    setThisUserInYourFriendRequestList(status.isRequestReceived);
+                } catch (err) {
+                    console.error(err.message);
+                }
+            }
+        };
+
+        fetchFriendshipStatus();
+    }, [user, profileData, socket, getFriendshipInfo]);
 
 
 
@@ -111,29 +131,23 @@ const OtherUserProfile = () => {
 
             <div className="vh-100 d-flex align-items-center justify-content-center">
                 <h1>Profile Page of {profileData.username}</h1>
-                {thisUserInYourFriendRequestList ? (
-                    <p>You have a pending friend request from this user</p>
-                ) : isFriend ? (
+                {isFriend ? (
                     <p>You are friends</p>
+                ) : thisUserInYourFriendRequestList ? (
+                    <p>You have a pending friend request from this user</p>
+                ) : isRequestSent ? (
+                    <button className="btn btn-secondary" disabled>
+                        Friend request sent
+                    </button>
                 ) : (
-                    <>
-                        {isRequestSent ? (
-                            <button className="btn btn-secondary" disabled>
-                                Friend request sent
-                            </button>
-                        ) : (
-                            <button
-                                className="btn btn-primary"
-                                onClick={() => handleSendFriendRequest(jwtDecode(user).id, profileData._id)}
-                                disabled={friendRequestLoading}
-                            >
-                                {friendRequestLoading ? 'Sending request...' : 'Add friend'}
-                            </button>
-                        )}
-                    </>
+                    <button
+                        className="btn btn-primary"
+                        onClick={() => handleSendFriendRequest(jwtDecode(user).id, profileData._id)}
+                        disabled={friendRequestLoading}
+                    >
+                        {friendRequestLoading ? 'Sending request...' : 'Add friend'}
+                    </button>
                 )}
-
-
             </div>
 
 

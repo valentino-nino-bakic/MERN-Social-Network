@@ -1,13 +1,14 @@
-import { createContext, useEffect, useMemo, useState, useCallback } from 'react';
+import { createContext, useEffect, useMemo, /* useState, */ useCallback } from 'react';
 import { io } from 'socket.io-client';
 
 import {
-    isUserFriend,
+    // isUserFriend,
     sendFriendRequest,
     acceptFriendRequest,
     declineFriendRequest,
-    fetchFriendRequests,
-    isRequestAlreadySent
+    fetchFriendshipInfo,
+    fetchFriendRequests
+    // isRequestAlreadySent
 } from '../api/socket';
 
 
@@ -37,9 +38,9 @@ const SocketProvider = ({ children }) => {
 
 
 
-    const isOtherUserFriend = (currentUserId, otherUserId) => {
-        return isUserFriend(socket, currentUserId, otherUserId);
-    }
+    // const isOtherUserFriend = (currentUserId, otherUserId) => {
+    //     return isUserFriend(socket, currentUserId, otherUserId);
+    // }
 
 
     const sendFriendshipRequest = (currentUserId, otherUserId) => {
@@ -72,26 +73,32 @@ const SocketProvider = ({ children }) => {
     //     }
     // }, []);
 
+    const getFriendshipInfo = useCallback((socket, data) => {
+        return fetchFriendshipInfo(socket, data);
+    }, []);
+
+
     const getFriendRequests = useCallback((socket, userId) => {
         return fetchFriendRequests(socket, userId);
-    }, [socket]);
+    }, []);
 
 
-    const hasRequestAlreadyBeenSent = (currentUserId, otherUserId) => {
-        return isRequestAlreadySent(socket, currentUserId, otherUserId);
-    }
+    // const hasRequestAlreadyBeenSent = (currentUserId, otherUserId) => {
+    //     return isRequestAlreadySent(socket, currentUserId, otherUserId);
+    // }
 
 
 
     return (
         <SocketContext.Provider value={{
             socket,
-            isOtherUserFriend,
+            // isOtherUserFriend,
             sendFriendshipRequest,
             acceptFriendshipRequest,
             declineFriendshipRequest,
-            getFriendRequests,
-            hasRequestAlreadyBeenSent
+            getFriendshipInfo,
+            getFriendRequests
+            // hasRequestAlreadyBeenSent
         }}>
             {children}
         </SocketContext.Provider>
