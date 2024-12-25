@@ -20,9 +20,18 @@ const OtherUserProfile = () => {
 
     const [friendRequestLoading, setFriendRequestLoading] = useState(false);
 
-    const [isFriend, setIsFriend] = useState(false);
-    const [isRequestSent, setIsRequestSent] = useState(false);
-    const [thisUserInYourFriendRequestList, setThisUserInYourFriendRequestList] = useState(false);
+    const [isFriend, setIsFriend] = useState(() => {
+        const isOtherUserYourFriend = localStorage.getItem('isOtherUserYourFriend');
+        return isOtherUserYourFriend;
+    });
+    const [isRequestSent, setIsRequestSent] = useState(() => {
+        const friendshipRequestSent = localStorage.getItem('friendshipRequestSent');
+        return friendshipRequestSent;
+    });
+    const [thisUserInYourFriendRequestList, setThisUserInYourFriendRequestList] = useState(() => {
+        const inYourFriendRequestList = localStorage.getItem('inYourFriendRequestList');
+        return inYourFriendRequestList;
+    });
 
 
     useEffect(() => {
@@ -72,8 +81,11 @@ const OtherUserProfile = () => {
                 try {
                     const status = await getFriendshipInfo(socket, bothUserIDS);
                     setIsFriend(status.isFriend);
+                    localStorage.setItem('isOtherUserYourFriend', status.isFriend);
                     setIsRequestSent(status.isRequestSent);
+                    localStorage.setItem('friendshipRequestSent', status.isRequestSent);
                     setThisUserInYourFriendRequestList(status.isRequestReceived);
+                    localStorage.setItem('inYourFriendRequestList', status.isRequestReceived);
                 } catch (err) {
                     console.error(err.message);
                 }
@@ -133,11 +145,11 @@ const OtherUserProfile = () => {
                 <h1>Profile Page of {profileData.username}</h1>
                 {isFriend ? (
                     <p>You are friends</p>
-                ) : thisUserInYourFriendRequestList ? (
-                    <p>You have a pending friend request from this user</p>
                 ) : isRequestSent ? (
+                    <p>Friend request sent</p>
+                ) : thisUserInYourFriendRequestList ? (
                     <button className="btn btn-secondary" disabled>
-                        Friend request sent
+                        You have a pending friend request from this user
                     </button>
                 ) : (
                     <button

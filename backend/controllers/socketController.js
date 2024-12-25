@@ -10,20 +10,20 @@ const SocketController = {
         const { currentUserId, otherUserId } = data;
 
         try {
-            const user = await User.findById(currentUserId);
+            const currentUser = await User.findById(currentUserId);
             const otherUser = await User.findById(otherUserId);
 
-            if (!user || !otherUser) {
+            if (!currentUser || !otherUser) {
                 throw new Error('User not found');
             }
 
-            const alreadySent = user.friendRequests.some(request => request.senderId.toString() === otherUserId);
+            const alreadySent = otherUser.friendRequests.some(request => request.senderId.toString() === currentUserId);
             if (alreadySent) {
                 throw new Error('Friend request already sent');
             }
 
-            user.friendRequests.push({ senderId: otherUserId });
-            await user.save();
+            otherUser.friendRequests.push({ senderId: currentUserId });
+            await otherUser.save();
 
             socket.emit('sendFriendRequestResponse', { success: true, message: 'Friend request sent' });
         } catch (error) {
@@ -106,7 +106,7 @@ const SocketController = {
         const { currentUserId, otherUserId } = data;
 
         try {
-            const user = await User.findById(currentUserId).populate('friends');
+            const user = await User.findById(currentUserId)/* .populate('friends'); */
             const otherUser = await User.findById(otherUserId);
 
             if (!user || !otherUser) {
@@ -114,11 +114,12 @@ const SocketController = {
             }
 
             const isFriend = user.friends.some(friend => friend._id.toString() === otherUserId);
-            const isRequestSent = user.friendRequests.some(request => request.senderId.toString() === otherUserId);
-            const isRequestReceived = otherUser.friendRequests.some(request => request.senderId.toString() === currentUserId);
+            const isRequestSent = otherUser.friendRequests.some(request => request.senderId.toString() === currentUserId);
+            const isRequestReceived = user.friendRequests.some(request => request.senderId.toString() === otherUserId);
 
 
             socket.emit('fetchFriendshipInfoResponse', {
+                success: true,
                 isFriend,
                 isRequestSent,
                 isRequestReceived,
