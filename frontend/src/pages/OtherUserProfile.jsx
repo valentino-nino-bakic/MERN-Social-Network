@@ -10,7 +10,7 @@ import useSocket from '../hooks/useSocket';
 
 const OtherUserProfile = () => {
     const { getUserByUsername, user } = useAuth();
-    const { socket, getFriendshipInfo, /* isOtherUserFriend, */ sendFriendshipRequest, /* hasRequestAlreadyBeenSent */ } = useSocket();
+    const { socket, getFriendshipInfo, sendFriendshipRequest } = useSocket();
 
     const { username } = useParams();
 
@@ -106,6 +106,7 @@ const OtherUserProfile = () => {
                 await sendFriendshipRequest(currentUserId, otherUserId);
                 alert('Friend request sent!');
                 setIsRequestSent(true);
+                localStorage.setItem('friendshipRequestSent', true);
             } catch (err) {
                 alert(err.message);
             } finally {

@@ -2,13 +2,11 @@ import { createContext, useEffect, useMemo, /* useState, */ useCallback } from '
 import { io } from 'socket.io-client';
 
 import {
-    // isUserFriend,
     sendFriendRequest,
     acceptFriendRequest,
     declineFriendRequest,
     fetchFriendshipInfo,
     fetchFriendRequests
-    // isRequestAlreadySent
 } from '../api/socket';
 
 
@@ -27,7 +25,7 @@ const SocketProvider = ({ children }) => {
     useEffect(() => {
         const handleConnect = () => console.log('User connected');
         const handleDisconnect = () => console.log('User disconnected');
-        
+
         socket.on('connect', handleConnect);
         socket.on('disconnect', handleDisconnect);
 
@@ -40,12 +38,6 @@ const SocketProvider = ({ children }) => {
 
 
 
-
-    // const isOtherUserFriend = (currentUserId, otherUserId) => {
-    //     return isUserFriend(socket, currentUserId, otherUserId);
-    // }
-
-
     const sendFriendshipRequest = (currentUserId, otherUserId) => {
         return sendFriendRequest(socket, currentUserId, otherUserId);
     }
@@ -53,12 +45,12 @@ const SocketProvider = ({ children }) => {
 
     const acceptFriendshipRequest = (currentUserId, senderId) => {
         return acceptFriendRequest(socket, currentUserId, senderId);
-    }
+    };
 
 
-    const declineFriendshipRequest = (currentUserId, senderId) => {
+    const declineFriendshipRequest = useCallback((socket, currentUserId, senderId) => {
         return declineFriendRequest(socket, currentUserId, senderId);
-    }
+    }, []);
 
     // const getComments = useCallback(async (postId) => {
     //     setLoading(true);
@@ -86,22 +78,16 @@ const SocketProvider = ({ children }) => {
     }, []);
 
 
-    // const hasRequestAlreadyBeenSent = (currentUserId, otherUserId) => {
-    //     return isRequestAlreadySent(socket, currentUserId, otherUserId);
-    // }
-
 
 
     return (
         <SocketContext.Provider value={{
             socket,
-            // isOtherUserFriend,
             sendFriendshipRequest,
             acceptFriendshipRequest,
             declineFriendshipRequest,
             getFriendshipInfo,
             getFriendRequests
-            // hasRequestAlreadyBeenSent
         }}>
             {children}
         </SocketContext.Provider>

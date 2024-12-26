@@ -11,7 +11,10 @@ import useSocket from '../hooks/useSocket';
 const FriendRequests = () => {
     const { user } = useAuth();
     const { socket, acceptFriendshipRequest, declineFriendshipRequest, getFriendRequests } = useSocket();
-    const [friendRequests, setFriendRequests] = useState([]);
+    const [friendRequests, setFriendRequests] = useState(() => {
+        const foo = JSON.parse(localStorage.getItem('friendRequests'));
+        return foo || [];
+    });
 
 
     useEffect(() => {
@@ -19,6 +22,7 @@ const FriendRequests = () => {
             if (sockety) {
                 try {
                     const requests = await getFriendRequests(sockety, userId);
+                    localStorage.setItem('friendRequests', JSON.stringify(requests));
                     setFriendRequests(requests);
                 } catch (err) {
                     console.log('Error fetching friend requests:', err);
@@ -34,11 +38,16 @@ const FriendRequests = () => {
 
 
 
-    const handleAcceptRequest = async (currentUserId, senderId) => {
+    const handleAcceptRequest = async (socket, currentUserId, senderId) => {
         if (socket) {
             try {
-                await acceptFriendshipRequest(currentUserId, senderId);
-                setFriendRequests(prev => prev.filter(req => req.senderId !== senderId));
+                const message = await acceptFriendshipRequest(currentUserId, senderId);
+                setFriendRequests(prev => {
+                    const updatedRequests = prev.filter(req => req.senderId !== senderId);
+                    localStorage.setItem('friendRequests', JSON.stringify(updatedRequests));
+                    return updatedRequests;
+                });
+                alert(message);
             } catch (err) {
                 console.log('Error accepting friend request:', err);
             }
@@ -49,11 +58,12 @@ const FriendRequests = () => {
 
 
 
-    const handleDeclineRequest = async (currentUserId, senderId) => {
+    const handleDeclineRequest = async (socket, currentUserId, senderId) => {
         if (socket) {
             try {
-                await declineFriendshipRequest(currentUserId, senderId);
+                const message = await declineFriendshipRequest(socket, currentUserId, senderId);
                 setFriendRequests(prev => prev.filter(req => req.senderId !== senderId));
+                alert(message);
             } catch (err) {
                 console.error('Error declining friend request:', err);
             }
@@ -64,7 +74,7 @@ const FriendRequests = () => {
 
 
 
-    
+
     return (
         <div className="friend-requests mt-5">
             <h2>Friend Requests</h2>
@@ -77,7 +87,7 @@ const FriendRequests = () => {
                             alt={request.senderId.username}
                             style={{ width: '50px', height: '50px', borderRadius: '50%', objectFit: 'cover' }}
                         />
-                        <button className="btn btn-success mx-2" onClick={() => handleAcceptRequest(jwtDecode(user).id, request.senderId)}>Accept</button>
+                        <button className="btn btn-success mx-2" onClick={() => handleAcceptRequest(socket, jwtDecode(user).id, request.senderId)}>Accept</button>
                         <button className="btn btn-danger" onClick={() => handleDeclineRequest(jwtDecode(user).id, request.senderId)}>Decline</button>
                     </div>
                 ))

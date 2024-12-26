@@ -44,14 +44,23 @@ const SocketController = {
                 throw new Error('User not found');
             }
 
-            const requestIndex = user.friendRequests.findIndex(request => request.senderId.toString() === senderId);
-            if (requestIndex === -1) {
-                throw new Error('Friend request not found');
+            if (user.friends.includes(senderId)) {
+                throw new Error('You are already friends');
             }
 
-            user.friendRequests[requestIndex].status = 'accepted';
+            const requestIndex = user.friendRequests.findIndex(request => request.senderId.toString() === senderId);
+            // if (requestIndex === -1) {
+            //     throw new Error('Friend request not found');
+            // }
+
+            // user.friendRequests[requestIndex].status = 'accepted';
             user.friends.push(senderId);
+            sender.friends.push(currentUserId);
+
+            user.friendRequests.splice(requestIndex, 1);
+
             await user.save();
+            await sender.save();
 
             socket.emit('acceptFriendRequestResponse', { success: true, message: 'Friend request accepted' });
         } catch (error) {
@@ -84,21 +93,6 @@ const SocketController = {
             socket.emit('declineFriendRequestResponse', { success: false, message: error.message });
         }
     },
-
-
-
-    // isUserFriend: async (socket, data) => {
-    //     const { currentUserId, otherUserId } = data;
-
-    //     try {
-    //         const user = await User.findById(currentUserId).populate('friends');
-    //         const isFriend = user.friends.some(friend => friend._id.toString() === otherUserId);
-
-    //         socket.emit('isUserFriendResponse', { success: true, isFriend });
-    //     } catch (error) {
-    //         socket.emit('isUserFriendResponse', { success: false, message: error.message });
-    //     }
-    // },
 
 
 
@@ -148,21 +142,6 @@ const SocketController = {
 
 
 
-    // isRequestAlreadySent: async (socket, data) => {
-    //     const { currentUserId, otherUserId } = data;
-
-    //     try {
-    //         const otherUser = await User.findById(otherUserId);
-    //         if (!otherUser) {
-    //             throw new Error('User not found');
-    //         }
-
-    //         const isSent = otherUser.friendRequests.some(request => request.senderId.toString() === currentUserId);
-    //         socket.emit('isRequestAlreadySentResponse', { success: true, isRequestSent: isSent });
-    //     } catch (error) {
-    //         socket.emit('isRequestAlreadySentResponse', { success: false, message: error.message });
-    //     }
-    // }
 }
 
 

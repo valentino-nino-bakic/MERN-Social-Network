@@ -64,6 +64,7 @@ const AuthProvider = ({ children }) => {
         if (localStorage.getItem('profile-image')) {
             localStorage.removeItem('profile-image');
         }
+        localStorage.clear();
     }
 
 
