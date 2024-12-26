@@ -81,9 +81,9 @@ const SocketController = {
             }
 
             const requestIndex = user.friendRequests.findIndex(request => request.senderId.toString() === senderId);
-            if (requestIndex === -1) {
-                throw new Error('Friend request not found');
-            }
+            // if (requestIndex === -1) {
+            //     throw new Error('Friend request not found');
+            // }
 
             user.friendRequests.splice(requestIndex, 1);
             await user.save();

@@ -61,8 +61,12 @@ const FriendRequests = () => {
     const handleDeclineRequest = async (socket, currentUserId, senderId) => {
         if (socket) {
             try {
-                const message = await declineFriendshipRequest(socket, currentUserId, senderId);
-                setFriendRequests(prev => prev.filter(req => req.senderId !== senderId));
+                const message = await declineFriendshipRequest(currentUserId, senderId);
+                setFriendRequests(prev => {
+                    const updatedRequests = prev.filter(req => req.senderId !== senderId);
+                    localStorage.setItem('friendRequests', JSON.stringify(updatedRequests));
+                    return updatedRequests;
+                });
                 alert(message);
             } catch (err) {
                 console.error('Error declining friend request:', err);
@@ -88,7 +92,7 @@ const FriendRequests = () => {
                             style={{ width: '50px', height: '50px', borderRadius: '50%', objectFit: 'cover' }}
                         />
                         <button className="btn btn-success mx-2" onClick={() => handleAcceptRequest(socket, jwtDecode(user).id, request.senderId)}>Accept</button>
-                        <button className="btn btn-danger" onClick={() => handleDeclineRequest(jwtDecode(user).id, request.senderId)}>Decline</button>
+                        <button className="btn btn-danger" onClick={() => handleDeclineRequest(socket, jwtDecode(user).id, request.senderId)}>Decline</button>
                     </div>
                 ))
             ) : (

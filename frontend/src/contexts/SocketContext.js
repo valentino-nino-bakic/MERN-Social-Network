@@ -48,9 +48,9 @@ const SocketProvider = ({ children }) => {
     };
 
 
-    const declineFriendshipRequest = useCallback((socket, currentUserId, senderId) => {
+    const declineFriendshipRequest = (currentUserId, senderId) => {
         return declineFriendRequest(socket, currentUserId, senderId);
-    }, []);
+    };
 
     // const getComments = useCallback(async (postId) => {
     //     setLoading(true);
