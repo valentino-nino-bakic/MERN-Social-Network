@@ -6,7 +6,8 @@ import {
     acceptFriendRequest,
     declineFriendRequest,
     fetchFriendshipInfo,
-    fetchFriendRequests
+    fetchFriendRequests,
+    fetchFriends
 } from '../api/socket';
 
 
@@ -78,6 +79,11 @@ const SocketProvider = ({ children }) => {
     }, []);
 
 
+    const getFriends = useCallback((socket, userId) => {
+        return fetchFriends(socket, userId);
+    }, []);
+
+
 
 
     return (
@@ -87,7 +93,8 @@ const SocketProvider = ({ children }) => {
             acceptFriendshipRequest,
             declineFriendshipRequest,
             getFriendshipInfo,
-            getFriendRequests
+            getFriendRequests,
+            getFriends
         }}>
             {children}
         </SocketContext.Provider>

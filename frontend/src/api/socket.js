@@ -84,10 +84,30 @@ const fetchFriendRequests = (socket, userId) => {
 
 
 
+
+const fetchFriends = (socket, userId) => {
+    return new Promise((resolve, reject) => {
+        socket.emit('fetchFriends', { userId });
+
+        socket.on('fetchFriendsResponse', response => {
+            if (response.success) {
+                resolve(response.friends);
+                console.log(response);
+            } else {
+                reject(new Error(response.message));
+            }
+        });
+    });
+}
+
+
+
+
 export {
     sendFriendRequest,
     acceptFriendRequest,
     declineFriendRequest,
     fetchFriendshipInfo,
-    fetchFriendRequests
+    fetchFriendRequests,
+    fetchFriends
 }

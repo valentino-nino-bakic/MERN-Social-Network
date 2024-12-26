@@ -70,6 +70,7 @@ io.on('connection', socket => {
     socket.on('declineFriendRequest', data => SocketController.declineFriendRequest(socket, data));
     socket.on('fetchFriendshipInfo', data => SocketController.fetchFriendshipInfo(socket, data));
     socket.on('fetchFriendRequests', data => SocketController.fetchFriendRequests(socket, data));
+    socket.on('fetchFriends', data => SocketController.fetchFriends(socket, data));
     // socket.on('isRequestAlreadySent', data => SocketController.isRequestAlreadySent(socket, data));
 
 

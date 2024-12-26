@@ -142,6 +142,22 @@ const SocketController = {
 
 
 
+    fetchFriends: async (socket, data) => {
+        const { userId } = data;
+
+        try {
+            const user = await User.findById(userId).populate('friends', 'username profileImageUrl');
+            if (!user) {
+                throw new Error('User not found');
+            }
+
+            socket.emit('fetchFriendsResponse', { success: true, friends: user.friends });
+        } catch (error) {
+            socket.emit('fetchFriendsResponse', { success: false, message: error.message });
+        }
+    },
+
+
 }
 
 
