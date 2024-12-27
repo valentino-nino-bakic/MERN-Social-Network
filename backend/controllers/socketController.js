@@ -1,7 +1,7 @@
 
 
 const User = require('../models/userModel');
-
+const PrivateMessage = require('../models/privateMessageModel');
 
 
 const SocketController = {
@@ -156,6 +156,47 @@ const SocketController = {
             socket.emit('fetchFriendsResponse', { success: false, message: error.message });
         }
     },
+
+
+
+    sendPrivateMessage: async (socket, data) => {
+        const { currentUserId, otherUserId, content } = data;
+
+        try {
+            const currentUser = await User.findById(currentUserId);
+            const otherUser = await User.findById(otherUserId);
+
+            if (!currentUser || !otherUser) {
+                throw new Error('User not found');
+            }
+
+            const newPrivateMessage = new PrivateMessage({
+                senderId: currentUserId,
+                receiverId: otherUserId,
+                content: content,
+            });
+
+            await newPrivateMessage.save();
+
+            socket.to(otherUserId).emit('receivePrivateMessage', {
+                senderId: currentUserId,
+                message: content,
+                createdAt: newPrivateMessage.createdAt,
+            });
+
+            socket.emit('sendPrivateMessageResponse', {
+                success: true,
+                message: 'Message sent successfully',
+                createdAt: newPrivateMessage.createdAt,
+            });
+        } catch (error) {
+            socket.emit('sendPrivateMessageResponse', {
+                success: false,
+                message: error.message,
+            });
+        }
+    },
+
 
 
 }

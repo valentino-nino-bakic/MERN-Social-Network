@@ -2,12 +2,12 @@
 import { useEffect } from 'react';
 
 import useSocket from '../hooks/useSocket';
-import useAuth from '..hooks/useAuth';
+import useAuth from '../hooks/useAuth';
 
 
 
 const Messages = () => {
-    const { socket, privateMessage } = useSocket();
+    const { socket, sendPrivateMessage } = useSocket();
     const { user } = useAuth();
 
 
