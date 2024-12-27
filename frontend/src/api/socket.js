@@ -103,11 +103,28 @@ const fetchFriends = (socket, userId) => {
 
 
 
+const sendPrivateMessage = (socket, currentUserId, otherUserId, messageContent) => {
+    return new Promise((resolve, reject) => {
+        socket.emit('sendPrivateMessage', { senderId: currentUserId, receiverId: otherUserId, content: messageContent });
+
+        socket.on('sendPrivateMessageResponse', response => {
+            if (response.success) {
+                resolve(response);
+            } else {
+                reject(new Error(response.message));
+            }
+        });
+    });
+}
+
+
+
 export {
     sendFriendRequest,
     acceptFriendRequest,
     declineFriendRequest,
     fetchFriendshipInfo,
     fetchFriendRequests,
-    fetchFriends
+    fetchFriends,
+    sendPrivateMessage
 }

@@ -14,7 +14,7 @@ import ProtectedRoute from './components/ProtectedRoute';
 
 import SearchResults from './pages/SearchResults';
 
-import Chat from './pages/Chat';
+import Messages from './pages/Messages';
 import Friends from './pages/Friends';
 
 import OtherUserProfile from './pages/OtherUserProfile';
@@ -39,7 +39,7 @@ const App = () => {
                     <Route path="profile" element={<Profile />} />
                     <Route path="user/:username" element={<OtherUserProfile />} />
                     <Route path="search-results" element={<SearchResults />} />
-                    <Route path="chat" element={<Chat />} />
+                    <Route path="messages" element={<Messages />} />
                     <Route path="friends" element={<Friends />} />
                     <Route path="*" element={<NotFound />} />
                 </Route>

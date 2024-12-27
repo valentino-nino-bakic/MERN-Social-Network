@@ -81,7 +81,7 @@ const FriendRequests = () => {
 
     return (
         <div className="friend-requests mt-5">
-            <h2>Friend Requests</h2>
+            <h3>Friend Requests</h3>
             {friendRequests.length > 0 ? (
                 friendRequests.map(request => (
                     <div key={request._id} className="d-flex align-items-center my-3">
