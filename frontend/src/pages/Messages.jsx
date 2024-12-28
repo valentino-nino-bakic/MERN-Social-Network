@@ -12,7 +12,8 @@ const Messages = () => {
     const [friends, setFriends] = useState([]);
     const [selectedFriend, setSelectedFriend] = useState(null);
     const { user } = useAuth();
-    const { socket, getFriends, sendMessage, receiveMessage } = useSocket();
+    const { socket, getFriends, getMessages, sendMessage } = useSocket();
+
 
     useEffect(() => {
         const fetchAllFriends = async (sockety, userId) => {
@@ -29,6 +30,12 @@ const Messages = () => {
         };
         fetchAllFriends(socket, jwtDecode(user).id);
     }, [getFriends, user, socket]);
+
+
+    const handleSelectFriend = (friend) => {
+        setSelectedFriend(friend);
+    }
+
 
 
 
@@ -63,7 +70,7 @@ const Messages = () => {
                                                         {friend.username}
                                                     </button>
                                                 </div>
-                                                <button className="btn btn-outline-primary btn-sm">Message</button>
+                                                <button className="btn btn-outline-primary btn-sm" onClick={() => handleSelectFriend(friend)}>Message</button>
                                             </li>
                                         ))}
                                     </ul>
@@ -72,7 +79,14 @@ const Messages = () => {
                         </div>
                     </div>
                     <div className="col-md-8">
-                        <Chat />
+                        <Chat
+                            user={user}
+                            selectedFriend={selectedFriend}
+                            socket={socket}
+                            getMessages={getMessages}
+                            sendMessage={sendMessage}
+                          /*   handleReceiveMessage={handleReceiveMessage} */
+                        />
                     </div>
                 </div>
             </div>

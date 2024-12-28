@@ -87,9 +87,9 @@ const SocketProvider = ({ children }) => {
     }, []);
 
 
-    const sendMessage = (currentUserId, otherUserId, messageContent) => {
+    const sendMessage = useCallback((currentUserId, otherUserId, messageContent) => {
         return sendPrivateMessage(socket, currentUserId, otherUserId, messageContent);
-    }
+    }, [socket]);
 
 
     const receiveMessage = () => {
