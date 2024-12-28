@@ -199,6 +199,32 @@ const SocketController = {
 
 
 
+
+    fetchPrivateMessages: async (socket, data) => {
+        const { currentUserId, otherUserId } = data;
+
+        try {
+            const user = await User.findById(currentUserId);
+            if (!user) {
+                throw new Error('User not found');
+            }
+
+            const messageHistory = await PrivateMessage.find({
+                $or: [
+                    { senderId: currentUserId, receiverId: otherUserId },
+                    { senderId: otherUserId, receiverId: currentUserId },
+                ],
+            }).sort({ createdAt: 1 });
+
+            socket.emit('fetchMessagesResponse', { success: true, messages: messageHistory });
+        } catch (error) {
+            socket.emit('fetchMessagesResponse', { success: false, message: error.message });
+        }
+    },
+
+
+
+
 }
 
 

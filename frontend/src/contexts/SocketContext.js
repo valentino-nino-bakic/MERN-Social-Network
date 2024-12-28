@@ -9,7 +9,8 @@ import {
     fetchFriendRequests,
     fetchFriends,
     sendPrivateMessage,
-    receivePrivateMessage
+    receivePrivateMessage,
+    fetchPrivateMessages
 } from '../api/socket';
 
 
@@ -96,6 +97,10 @@ const SocketProvider = ({ children }) => {
     }
 
 
+    const getMessages = useCallback((socket, currentUserId, otherUserId) => {
+        return fetchPrivateMessages(socket, currentUserId, otherUserId);
+    }, []);
+
 
 
     return (
@@ -108,7 +113,8 @@ const SocketProvider = ({ children }) => {
             getFriendRequests,
             getFriends,
             sendMessage,
-            receiveMessage
+            receiveMessage,
+            getMessages
         }}>
             {children}
         </SocketContext.Provider>

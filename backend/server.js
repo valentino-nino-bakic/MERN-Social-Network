@@ -55,15 +55,6 @@ app.use('/api', likeRouter);
 io.on('connection', socket => {
     console.log(`New user connected: ${socket.id}`);
 
-    // socket.on('private_message', ({ message, toUserId }) => {
-    //     console.log(`Message: ${message}, To: ${toUserId}`);
-
-    //     io.to(toUserId).emit('receive_message', {
-    //         message: message,
-    //         fromUserId: socket.id
-    //     });
-    // });
-
     socket.on('sendFriendRequest', data => SocketController.sendFriendRequest(socket, data));
     socket.on('acceptFriendRequest', data => SocketController.acceptFriendRequest(socket, data));
     socket.on('declineFriendRequest', data => SocketController.declineFriendRequest(socket, data));
@@ -71,6 +62,7 @@ io.on('connection', socket => {
     socket.on('fetchFriendRequests', data => SocketController.fetchFriendRequests(socket, data));
     socket.on('fetchFriends', data => SocketController.fetchFriends(socket, data));
     socket.on('sendPrivateMessage', data => SocketController.sendPrivateMessage(socket, data));
+    socket.on('fetchMessages', data => SocketController.fetchPrivateMessages(socket, data));
 
 
     socket.on('disconnect', () => {

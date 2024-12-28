@@ -10,6 +10,7 @@ import Chat from '../components/Chat';
 
 const Messages = () => {
     const [friends, setFriends] = useState([]);
+    const [selectedFriend, setSelectedFriend] = useState(null);
     const { user } = useAuth();
     const { socket, getFriends, sendMessage, receiveMessage } = useSocket();
 
@@ -33,7 +34,7 @@ const Messages = () => {
 
     return (
         <>
-            <div className="container-fluid vh-100 mt-5">
+            <div className="container-fluid vh-100 m-5">
                 <div className="row">
                     <div className="col-md-4">
                         <div className="card shadow-sm mb-4">
