@@ -7,7 +7,9 @@ import {
     declineFriendRequest,
     fetchFriendshipInfo,
     fetchFriendRequests,
-    fetchFriends
+    fetchFriends,
+    sendPrivateMessage,
+    receivePrivateMessage
 } from '../api/socket';
 
 
@@ -84,6 +86,16 @@ const SocketProvider = ({ children }) => {
     }, []);
 
 
+    const sendMessage = (currentUserId, otherUserId, messageContent) => {
+        return sendPrivateMessage(socket, currentUserId, otherUserId, messageContent);
+    }
+
+
+    const receiveMessage = () => {
+        return receivePrivateMessage(socket);
+    }
+
+
 
 
     return (
@@ -94,7 +106,9 @@ const SocketProvider = ({ children }) => {
             declineFriendshipRequest,
             getFriendshipInfo,
             getFriendRequests,
-            getFriends
+            getFriends,
+            sendMessage,
+            receiveMessage
         }}>
             {children}
         </SocketContext.Provider>
