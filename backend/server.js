@@ -54,6 +54,7 @@ app.use('/api', likeRouter);
 
 io.on('connection', socket => {
     console.log(`New user connected: ${socket.id}`);
+    socket.join(socket.handshake.query.userId);
 
     socket.on('sendFriendRequest', data => SocketController.sendFriendRequest(socket, data));
     socket.on('acceptFriendRequest', data => SocketController.acceptFriendRequest(socket, data));

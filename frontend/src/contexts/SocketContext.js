@@ -1,4 +1,5 @@
 import { createContext, useEffect, useMemo, /* useState, */ useCallback } from 'react';
+import { jwtDecode } from 'jwt-decode';
 import { io } from 'socket.io-client';
 
 import {
@@ -9,23 +10,28 @@ import {
     fetchFriendRequests,
     fetchFriends,
     sendPrivateMessage,
-    receivePrivateMessage,
     fetchPrivateMessages
 } from '../api/socket';
 
+import useAuth from '../hooks/useAuth';
+
 
 const SOCKET_URL = process.env.REACT_APP_BASE_URL;
-
-
-
 const SocketContext = createContext();
 
+
 const SocketProvider = ({ children }) => {
+    const { user } = useAuth();
+
     const socket = useMemo(() => io(SOCKET_URL, {
         reconnectionAttempts: 5,
-        reconnectionDelay: 1000
-    }), []);
+        reconnectionDelay: 1000,
+        query: {
+            userId: jwtDecode(user).id
+        }
+    }), [user]);
 
+    
     useEffect(() => {
         const handleConnect = () => console.log('User connected');
         const handleDisconnect = () => console.log('User disconnected');
@@ -92,11 +98,6 @@ const SocketProvider = ({ children }) => {
     }, [socket]);
 
 
-    const receiveMessage = () => {
-        return receivePrivateMessage(socket);
-    }
-
-
     const getMessages = useCallback((socket, currentUserId, otherUserId) => {
         return fetchPrivateMessages(socket, currentUserId, otherUserId);
     }, []);
@@ -113,7 +114,6 @@ const SocketProvider = ({ children }) => {
             getFriendRequests,
             getFriends,
             sendMessage,
-            receiveMessage,
             getMessages
         }}>
             {children}

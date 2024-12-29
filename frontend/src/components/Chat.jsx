@@ -5,21 +5,23 @@ import { jwtDecode } from 'jwt-decode';
 
 
 
-const Chat = ({ user, selectedFriend, socket, getMessages, sendMessage /* handleReceiveMessage */ }) => {
+const Chat = ({ user, selectedFriend, socket, getMessages, sendMessage }) => {
     const [message, setMessage] = useState('');
     const [messages, setMessages] = useState([]);
+    const [myID, setMyID] = useState(null);
 
-    const handleSendMessage = e  => {
+    const handleSendMessage = e => {
         e.preventDefault();
         sendMessage(jwtDecode(user).id, selectedFriend._id, message);
         setMessage('');
         setMessages([...messages, { senderId: jwtDecode(user).id, content: message }]);
     }
 
-    /*  const handleReceiveMessage = () => {
-         receiveMessage(socket);
-     }
-  */
+
+    useEffect(() => {
+        setMyID(jwtDecode(user).id);
+    }, [user]);
+
 
     useEffect(() => {
         const fetchMessages = async (socket, currentUserId, otherUserId) => {
@@ -39,10 +41,46 @@ const Chat = ({ user, selectedFriend, socket, getMessages, sendMessage /* handle
         }
     }, [getMessages, user, socket, selectedFriend]);
 
+
+
+
+    useEffect(() => {
+        const receiveMessage = async (otherUserId, currentUserId) => {
+            if (socket) {
+                try {
+                    socket.on('receivePrivateMessage', data => {
+                        const { senderId, message } = data;
+                        console.log(`Received message from user ${senderId}:`, message);
+                        if (senderId === selectedFriend._id) {
+                            setMessages(prev => ([...prev, { senderId: senderId, content: message }]));
+                        }
+                    });
+                } catch (error) {
+                    console.log(error)
+                }
+            } else {
+                console.log('Socket not initialized');
+            }
+        }
+
+        if (selectedFriend && myID) {
+            receiveMessage(selectedFriend._id, myID);
+        }
+
+        return () => {
+            if (socket) {
+                socket.off('receivePrivateMessage');
+            }
+        };
+
+    }, [selectedFriend, myID, socket]);
+
+
+
     return (
         <>
             {selectedFriend ? (
-                <div className="container-fluid d-flex flex-column border shadow-sm rounded p-3">
+                <div className="container-fluid d-flex flex-column border shadow-sm rounded p-3 overflow-auto">
                     <div className="d-flex">
                         <img src={selectedFriend.profileImageUrl} alt="profile" className="rounded-circle mx-2" style={{ height: '50px', width: '50px', objectFit: 'cover' }} />
                         <p className="fw-bold">{selectedFriend.username}</p>
@@ -56,7 +94,7 @@ const Chat = ({ user, selectedFriend, socket, getMessages, sendMessage /* handle
                             </div>
                         </div>
                     ))}
-                    <form onSubmit={handleSendMessage} className="message-input mt-5 container-fluid">
+                    <form onSubmit={handleSendMessage} className="bg-white message-input mt-5 container-fluid position-sticky bottom-0">
                         <div className="row">
                             <div className="col-md-10">
                                 <input
@@ -68,7 +106,6 @@ const Chat = ({ user, selectedFriend, socket, getMessages, sendMessage /* handle
                                 />
                             </div>
                             <div className="col-md-2 d-flex align-items-center justify-content-end">
-                               
                                 <button type="submit" className="btn btn-primary w-100">Send</button>
                             </div>
                         </div>

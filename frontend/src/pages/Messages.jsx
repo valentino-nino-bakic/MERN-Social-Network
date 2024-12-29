@@ -54,7 +54,10 @@ const Messages = () => {
                                 ) : (
                                     <ul className="list-group">
                                         {friends.map((friend) => (
-                                            <li key={friend._id} className="list-group-item d-flex justify-content-between align-items-center">
+                                            <li
+                                                key={friend._id}
+                                                className={`list-group-item d-flex justify-content-between align-items-center ${selectedFriend?._id === friend._id ? 'bg-warning' : '' }`}
+                                            >
                                                 <div>
                                                     <img
                                                         className="rounded-circle"
@@ -85,7 +88,6 @@ const Messages = () => {
                             socket={socket}
                             getMessages={getMessages}
                             sendMessage={sendMessage}
-                          /*   handleReceiveMessage={handleReceiveMessage} */
                         />
                     </div>
                 </div>
