@@ -1,5 +1,6 @@
 
 import { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { jwtDecode } from 'jwt-decode';
 
 import useAuth from '../hooks/useAuth';
@@ -91,6 +92,20 @@ const Profile = () => {
                 </div>
             </div>
 
+            <ul className="list-unstyled d-flex justify-content-center w-100 p-0 profile-page-ul">
+                <li className="px-5 py-2">
+                    <Link to='/home/friends' className="text-decoration-none">Friends</Link>
+                </li>
+                <li className="px-5 py-2">
+                    <Link to='/home/profile' className="text-decoration-none">Lorem</Link>
+                </li>
+                <li className="px-5 py-2">
+                    <Link to='/home/profile' className="text-decoration-none">Ipsum</Link>
+                </li>
+                <li className="px-5 py-2">
+                    <Link to='/home/profile' className="text-decoration-none">Dolor</Link>
+                </li>
+            </ul>
 
             <div className="modal" id="upload-modal">
                 <div className="modal-dialog">

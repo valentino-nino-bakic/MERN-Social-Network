@@ -171,3 +171,26 @@ form {
 .friend-message {
     background-color: #f0f0f0;
 }
+
+
+
+.profile-page-ul {
+    background-color: #1D8BC3;
+
+    li {
+        a {
+            background-color: #1D8BC3;
+            color: white;
+
+            &:hover {
+                background-color: black;
+                color: white;
+            }
+        }
+
+        &:hover {
+            cursor: pointer;
+            background-color: black;
+        }
+    }
+}

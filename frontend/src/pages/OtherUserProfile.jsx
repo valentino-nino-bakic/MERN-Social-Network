@@ -125,6 +125,8 @@ const OtherUserProfile = () => {
         return <div>Error: {error}</div>
     }
 
+
+
     return (
         <div className="container-fluid p-0">
 
@@ -142,25 +144,28 @@ const OtherUserProfile = () => {
                 </div>
             </div>
 
-            <div className="vh-100 d-flex align-items-center justify-content-center">
-                <h1>Profile Page of {profileData.username}</h1>
-                {isFriend ? (
-                    <p>You are friends</p>
-                ) : isRequestSent ? (
-                    <p>Friend request sent</p>
-                ) : thisUserInYourFriendRequestList ? (
-                    <button className="btn btn-secondary" disabled>
-                        You have a pending friend request from this user
-                    </button>
-                ) : (
-                    <button
-                        className="btn btn-primary"
-                        onClick={() => handleSendFriendRequest(jwtDecode(user).id, profileData._id)}
-                        disabled={friendRequestLoading}
-                    >
-                        {friendRequestLoading ? 'Sending request...' : 'Add friend'}
-                    </button>
-                )}
+            <div className="container position-relative">
+                <div className="row">
+                    <div className="col-3"></div>
+                    <div className="col-2">
+                        {isFriend ? (
+                            <p className="position-absolute text-light" style={{ bottom: '20px' }}><i className="fas fa-user-friends"></i> Friends</p>
+                        ) : isRequestSent ? (
+                            <p className="position-absolute text-light" style={{ bottom: '20px' }}><i className="fas fa-user-check"></i> Friend request sent</p>
+                        ) : thisUserInYourFriendRequestList ? (
+                            <p className="position-absolute text-light" style={{ bottom: '20px' }}><i className="fas fa-user-check"></i> You have a pending friend request from this user</p>
+                        ) : (
+                            <button
+                                className="btn btn-primary"
+                                onClick={() => handleSendFriendRequest(jwtDecode(user).id, profileData._id)}
+                                disabled={friendRequestLoading}
+                            >
+                                {friendRequestLoading ? 'Sending request...' : 'Add friend'}
+                            </button>
+                        )}
+                    </div>
+                    <div className="col-7"></div>
+                </div>
             </div>
 
 
