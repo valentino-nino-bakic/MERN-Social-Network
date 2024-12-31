@@ -97,7 +97,7 @@ const Profile = () => {
                     <Link to='/home/friends' className="text-decoration-none">Friends</Link>
                 </li>
                 <li className="px-5 py-2">
-                    <Link to='/home/profile' className="text-decoration-none">Lorem</Link>
+                    <Link to='/home/profile/posts' className="text-decoration-none">Lorem</Link>
                 </li>
                 <li className="px-5 py-2">
                     <Link to='/home/profile' className="text-decoration-none">Ipsum</Link>

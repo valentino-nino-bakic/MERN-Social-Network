@@ -16,6 +16,21 @@ const getAllPosts = async () => {
 }
 
 
+const getPostsByUserId = async (userId) => {
+    try {
+        const response = await fetch(`${API_ENDPOINTS.POSTS}/${userId}`);
+        if (!response.ok) {
+            const data = await response.json();
+            throw new Error(data.message);
+        }
+        const data = await response.json();
+        return data.posts;
+    } catch (error) {
+        throw error;
+    }
+}
+
+
 
 const createPost = async (token, postData) => {
     const options = {
@@ -40,4 +55,4 @@ const createPost = async (token, postData) => {
 }
 
 
-export { getAllPosts, createPost };
+export { getAllPosts, getPostsByUserId, createPost };
