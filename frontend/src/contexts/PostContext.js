@@ -1,5 +1,5 @@
 import { createContext, useState, useCallback } from 'react';
-import { getAllPosts, createPost } from '../api/post';
+import { getAllPosts, getPostsByUserId, createPost } from '../api/post';
 
 
 const PostContext = createContext();
@@ -30,6 +30,17 @@ const PostProvider = ({ children }) => {
 
 
 
+    const retrievePostsByUserId = useCallback(async userId => {
+        try {
+            const data = await getPostsByUserId(userId);
+            return data.posts;
+        } catch (error) {
+            console.log(error.message);
+        }
+    }, []);
+
+
+
     const createNewPost = useCallback(async (token, postData) => {
         setLoading(true);
         setError(null);
@@ -47,7 +58,7 @@ const PostProvider = ({ children }) => {
 
 
     return (
-        <PostContext.Provider value={{ posts, getPosts, createNewPost, loading, error }}>
+        <PostContext.Provider value={{ posts, getPosts, retrievePostsByUserId, createNewPost, loading, error }}>
             {children}
         </PostContext.Provider>
     )

@@ -7,6 +7,7 @@ import useAuth from '../hooks/useAuth';
 
 import CreatePost from '../components/CreatePost';
 import FriendRequests from '../components/FriendRequests';
+import MyPosts from '../components/MyPosts';
 
 
 
@@ -140,6 +141,8 @@ const Profile = () => {
                 <FriendRequests />
             </div>
 
+
+            <MyPosts user={user}/>
         </div>
     )
 }

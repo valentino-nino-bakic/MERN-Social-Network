@@ -16,7 +16,7 @@ const postController = {
 
 
     getPostsByUserId: async (req, res) => {
-        const userId = req.body.userId;
+        const userId = req.params.userId;
         try {
             const user = await User.findById(userId);
             if (!user) {
