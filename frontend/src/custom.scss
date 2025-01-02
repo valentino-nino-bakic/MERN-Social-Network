@@ -175,22 +175,18 @@ form {
 
 
 .profile-page-ul {
-    background-color: #1D8BC3;
+    background-color: #f1f1f1;
 
-    li {
-        a {
-            background-color: #1D8BC3;
-            color: white;
 
-            &:hover {
-                background-color: black;
-                color: white;
-            }
-        }
-
+    a {
+        background-color: #f1f1f1;
+        border-left: 1px solid silver;
         &:hover {
-            cursor: pointer;
             background-color: black;
+            color: white;
         }
+    }
+    a:last-child {
+        border-right: 1px solid silver;
     }
 }

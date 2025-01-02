@@ -1,14 +1,9 @@
 
 import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Outlet } from 'react-router-dom';
 import { jwtDecode } from 'jwt-decode';
 
 import useAuth from '../hooks/useAuth';
-
-import CreatePost from '../components/CreatePost';
-import FriendRequests from '../components/FriendRequests';
-import MyPosts from '../components/MyPosts';
-
 
 
 
@@ -64,7 +59,7 @@ const Profile = () => {
 
     return (
         <div className="container-fluid p-0">
-            
+
             <div className="position-relative d-flex align-items-center bg-image-holder">
                 <div className="position-absolute d-flex align-items-center px-5" style={{ bottom: '-80px' }}>
                     <div className="position-relative" style={{ width: '200px', height: '200px' }}>
@@ -94,18 +89,10 @@ const Profile = () => {
             </div>
 
             <ul className="list-unstyled d-flex justify-content-center w-100 p-0 profile-page-ul">
-                <li className="px-5 py-2">
-                    <Link to='/home/friends' className="text-decoration-none">Friends</Link>
-                </li>
-                <li className="px-5 py-2">
-                    <Link to='/home/profile/posts' className="text-decoration-none">Lorem</Link>
-                </li>
-                <li className="px-5 py-2">
-                    <Link to='/home/profile' className="text-decoration-none">Ipsum</Link>
-                </li>
-                <li className="px-5 py-2">
-                    <Link to='/home/profile' className="text-decoration-none">Dolor</Link>
-                </li>
+                <Link to='/home/profile' className="text-decoration-none px-4 py-2">Posts</Link>
+                <Link to='/home/profile/friends' className="text-decoration-none px-4 py-2">Friends</Link>
+                <Link to='/home/profile' className="text-decoration-none px-4 py-2">Ipsum</Link>
+                <Link to='/home/profile' className="text-decoration-none px-4 py-2">Dolor</Link>
             </ul>
 
             <div className="modal" id="upload-modal">
@@ -137,12 +124,8 @@ const Profile = () => {
             </div>
 
             <div className="p-5">
-                <CreatePost />
-                <FriendRequests />
+                <Outlet />
             </div>
-
-
-            <MyPosts user={user}/>
         </div>
     )
 }

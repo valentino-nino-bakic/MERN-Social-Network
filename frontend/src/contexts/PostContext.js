@@ -33,7 +33,7 @@ const PostProvider = ({ children }) => {
     const retrievePostsByUserId = useCallback(async userId => {
         try {
             const data = await getPostsByUserId(userId);
-            return data.posts;
+            return data;
         } catch (error) {
             console.log(error.message);
         }

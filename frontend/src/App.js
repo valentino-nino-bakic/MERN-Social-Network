@@ -20,7 +20,6 @@ import Friends from './pages/Friends';
 import OtherUserProfile from './pages/OtherUserProfile';
 
 import { SocketProvider } from './contexts/SocketContext';
-
 import MyPosts from './components/MyPosts';
 
 
@@ -39,7 +38,8 @@ const App = () => {
                 <Route path="/home" element={<ProtectedRoute><SocketProvider><HomeLayout /></SocketProvider></ProtectedRoute>}>
                     <Route index element={<Home />} />
                     <Route path="profile" element={<Profile />}>
-                        <Route path="posts" element={<MyPosts />} />
+                        <Route index element={<MyPosts />} />
+                        <Route path="friends" element={<Friends />} />
                     </Route>
                     <Route path="user/:username" element={<OtherUserProfile />} />
                     <Route path="search-results" element={<SearchResults />} />

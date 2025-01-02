@@ -156,11 +156,13 @@ const OtherUserProfile = () => {
                             <p className="position-absolute text-light" style={{ bottom: '20px' }}><i className="fas fa-user-check"></i> You have a pending friend request from this user</p>
                         ) : (
                             <button
-                                className="btn btn-primary"
+                                className="btn btn-primary position-absolute"
+                                style={{ bottom: '20px' }} 
                                 onClick={() => handleSendFriendRequest(jwtDecode(user).id, profileData._id)}
                                 disabled={friendRequestLoading}
                             >
-                                {friendRequestLoading ? 'Sending request...' : 'Add friend'}
+                                <i className="fas fa-user-plus"></i>
+                                {friendRequestLoading ? ' Sending request...' : ' Add friend'}
                             </button>
                         )}
                     </div>
