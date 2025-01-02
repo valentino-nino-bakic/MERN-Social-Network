@@ -6,6 +6,9 @@ import { jwtDecode } from 'jwt-decode';
 import useAuth from '../hooks/useAuth';
 import useSocket from '../hooks/useSocket';
 
+import SingleUserPosts from '../components/SingleUserPosts';
+
+
 
 
 const OtherUserProfile = () => {
@@ -41,20 +44,6 @@ const OtherUserProfile = () => {
             try {
                 const data = await getUserByUsername(username);
                 setProfileData(data);
-                // if (user) {
-                // const friendshipStatus = await isOtherUserFriend(jwtDecode(user).id, data._id);
-                // setIsFriend(friendshipStatus);
-
-                // const sentRequest = await hasRequestAlreadyBeenSent(jwtDecode(user).id, data._id);
-                // setIsRequestSent(sentRequest);
-                //     const bothUserIDS = {
-                //         currentUserId: jwtDecode(user).id,
-                //         otherUserId: data._id
-                //     }
-                //     const requests = await getFriendshipInfo(socket, bothUserIDS);
-                //     const isThere = requests.some(request => request.senderId._id === data._id);
-                //     setThisUserInYourFriendRequestList(isThere);
-                // }
             } catch (err) {
                 setError(err.message);
             } finally {
@@ -67,7 +56,7 @@ const OtherUserProfile = () => {
             setProfileData(null);
             setLoading(false);
         }
-    }, [username, getUserByUsername /* isOtherUserFriend, user, hasRequestAlreadyBeenSent, getFriendshipInfo, socket */]);
+    }, [username, getUserByUsername]);
 
 
 
@@ -128,51 +117,60 @@ const OtherUserProfile = () => {
 
 
     return (
-        <div className="container-fluid p-0">
+        <>
+            <div className="container-fluid p-0">
 
-            <div className="position-relative d-flex align-items-center bg-image-holder">
-                <div className="position-absolute d-flex align-items-center px-5" style={{ bottom: '-80px' }}>
-                    <div className="position-relative" style={{ width: '200px', height: '200px' }}>
-                        <img
-                            src={profileData.profileImageUrl}
-                            alt="User"
-                            className="rounded-circle border border-3"
-                            style={{ width: '200px', height: '200px', objectFit: 'cover' }}
-                        />
+                <div className="position-relative d-flex align-items-center bg-image-holder">
+                    <div className="position-absolute d-flex align-items-center px-5" style={{ bottom: '-80px' }}>
+                        <div className="position-relative" style={{ width: '200px', height: '200px' }}>
+                            <img
+                                src={profileData.profileImageUrl}
+                                alt="User"
+                                className="rounded-circle border border-3"
+                                style={{ width: '200px', height: '200px', objectFit: 'cover' }}
+                            />
+                        </div>
+                        <h1 className="ms-3 text-white pb-5">{profileData.username}</h1>
                     </div>
-                    <h1 className="ms-3 text-white pb-5">{profileData.username}</h1>
                 </div>
-            </div>
 
-            <div className="container position-relative">
+                <div className="container position-relative">
+                    <div className="row">
+                        <div className="col-3"></div>
+                        <div className="col-2">
+                            {isFriend ? (
+                                <p className="position-absolute text-light" style={{ bottom: '20px' }}><i className="fas fa-user-friends"></i> Friends</p>
+                            ) : isRequestSent ? (
+                                <p className="position-absolute text-light" style={{ bottom: '20px' }}><i className="fas fa-user-check"></i> Friend request sent</p>
+                            ) : thisUserInYourFriendRequestList ? (
+                                <p className="position-absolute text-light" style={{ bottom: '20px' }}><i className="fas fa-user-check"></i> You have a pending friend request from this user</p>
+                            ) : (
+                                <button
+                                    className="btn btn-primary position-absolute"
+                                    style={{ bottom: '20px' }}
+                                    onClick={() => handleSendFriendRequest(jwtDecode(user).id, profileData._id)}
+                                    disabled={friendRequestLoading}
+                                >
+                                    <i className="fas fa-user-plus"></i>
+                                    {friendRequestLoading ? ' Sending request...' : ' Add friend'}
+                                </button>
+                            )}
+                        </div>
+                        <div className="col-7"></div>
+                    </div>
+                </div>
+
+            </div>
+            <div className="container mt-5">
                 <div className="row">
-                    <div className="col-3"></div>
-                    <div className="col-2">
-                        {isFriend ? (
-                            <p className="position-absolute text-light" style={{ bottom: '20px' }}><i className="fas fa-user-friends"></i> Friends</p>
-                        ) : isRequestSent ? (
-                            <p className="position-absolute text-light" style={{ bottom: '20px' }}><i className="fas fa-user-check"></i> Friend request sent</p>
-                        ) : thisUserInYourFriendRequestList ? (
-                            <p className="position-absolute text-light" style={{ bottom: '20px' }}><i className="fas fa-user-check"></i> You have a pending friend request from this user</p>
-                        ) : (
-                            <button
-                                className="btn btn-primary position-absolute"
-                                style={{ bottom: '20px' }} 
-                                onClick={() => handleSendFriendRequest(jwtDecode(user).id, profileData._id)}
-                                disabled={friendRequestLoading}
-                            >
-                                <i className="fas fa-user-plus"></i>
-                                {friendRequestLoading ? ' Sending request...' : ' Add friend'}
-                            </button>
-                        )}
+                    <div className="col-2"></div>
+                    <div className="col-6">
+                        <SingleUserPosts singleUserId={profileData._id} />
                     </div>
-                    <div className="col-7"></div>
+                    <div className="col-4"></div>
                 </div>
             </div>
-
-
-
-        </div>
+        </>
     )
 }
 

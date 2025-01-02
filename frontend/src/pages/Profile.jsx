@@ -1,6 +1,6 @@
 
 import { useState, useEffect } from 'react';
-import { Link, Outlet } from 'react-router-dom';
+import { NavLink, Outlet } from 'react-router-dom';
 import { jwtDecode } from 'jwt-decode';
 
 import useAuth from '../hooks/useAuth';
@@ -88,12 +88,6 @@ const Profile = () => {
                 </div>
             </div>
 
-            <ul className="list-unstyled d-flex justify-content-center w-100 p-0 profile-page-ul">
-                <Link to='/home/profile' className="text-decoration-none px-4 py-2">Posts</Link>
-                <Link to='/home/profile/friends' className="text-decoration-none px-4 py-2">Friends</Link>
-                <Link to='/home/profile' className="text-decoration-none px-4 py-2">Ipsum</Link>
-                <Link to='/home/profile' className="text-decoration-none px-4 py-2">Dolor</Link>
-            </ul>
 
             <div className="modal" id="upload-modal">
                 <div className="modal-dialog">
@@ -122,6 +116,11 @@ const Profile = () => {
                     </div>
                 </div>
             </div>
+
+            <ul className="list-unstyled d-flex justify-content-center w-100 p-0 profile-page-ul">
+                <NavLink to='/home/profile' end className={({ isActive }) => `text-decoration-none px-4 py-2 ${isActive ? 'active-link' : ''}`}>Posts</NavLink>
+                <NavLink to='/home/profile/friends' className={({ isActive }) => `text-decoration-none px-4 py-2 ${isActive ? 'active-link' : ''}`}>Friends</NavLink>
+            </ul>
 
             <div className="p-5">
                 <Outlet />

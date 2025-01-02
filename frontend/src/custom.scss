@@ -177,16 +177,12 @@ form {
 .profile-page-ul {
     background-color: #f1f1f1;
 
-
     a {
         background-color: #f1f1f1;
-        border-left: 1px solid silver;
-        &:hover {
-            background-color: black;
-            color: white;
-        }
     }
-    a:last-child {
-        border-right: 1px solid silver;
+
+    .active-link {
+        background-color: black;
+        color: #24a6e7;
     }
 }

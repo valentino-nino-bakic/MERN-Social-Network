@@ -12,10 +12,16 @@ const MyPosts = () => {
     const { user } = useAuth();
 
     return (
-        <>
-            <CreatePost />
-            <SingleUserPosts singleUserId={jwtDecode(user).id} />
-        </>
+        <div className="container">
+            <div className="row">
+                <div className="col-2"></div>
+                <div className="col-6">
+                    <CreatePost />
+                    <SingleUserPosts singleUserId={jwtDecode(user).id} />
+                </div>
+                <div className="col-4"></div>
+            </div>
+        </div>
     )
 }
 

@@ -1,4 +1,5 @@
 
+import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { jwtDecode } from 'jwt-decode';
 
@@ -15,6 +16,17 @@ const DisplayPosts = ({ posts }) => {
     const { user } = useAuth();
     const { comments, getComments, addNewComment, loading: commentLoading, error: commentError } = useComment();
     const { likes, getLikes, addNewLike, loading: likeLoading, error: likeError } = useLike();
+
+
+    useEffect(() => {
+        if (posts.length > 0) {
+            posts.forEach(post => {
+                getComments(post._id);
+                getLikes(post._id);
+            });
+        }
+    }, [posts, getComments, getLikes]);
+
 
     const handleAddComment = async (token, postId, author, content) => {
         await addNewComment(token, postId, author, content);
@@ -33,12 +45,13 @@ const DisplayPosts = ({ posts }) => {
         }
     }
 
+    
 
     return (
         <>
             {posts.length > 0 ? (
                 posts.map(post => (
-                    <div className="single-post card my-3" key={post._id}>
+                    <div key={post._id} className="card mb-5">
                         <div className="card-body">
 
                             <div className="d-flex align-items-center gap-3 mb-3">
@@ -58,7 +71,7 @@ const DisplayPosts = ({ posts }) => {
                                 </span>
                             </div>
                             <h5 className="card-title">{post.title}</h5>
-                            <p className="card-text">{post.content}</p>
+                            <p className="card-text py-3">{post.content}</p>
 
 
                             <div className="container d-flex justify-content-between">
