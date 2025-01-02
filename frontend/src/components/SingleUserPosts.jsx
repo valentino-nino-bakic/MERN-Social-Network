@@ -5,6 +5,7 @@ import { useState, useEffect } from 'react';
 import usePost from '../hooks/usePost';
 import useComment from '../hooks/useComment';
 import useLike from '../hooks/useLike';
+import DisplayPosts from './DisplayPosts';
 
 
 
@@ -40,19 +41,11 @@ const SingleUserPosts = ({ singleUserId }) => {
     }, [singleUserPosts, getComments, getLikes]);
 
 
+    
     return (
         <>
             <div className="single-user-posts">
-                {singleUserPosts.length > 0 ? (
-                    singleUserPosts.map(post => (
-                        <div key={post._id}>
-                            <h3>{post.title}</h3>
-                            <p>{post.content}</p>
-                        </div>
-                    ))
-                ) : (
-                    <p>No posts yet</p>
-                )}
+                <DisplayPosts posts={singleUserPosts} />
             </div>
         </>
     )
