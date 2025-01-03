@@ -78,12 +78,23 @@ const DisplayPosts = ({ posts }) => {
                                 <div>
                                     {likeLoading && <p>Loading likes...</p>}
                                     {likeError && <p>Error loading likes: {likeError}</p>}
-                                    {likes[post._id] && likes[post._id].length > 0 ? <button data-bs-toggle="modal" data-bs-target="#likesModal" style={{ background: 'transparent', border: 'none' }}><i className="fa-solid fa-thumbs-up" style={{ color: '#0073e6' }} ></i> <span className="text-muted">{likes[post._id].length}</span></button> : ''}
-                                    <div className="modal fade" id="likesModal" tabIndex="-1" aria-labelledby="likesModalLabel" aria-hidden="true">
+                                    {likes[post._id] && likes[post._id].length > 0 ? (
+                                        <button
+                                            data-bs-toggle="modal"
+                                            data-bs-target={`#likesModal-${post._id}`}
+                                            style={{ background: 'transparent', border: 'none' }}
+                                        >
+                                            <i className="fa-solid fa-thumbs-up" style={{ color: '#0073e6' }}></i>
+                                            <span className="text-muted"> {likes[post._id].length}</span>
+                                        </button>
+                                    ) : (
+                                        ''
+                                    )}
+                                    <div className="modal fade" id={`likesModal-${post._id}`} tabIndex="-1" aria-labelledby={`likesModalLabel-${post._id}`} aria-hidden="true">
                                         <div className="modal-dialog">
                                             <div className="modal-content">
                                                 <div className="modal-header">
-                                                    <h5 className="modal-title" id="likesModalLabel">Likes</h5>
+                                                    <h5 className="modal-title" id={`likesModalLabel-${post._id}`}>Likes</h5>
                                                     <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                 </div>
                                                 <div className="modal-body">
