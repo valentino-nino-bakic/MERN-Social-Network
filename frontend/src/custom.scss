@@ -39,6 +39,7 @@ body {
     .navbar {
         background-color: $light;
         color: $dark;
+        border-bottom: 1px solid rgb(218, 218, 218);
     }
 
     a {
@@ -64,6 +65,12 @@ body {
     }
 
 
+    .single-post {
+        color: black;
+        background-color: white;
+    }
+
+
 
 }
 
@@ -80,7 +87,18 @@ body.dark-theme {
     // }
 
     .navbar {
-        background-color: $dark
+        background-color: $dark;
+        border-bottom: 1px solid rgb(52, 52, 52);
+
+        input {
+            background-color: black;
+            border: 1px solid rgb(61, 61, 61);
+            color: white;
+
+            &::placeholder {
+                color: rgb(61, 61, 61);
+            }
+        }
     }
 
 
@@ -106,7 +124,17 @@ body.dark-theme {
         color: $light;
     }
 
+    .toggle-theme-button {
+        background-color: black;
+        color: #5FB072
+    }
 
+
+    .single-post {
+        color: white;
+        background-color: black;
+        border: 1px solid rgb(61, 61, 61)
+    }
 }
 
 

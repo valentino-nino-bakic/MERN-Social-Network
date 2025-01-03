@@ -71,7 +71,7 @@ const HomeNavbar = () => {
                     </div>
 
                     <div className="d-flex align-items-center">
-                        <button className="btn btn-success me-3" onClick={toggleTheme}>Toggle theme</button>
+                        <button className="btn btn-success me-3 toggle-theme-button" onClick={toggleTheme}>Toggle theme</button>
                         <ul className="navbar-nav align-items-center">
                             <Link className="navbar-brand" to="/home/profile">
                                 <li className="nav-item d-flex align-items-center mx-2">

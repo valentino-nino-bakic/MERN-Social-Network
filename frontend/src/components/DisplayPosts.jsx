@@ -45,13 +45,13 @@ const DisplayPosts = ({ posts }) => {
         }
     }
 
-    
+
 
     return (
         <>
             {posts.length > 0 ? (
                 posts.map(post => (
-                    <div key={post._id} className="card mb-5">
+                    <div key={post._id} className="card mb-5 single-post">
                         <div className="card-body">
 
                             <div className="d-flex align-items-center gap-3 mb-3">
@@ -78,7 +78,47 @@ const DisplayPosts = ({ posts }) => {
                                 <div>
                                     {likeLoading && <p>Loading likes...</p>}
                                     {likeError && <p>Error loading likes: {likeError}</p>}
-                                    {likes[post._id] && likes[post._id].length > 0 ? <><i className="fa-solid fa-thumbs-up" style={{ color: '#0073e6' }} ></i> <span className="text-muted">{likes[post._id].length}</span></> : ''}
+                                    {likes[post._id] && likes[post._id].length > 0 ? <button data-bs-toggle="modal" data-bs-target="#likesModal" style={{ background: 'transparent', border: 'none' }}><i className="fa-solid fa-thumbs-up" style={{ color: '#0073e6' }} ></i> <span className="text-muted">{likes[post._id].length}</span></button> : ''}
+                                    <div className="modal fade" id="likesModal" tabIndex="-1" aria-labelledby="likesModalLabel" aria-hidden="true">
+                                        <div className="modal-dialog">
+                                            <div className="modal-content">
+                                                <div className="modal-header">
+                                                    <h5 className="modal-title" id="likesModalLabel">Likes</h5>
+                                                    <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                </div>
+                                                <div className="modal-body">
+                                                    {likes[post._id] && likes[post._id].map(like => (
+                                                        <div key={like._id} className="d-flex align-items-center my-2 p-1">
+                                                            <div className="position-relative">
+                                                                <img
+                                                                    data-bs-dismiss="modal"
+                                                                    data-user-username={like.author.username}
+                                                                    onClick={handleGoToClickedImageProfile}
+                                                                    src={like.author.profileImageUrl}
+                                                                    alt="User"
+                                                                    className="rounded-circle"
+                                                                    style={{ width: '45px', height: '45px', objectFit: 'cover', cursor: 'pointer' }}
+                                                                />
+                                                                <i
+                                                                    className="fa fa-thumbs-up position-absolute"
+                                                                    style={{ backgroundColor: '#0073e6', color: 'white', fontSize: '10px', padding: '3px', borderRadius: '50%', bottom: '0', right: '0' }}>
+                                                                </i>
+                                                            </div>
+                                                            <button
+                                                                type="button"
+                                                                className="btn btn-link"
+                                                                data-bs-dismiss="modal"
+                                                                data-user-username={like.author.username}
+                                                                onClick={handleGoToClickedImageProfile}
+                                                            >
+                                                                {like.author.username}
+                                                            </button>
+                                                        </div>
+                                                    ))}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                                 <div>
                                     {comments[post._id] && comments[post._id].length > 0 ? <p className="text-muted">{comments[post._id].length} comments</p> : <p></p>}

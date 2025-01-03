@@ -4,8 +4,7 @@ backend/node_modules
 frontend/.env
 backend/.env
 
-
-
+backend/uploads
 
 .vscode/
 frontend/.DS_Store
