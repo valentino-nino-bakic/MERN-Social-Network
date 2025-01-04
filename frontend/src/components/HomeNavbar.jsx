@@ -72,22 +72,21 @@ const HomeNavbar = () => {
 
                     <div className="d-flex align-items-center">
                         <button className="btn btn-success me-3 toggle-theme-button" onClick={toggleTheme}>Toggle theme</button>
-                        <ul className="navbar-nav align-items-center">
-                            <Link className="navbar-brand" to="/home/profile">
-                                <li className="nav-item d-flex align-items-center mx-2">
-                                    <img
-                                        src={picture}
-                                        alt="User Avatar"
-                                        className="rounded-circle me-2"
-                                        style={{ width: '30px', height: '30px', objectFit: 'cover' }}
-                                    />
-                                    <span className="me-2">{jwtDecode(user).username}</span>
-                                </li>
-                            </Link>
-                            <li className="nav-item">
-                                <Button type="button" onClick={handleLogout} className="btn btn-primary">Logout</Button>
-                            </li>
-                        </ul>
+                        <div className="dropdown">
+                            <button className="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                                <img
+                                    src={picture}
+                                    alt="User Avatar"
+                                    className="rounded-circle me-2"
+                                    style={{ width: '30px', height: '30px', objectFit: 'cover' }}
+                                />
+                                <span className="me-2">{jwtDecode(user).username}</span>
+                            </button>
+                            <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                <li className="dropdown-item"><Link to="/home/profile">Profile</Link></li>
+                                <li className="dropdown-item" onClick={handleLogout}>Logout</li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
             </div>
