@@ -36,9 +36,9 @@ const AdminController = {
 
     editUser: async (req, res) => {
         try {
-            const { adminModifiedUserUsername, adminModifiedUserRole } = req.body;
+            const { username, role } = req.body;
 
-            const usernameOccupied = await User.findOne({ username: adminModifiedUserUsername });
+            const usernameOccupied = await User.findOne({ username: username });
             if (usernameOccupied) {
                 return res.status(400).json({ message: `Username ${usernameOccupied} already exists, try with different one...` });
             }
@@ -46,8 +46,8 @@ const AdminController = {
             const userId = req.params.id;
             const user = await User.findById(userId);
 
-            user.username = adminModifiedUserUsername;
-            user.role = adminModifiedUserRole;
+            user.username = username;
+            user.role = role;
 
             await user.save();
             return res.status(200).json({ message: 'User has been successfully modified!' });

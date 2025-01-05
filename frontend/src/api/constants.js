@@ -10,7 +10,12 @@ const API_ENDPOINTS = {
     UPLOAD_PROFILE_IMAGE: `${BASE_URL}/api/upload-profile-image`,
     SEARCH_RESULTS: `${BASE_URL}/api/search-results`,
     USER: `${BASE_URL}/api/user`,
-    USERS: `${BASE_URL}/api/users`
+    USERS: `${BASE_URL}/api/users`,
+    ADMIN: {
+        CREATE_USER: `${BASE_URL}/api/admin/users`,
+        EDIT_USER: `${BASE_URL}/api/admin/users`,
+        DELETE_USER: `${BASE_URL}/api/admin/users`
+    }
 }
 
 
