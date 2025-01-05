@@ -5,7 +5,6 @@ import { jwtDecode } from 'jwt-decode';
 
 import useAuth from '../hooks/useAuth';
 import useTheme from '../hooks/useTheme';
-import Button from './Button';
 
 
 
@@ -32,6 +31,9 @@ const HomeNavbar = () => {
     }, [setPicture, user]);
 
 
+    const handleGoToYourProfile = () => {
+        navigate('/home/profile');
+    }
 
     const handleLogout = async () => {
         await logout();
@@ -83,8 +85,8 @@ const HomeNavbar = () => {
                                 <span className="me-2">{jwtDecode(user).username}</span>
                             </button>
                             <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                <li className="dropdown-item"><Link to="/home/profile">Profile</Link></li>
-                                <li className="dropdown-item" onClick={handleLogout}>Logout</li>
+                                <li type="button" className="dropdown-item" onClick={handleGoToYourProfile}>Profile</li>
+                                <li type="button" className="dropdown-item" onClick={handleLogout}>Logout</li>
                             </ul>
                         </div>
                     </div>

@@ -7,6 +7,7 @@ require('dotenv').config();
 const PORT = process.env.PORT;
 const DB_CONNECTION_STRING = process.env.DB_CONNECTION_STRING;
 
+const adminRouter = require('./routes/adminRoutes');
 const userRouter = require('./routes/userRoutes');
 const postRouter = require('./routes/postRoutes');
 const commentRouter = require('./routes/commentRoutes');
@@ -19,6 +20,7 @@ const SocketController = require('./controllers/socketController');
 
 const server = http.createServer(app);
 const { Server } = require('socket.io');
+
 const io = new Server(server, {
     cors: {
         origin: '*',
@@ -45,6 +47,7 @@ app.use(cors());
 app.use('/uploads', express.static('uploads'));
 
 
+app.use('/api', adminRouter);
 app.use('/api', userRouter);
 app.use('/api', postRouter);
 app.use('/api', commentRouter);
