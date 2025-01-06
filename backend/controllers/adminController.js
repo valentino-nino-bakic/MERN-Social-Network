@@ -5,6 +5,18 @@ const User = require('../models/userModel');
 
 const AdminController = {
 
+    getUsers: async (req, res) => {
+        try {
+            const users = await User.find();
+            return res.status(200).json({ users: users });
+        } catch (error) {
+            console.log(error);
+            res.status(500).json({ message: error.message });
+        }
+    },
+
+
+
     createUser: async (req, res) => {
         try {
             const { username, email, password } = req.body;
@@ -50,7 +62,7 @@ const AdminController = {
             user.role = role;
 
             await user.save();
-            return res.status(200).json({ message: 'User has been successfully modified!' });
+            return res.status(200).json({ user: user, message: 'User has been successfully modified!' });
         } catch (error) {
             console.error(error);
             return res.status(500).json({ message: error.message });

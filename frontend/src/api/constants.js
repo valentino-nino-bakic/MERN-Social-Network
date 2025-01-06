@@ -12,6 +12,7 @@ const API_ENDPOINTS = {
     USER: `${BASE_URL}/api/user`,
     USERS: `${BASE_URL}/api/users`,
     ADMIN: {
+        GET_USERS: `${BASE_URL}/api/admin/users`,
         CREATE_USER: `${BASE_URL}/api/admin/users`,
         EDIT_USER: `${BASE_URL}/api/admin/users`,
         DELETE_USER: `${BASE_URL}/api/admin/users`

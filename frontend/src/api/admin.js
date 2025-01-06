@@ -1,6 +1,21 @@
 import API_ENDPOINTS from './constants';
 
 
+const getUsers = async () => {
+    try {
+        const response = await fetch(API_ENDPOINTS.ADMIN.GET_USERS);
+        if (!response.ok) {
+            const data = await response.json();
+            throw new Error(data.message);
+        }
+        const data = await response.json();
+        return data.users;
+    } catch (error) {
+        throw error;
+    }
+}
+
+
 
 const createUser = async (username, email, password) => {
     const requestBody = {
@@ -53,7 +68,7 @@ const editUser = async (userId, username, role) => {
             throw new Error(data.message);
         }
         const data = await response.json();
-        return data.message;
+        return data.user;
     } catch (error) {
         throw error;
     }
@@ -82,6 +97,7 @@ const deleteUser = async userId => {
 
 
 export {
+    getUsers,
     createUser,
     editUser,
     deleteUser

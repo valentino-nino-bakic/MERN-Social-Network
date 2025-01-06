@@ -1,5 +1,6 @@
 
 import AdminNavbar from '../components/AdminNavbar';
+import Footer from '../components/Footer';
 
 
 const Admin = () => {
@@ -9,6 +10,7 @@ const Admin = () => {
             <div>
                 <h1>Admin</h1>
             </div>
+            <Footer />
         </>
     )
 }

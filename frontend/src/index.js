@@ -11,6 +11,7 @@ import { PostProvider } from './contexts/PostContext';
 import { CommentProvider } from './contexts/CommentContext';
 import { LikeProvider } from './contexts/LikeContext';
 import { ThemeProvider } from './contexts/ThemeContext';
+import { AdminProvider } from './contexts/AdminContext';
 
 
 
@@ -22,7 +23,9 @@ root.render(
                 <PostProvider>
                     <CommentProvider>
                         <LikeProvider>
-                            <App />
+                            <AdminProvider>
+                                <App />
+                            </AdminProvider>
                         </LikeProvider>
                     </CommentProvider>
                 </PostProvider>

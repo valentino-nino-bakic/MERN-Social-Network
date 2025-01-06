@@ -76,16 +76,19 @@ const HomeNavbar = () => {
                         <button className="btn btn-success me-3 toggle-theme-button" onClick={toggleTheme}>Toggle theme</button>
                         <div className="dropdown">
                             <button className="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                                <img
-                                    src={picture}
-                                    alt="User Avatar"
-                                    className="rounded-circle me-2"
-                                    style={{ width: '30px', height: '30px', objectFit: 'cover' }}
-                                />
-                                <span className="me-2">{jwtDecode(user).username}</span>
+                                {jwtDecode(user).username}
                             </button>
-                            <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                <li type="button" className="dropdown-item" onClick={handleGoToYourProfile}>Profile</li>
+                            <ul className="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton1">
+                                <li type="button" className="dropdown-item" onClick={handleGoToYourProfile}>
+                                    <img
+                                        src={picture}
+                                        alt="User Avatar"
+                                        className="rounded-circle me-2"
+                                        style={{ width: '30px', height: '30px', objectFit: 'cover' }}
+                                    />
+                                    Profile
+                                </li>
+                                <li><hr className="dropdown-divider" /></li>
                                 <li type="button" className="dropdown-item" onClick={handleLogout}>Logout</li>
                             </ul>
                         </div>

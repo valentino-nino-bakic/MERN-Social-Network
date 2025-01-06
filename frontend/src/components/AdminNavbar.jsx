@@ -59,17 +59,6 @@ const HomeNavbar = () => {
                         <Link className="navbar-brand" to="/admin">
                             <img src="https://image.similarpng.com/very-thumbnail/2020/12/Lorem-ipsum-logo-isolated-clipart-PNG.png" alt="Logo" className="me-2" style={{ height: '60px' }} />
                         </Link>
-                        {/* <form onSubmit={handleSearch} className="d-flex">
-                            <input
-                                className="form-control me-2"
-                                type="search"
-                                placeholder="Search Loremipsumia"
-                                value={searchQuery}
-                                onChange={e => setSearchQuery(e.target.value)}
-                                aria-label="Search"
-                            />
-                            <button className="btn btn-outline-primary" type="submit">Search</button>
-                        </form> */}
                     </div>
 
                     <div className="d-flex align-items-center">
@@ -84,7 +73,7 @@ const HomeNavbar = () => {
                                 />
                                 <span className="me-2">{jwtDecode(user).username}</span>
                             </button>
-                            <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                            <ul className="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton1">
                                 {/* <li type="button" className="dropdown-item" onClick={handleGoToYourProfile}>Profile</li> */}
                                 <li type="button" className="dropdown-item" onClick={handleLogout}>Logout</li>
                             </ul>
