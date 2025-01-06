@@ -1,5 +1,6 @@
 import { Link, Navigate } from 'react-router-dom';
 import { useState } from 'react';
+import { jwtDecode } from 'jwt-decode';
 
 import Button from '../components/Button';
 import { isPasswordValid } from '../utils/validation';
@@ -35,8 +36,13 @@ const Login = () => {
 
 
     if (user) {
-        return <Navigate to='/home' />
+        if (jwtDecode(user).role === 'admin') {
+            return <Navigate to='/admin' />;
+        } else {
+            return <Navigate to='/home' />;
+        }
     }
+
 
     return (
         <>
@@ -50,24 +56,24 @@ const Login = () => {
                                     {error && <p className="text-danger">{error}</p>}
                                     <div data-mdb-input-init className="form-outline mb-4">
                                         <label className="form-label" htmlFor="login-username-or-email">Username or Email</label>
-                                        <input 
-                                            type="text" 
+                                        <input
+                                            type="text"
                                             id="login-username-or-email"
                                             name="login-username-or-email"
                                             value={formData['login-username-or-email']}
                                             onChange={handleChange}
-                                            className="form-control form-control-lg" 
+                                            className="form-control form-control-lg"
                                         />
                                     </div>
                                     <div data-mdb-input-init className="form-outline mb-4">
                                         <label className="form-label" htmlFor="login-password">Password</label>
-                                        <input 
+                                        <input
                                             type="password"
                                             id="login-password"
                                             name="login-password"
                                             value={formData['login-password']}
                                             onChange={handleChange}
-                                            className="form-control form-control-lg" 
+                                            className="form-control form-control-lg"
                                         />
                                     </div>
                                     <div className="pt-1 mb-4">

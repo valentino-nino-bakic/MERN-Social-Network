@@ -50,7 +50,7 @@ const UserController = {
             }
 
             if (user.role === 'admin') {
-                const token = jwt.sign({ id: user._id, username: user.username, email: user.email, role: 'admin' }, SECRET_KEY, { expiresIn: '1h' });
+                const token = jwt.sign({ id: user._id, username: user.username, email: user.email, role: 'admin', profileImageUrl: user.profileImageUrl }, SECRET_KEY, { expiresIn: '1h' });
                 res.status(200).json({ message: 'You have been successfully logged in!', token: token });
             } else {
                 const token = jwt.sign({ id: user._id, username: user.username, email: user.email, role: 'user', profileImageUrl: user.profileImageUrl, friendRequests: user.friendRequests }, SECRET_KEY, { expiresIn: '1h' });

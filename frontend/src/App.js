@@ -22,6 +22,7 @@ import OtherUserProfile from './pages/OtherUserProfile';
 import { SocketProvider } from './contexts/SocketContext';
 import MyPosts from './components/MyPosts';
 
+import Admin from './pages/Admin';
 
 
 
@@ -46,6 +47,7 @@ const App = () => {
                     <Route path="messages" element={<Messages />} />
                     <Route path="*" element={<NotFound />} />
                 </Route>
+                <Route path="/admin" element={<ProtectedRoute><Admin /></ProtectedRoute>} />
             </Routes>
         </BrowserRouter>
     )
