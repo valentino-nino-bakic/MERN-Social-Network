@@ -22,7 +22,9 @@ import OtherUserProfile from './pages/OtherUserProfile';
 import { SocketProvider } from './contexts/SocketContext';
 import MyPosts from './components/MyPosts';
 
-import Admin from './pages/Admin';
+import Admin from './pages/admin/Admin';
+import AllUsers from './components/admin/AllUsers';
+import AdminPanelUserProfile from './pages/admin/AdminPanelUserProfile';
 
 
 
@@ -47,7 +49,10 @@ const App = () => {
                     <Route path="messages" element={<Messages />} />
                     <Route path="*" element={<NotFound />} />
                 </Route>
-                <Route path="/admin" element={<ProtectedRoute><Admin /></ProtectedRoute>} />
+                <Route path="/admin" element={<ProtectedRoute><Admin /></ProtectedRoute>}>
+                    <Route index element={<AllUsers />} />
+                    <Route path="user/:id" element={<AdminPanelUserProfile />} /> 
+                </Route>
             </Routes>
         </BrowserRouter>
     )
