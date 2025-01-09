@@ -25,6 +25,7 @@ import MyPosts from './components/MyPosts';
 import Admin from './pages/admin/Admin';
 import AllUsers from './components/admin/AllUsers';
 import AdminPanelUserProfile from './pages/admin/AdminPanelUserProfile';
+import AdminProfile from './pages/admin/AdminProfile';
 
 
 
@@ -51,7 +52,8 @@ const App = () => {
                 </Route>
                 <Route path="/admin" element={<ProtectedRoute><Admin /></ProtectedRoute>}>
                     <Route index element={<AllUsers />} />
-                    <Route path="user/:id" element={<AdminPanelUserProfile />} /> 
+                    <Route path="profile" element={<AdminProfile />} />
+                    <Route path="users/:id" element={<AdminPanelUserProfile />} /> 
                 </Route>
             </Routes>
         </BrowserRouter>

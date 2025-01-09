@@ -1,5 +1,5 @@
 
-import { useState, useEffect } from 'react';
+import { /* useState */ useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { jwtDecode } from 'jwt-decode';
 
@@ -31,9 +31,9 @@ const HomeNavbar = () => {
     }, [setPicture, user]);
 
 
-    // const handleGoToYourProfile = () => {
-    //     navigate('/home/profile');
-    // }
+    const handleGoToYourProfile = () => {
+        navigate('/admin/profile');
+    }
 
     const handleLogout = async () => {
         await logout();
@@ -74,7 +74,7 @@ const HomeNavbar = () => {
                                 <span className="me-2">{jwtDecode(user).username}</span>
                             </button>
                             <ul className="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton1">
-                                {/* <li type="button" className="dropdown-item" onClick={handleGoToYourProfile}>Profile</li> */}
+                                <li type="button" className="dropdown-item" onClick={handleGoToYourProfile}>Profile</li>
                                 <li type="button" className="dropdown-item" onClick={handleLogout}>Logout</li>
                             </ul>
                         </div>

@@ -1,6 +1,7 @@
 
 import { createContext, useState } from 'react';
 import {
+    getUser,
     getUsers,
     createUser,
     editUser,
@@ -15,6 +16,17 @@ const AdminContext = createContext();
 
 const AdminProvider = ({ children }) => {
     const [users, setUsers] = useState([]);
+
+
+
+    const fetchUser = async userId => {
+        try {
+            const data = await getUser(userId);
+            return data;
+        } catch (error) {
+            throw error;
+        }
+    }
 
 
     const fetchUsers = async () => {
@@ -65,6 +77,7 @@ const AdminProvider = ({ children }) => {
         <AdminContext.Provider
             value={{
                 users,
+                fetchUser,
                 fetchUsers,
                 addUser,
                 modifyUser,

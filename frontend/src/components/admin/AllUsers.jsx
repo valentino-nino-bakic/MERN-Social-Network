@@ -1,12 +1,17 @@
 
 import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { jwtDecode } from 'jwt-decode';
 
 import useAdmin from '../../hooks/useAdmin';
-
+import useAuth from '../../hooks/useAuth';
 
 
 const AllUsers = () => {
+    const navigate = useNavigate();
     const { users, fetchUsers } = useAdmin();
+    const { user } = useAuth();
+
 
     useEffect(() => {
         const fetchAllUsers = async () => {
@@ -21,8 +26,19 @@ const AllUsers = () => {
 
 
 
+    const handleGoToUserProfile = e => {
+        const userId = e.target.getAttribute('data-user-id');
+        if (user && userId === jwtDecode(user).id) {
+            navigate('/admin/profile');
+        } else {
+            navigate(`/admin/users/${userId}`);
+        }
+    }
+
+
     return (
         <div className="container mt-4">
+            <h3 className="my-5">All Users</h3>
             <table className="table table-striped table-bordered">
                 <thead>
                     <tr>
@@ -36,7 +52,10 @@ const AllUsers = () => {
                     {users.map((user, index) => (
                         <tr key={user._id}>
                             <th scope="row">{index + 1}</th>
-                            <td><img src={user.profileImageUrl} style={{ width: '30px', height: '30px', objectFit: 'cover', borderRadius: '50%', marginRight: '10px' }} />{user.username}</td>
+                            <td>
+                                <img src={user.profileImageUrl} alt={user.username} style={{ width: '30px', height: '30px', objectFit: 'cover', borderRadius: '50%' }} />
+                                <button data-user-id={user._id} onClick={handleGoToUserProfile} type="button" className="btn btn-link">{user.username}</button>
+                            </td>
                             <td>{user.email}</td>
                             <td>{user.role}</td>
                         </tr>
