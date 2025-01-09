@@ -42,7 +42,9 @@ const postController = {
             }
             const newPost = new Post(newPostData);
             await newPost.save();
-            return res.status(201).json({ message: 'Your post has been successfully created', post: newPost });
+
+            const populatedPost = await newPost.populate('author', 'username profileImageUrl');
+            return res.status(201).json({ message: 'Your post has been successfully created', post: populatedPost });
         } catch (error) {
             console.log(error);
             res.status(500).json({ message: error.message });

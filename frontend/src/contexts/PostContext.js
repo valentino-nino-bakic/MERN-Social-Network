@@ -46,8 +46,11 @@ const PostProvider = ({ children }) => {
         setError(null);
         try {
             const data = await createPost(token, postData);
-            setPosts((prev) => [...prev, data]);
-            localStorage.setItem('allPosts', JSON.stringify([data, ...posts]));
+            setPosts(prev => {
+                const updatedPosts = [data, ...prev];
+                localStorage.setItem('allPosts', JSON.stringify(updatedPosts));
+                return updatedPosts;
+            });
         } catch (error) {
             setError(error.message);
         } finally {
