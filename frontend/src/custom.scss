@@ -214,3 +214,24 @@ form {
         color: #24a6e7;
     }
 }
+
+.fa-edit-user-td {
+    width: 60px;
+    text-align: center;
+    cursor: pointer;
+
+    &:hover {
+        background-color: black;
+        color: white;
+    }
+}
+
+.fixed-alert {
+    position: fixed;
+    top: 86px;
+    left: 0;
+    width: 100%;
+    margin: 0;
+    padding: 10px 0;
+    text-align: center;
+}

@@ -77,7 +77,7 @@ const AdminController = {
             user.role = role;
 
             await user.save();
-            return res.status(200).json({ user: user, message: 'User has been successfully modified!' });
+            return res.status(200).json({ user: user });
         } catch (error) {
             console.error(error);
             return res.status(500).json({ message: error.message });

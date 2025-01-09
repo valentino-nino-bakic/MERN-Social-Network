@@ -7,6 +7,7 @@ import useAdmin from '../../hooks/useAdmin';
 // import useAuth from '../../hooks/useAuth';
 
 import SingleUserPosts from '../../components/SingleUserPosts';
+import EditUserModal from '../../components/admin/EditUserModal';
 
 
 
@@ -77,31 +78,22 @@ const AdminPanelUserProfile = () => {
                     </div>
                 </div>
 
-                {/* <div className="container position-relative">
+                <div className="container position-relative">
                     <div className="row">
                         <div className="col-3"></div>
                         <div className="col-2">
-                            {isFriend ? (
-                                <p className="position-absolute text-light" style={{ bottom: '20px' }}><i className="fas fa-user-friends"></i> Friends</p>
-                            ) : isRequestSent ? (
-                                <p className="position-absolute text-light" style={{ bottom: '20px' }}><i className="fas fa-user-check"></i> Friend request sent</p>
-                            ) : thisUserInYourFriendRequestList ? (
-                                <p className="position-absolute text-light" style={{ bottom: '20px' }}><i className="fas fa-user-check"></i> You have a pending friend request from this user</p>
-                            ) : (
-                                <button
-                                    className="btn btn-primary position-absolute"
-                                    style={{ bottom: '20px' }}
-                                    onClick={() => handleSendFriendRequest(jwtDecode(user).id, profileData._id)}
-                                    disabled={friendRequestLoading}
-                                >
-                                    <i className="fas fa-user-plus"></i>
-                                    {friendRequestLoading ? ' Sending request...' : ' Add friend'}
-                                </button>
-                            )}
+                            <button
+                                data-bs-toggle="modal"
+                                data-bs-target={`#userModal-${profileData._id}`}
+                                className="btn btn-primary position-absolute"
+                                style={{ bottom: '20px' }}
+                            >
+                                <i className="fa fa-user-edit"></i> Edit User
+                            </button>
                         </div>
                         <div className="col-7"></div>
                     </div>
-                </div> */}
+                </div>
 
             </div>
             <div className="container mt-5">
@@ -113,6 +105,7 @@ const AdminPanelUserProfile = () => {
                     <div className="col-4"></div>
                 </div>
             </div>
+            <EditUserModal userData={profileData} />
         </>
     )
 }

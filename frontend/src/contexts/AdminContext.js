@@ -52,9 +52,9 @@ const AdminProvider = ({ children }) => {
     const modifyUser = async (userId, username, role) => {
         try {
             const data = await editUser(userId, username, role);
-            const { user, message } = data;
+            const { user } = data;
+            console.log(data);
             setUsers(prev => prev.map(u => u._id === userId ? { ...u, username: user.username, role: user.role } : u));
-            alert(message);
         } catch (err) {
             throw err;
         }

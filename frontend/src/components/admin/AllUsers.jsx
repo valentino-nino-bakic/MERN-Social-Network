@@ -6,6 +6,8 @@ import { jwtDecode } from 'jwt-decode';
 import useAdmin from '../../hooks/useAdmin';
 import useAuth from '../../hooks/useAuth';
 
+import EditUserModal from './EditUserModal';
+
 
 const AllUsers = () => {
     const navigate = useNavigate();
@@ -46,6 +48,7 @@ const AllUsers = () => {
                         <th scope="col">Username</th>
                         <th scope="col">Email</th>
                         <th scope="col">Role</th>
+                        <th scope="col"></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -58,10 +61,23 @@ const AllUsers = () => {
                             </td>
                             <td>{user.email}</td>
                             <td>{user.role}</td>
+                            <td
+                                data-bs-toggle="modal"
+                                data-bs-target={`#userModal-${user._id}`}
+                                title="Edit User"
+                                className="fa-edit-user-td"
+                            >
+                                <i className="fa fa-user-edit"></i>
+                            </td>
                         </tr>
                     ))}
                 </tbody>
             </table>
+            {users.map((user) => (
+                <div key={user._id}>
+                    <EditUserModal userData={user} />
+                </div>
+            ))}
         </div>
     )
 }

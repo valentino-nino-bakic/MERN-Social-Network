@@ -84,7 +84,7 @@ const editUser = async (userId, username, role) => {
             throw new Error(data.message);
         }
         const data = await response.json();
-        return data.user;
+        return data;
     } catch (error) {
         throw error;
     }
