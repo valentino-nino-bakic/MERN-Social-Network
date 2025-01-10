@@ -16,6 +16,7 @@ const AdminContext = createContext();
 
 const AdminProvider = ({ children }) => {
     const [users, setUsers] = useState([]);
+    const [alertMessage, setAlertMessage] = useState(null);
 
 
 
@@ -52,11 +53,18 @@ const AdminProvider = ({ children }) => {
     const modifyUser = async (userId, username, role) => {
         try {
             const data = await editUser(userId, username, role);
-            const { user } = data;
+            const { user, message } = data;
             console.log(data);
             setUsers(prev => prev.map(u => u._id === userId ? { ...u, username: user.username, role: user.role } : u));
+            setAlertMessage(message);
+            setTimeout(() => {
+                setAlertMessage(null);
+            }, 3000);
         } catch (err) {
-            throw err;
+            setAlertMessage(err.message);
+            setTimeout(() => {
+                setAlertMessage(null);
+            }, 3000);
         }
     }
 
@@ -81,6 +89,7 @@ const AdminProvider = ({ children }) => {
                 fetchUsers,
                 addUser,
                 modifyUser,
+                alertMessage,
                 removeUser
             }}
         >

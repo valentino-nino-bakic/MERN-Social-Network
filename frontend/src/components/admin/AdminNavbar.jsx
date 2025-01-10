@@ -57,7 +57,7 @@ const HomeNavbar = () => {
                 <div className="d-flex justify-content-between w-100">
                     <div className="d-flex align-items-center flex-grow-1">
                         <Link className="navbar-brand" to="/admin">
-                            <img src="https://image.similarpng.com/very-thumbnail/2020/12/Lorem-ipsum-logo-isolated-clipart-PNG.png" alt="Logo" className="me-2" style={{ height: '60px' }} />
+                            <img src="/assets/images/logo.png" alt="Logo" className="me-2" style={{ height: '60px' }} />
                         </Link>
                     </div>
 

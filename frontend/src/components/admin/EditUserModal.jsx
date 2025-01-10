@@ -6,15 +6,13 @@ import useAdmin from '../../hooks/useAdmin';
 
 
 const EditUserModal = ({ userData }) => {
-    const { modifyUser } = useAdmin();
+    const { modifyUser, alertMessage } = useAdmin();
 
     const [currentUsername, setCurrentUsername] = useState('');
     const [currentRole, setCurrentRole] = useState('');
 
     const [newUsername, setNewUsername] = useState('');
     const [newRole, setNewRole] = useState('user');
-
-    const [showAlert, setShowAlert] = useState(false);
 
 
     useEffect(() => {
@@ -26,16 +24,12 @@ const EditUserModal = ({ userData }) => {
 
 
     const handleSubmit = async e => {
+        e.preventDefault();
         try {
-            e.preventDefault();
             if (userData) {
                 await modifyUser(userData._id, newUsername, newRole);
                 setNewUsername('');
                 setNewRole('user');
-                setShowAlert(true);
-                setTimeout(() => {
-                    setShowAlert(false);
-                }, 3000);
             }
         } catch (err) {
             alert(err);
@@ -45,9 +39,11 @@ const EditUserModal = ({ userData }) => {
 
     return (
         <>
-            <div className={`alert alert-success fade ${showAlert ? 'show' : ''} fixed-alert`} role="alert" style={{display: showAlert ? 'block' : 'none'}}>
-                User updated successfully!
-            </div>
+            {alertMessage && (
+                <div className="alert alert-success show fade fixed-alert" role="alert">
+                    {alertMessage}
+                </div>
+            )}
             <div className="modal fade" id={`userModal-${userData._id}`} tabIndex="-1" aria-labelledby={`userModalLabel-${userData._id}`} aria-hidden="true">
                 <div className="modal-dialog">
                     <div className="modal-content">
