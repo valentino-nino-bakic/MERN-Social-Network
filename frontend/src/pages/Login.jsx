@@ -27,7 +27,7 @@ const Login = () => {
             [name]: value
         }));
         if (name === 'login-username-or-email') {
-            if (value.length < 4) {
+            if (value.trim().length < 4) {
                 setFormErrors(prev => ({
                     ...prev,
                     usernameOrEmailErrorMessage: 'Field too short'

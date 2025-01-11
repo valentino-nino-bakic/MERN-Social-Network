@@ -2,17 +2,19 @@
 import { useState, useEffect } from 'react';
 
 import useAdmin from '../../hooks/useAdmin';
-
+import { isUsernameValid } from '../../utils/validation';
 
 
 const EditUserModal = ({ userData }) => {
-    const { modifyUser, alertMessage } = useAdmin();
+    const { modifyUser, removeUser, alertMessage } = useAdmin();
 
     const [currentUsername, setCurrentUsername] = useState('');
     const [currentRole, setCurrentRole] = useState('');
 
     const [newUsername, setNewUsername] = useState('');
     const [newRole, setNewRole] = useState('user');
+
+    const [usernameErrorMessage, setUsernameErrorMessage] = useState('');
 
 
     useEffect(() => {
@@ -23,13 +25,42 @@ const EditUserModal = ({ userData }) => {
     }, [userData]);
 
 
-    const handleSubmit = async e => {
+    const handleChange = e => {
+        setNewUsername(e.target.value);
+        if (!isUsernameValid(e.target.value)) {
+            setUsernameErrorMessage('This field requires minimum 4 and maximum 20 characters');
+        } else {
+            setUsernameErrorMessage('');
+        }
+    }
+
+
+    const handleEdit = async e => {
         e.preventDefault();
         try {
             if (userData) {
-                await modifyUser(userData._id, newUsername, newRole);
-                setNewUsername('');
-                setNewRole('user');
+                if (isUsernameValid(newUsername)) {
+                    await modifyUser(userData._id, newUsername, newRole);
+                    setNewUsername('');
+                    setNewRole('user');
+                    setUsernameErrorMessage('');
+                } else {
+                    setUsernameErrorMessage('This field requires minimum 4 and maximum 20 characters');
+                }
+            }
+        } catch (err) {
+            alert(err);
+        }
+    }
+
+
+    const handleDelete = async () => {
+        try {
+            // eslint-disable-next-line no-restricted-globals
+            if (confirm('Are you sure you want to delete this user?')) {
+                if (userData) {
+                    await removeUser(userData._id);
+                }
             }
         } catch (err) {
             alert(err);
@@ -52,26 +83,27 @@ const EditUserModal = ({ userData }) => {
                             <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div className="modal-body">
-                            <form onSubmit={handleSubmit}>
+                            <form onSubmit={handleEdit}>
                                 <div className="mb-3">
                                     <p>Current Username: <span className="text-info fw-bold">{currentUsername}</span></p>
-                                    <label htmlFor="newUsername" className="form-label">New</label>
+                                    <label htmlFor="newUsername" className="form-label">New:</label>
                                     <input
                                         type="text"
                                         className="form-control"
                                         id="newUsername"
                                         value={newUsername}
-                                        onChange={(e) => setNewUsername(e.target.value)}
+                                        onChange={handleChange}
                                     />
+                                    {usernameErrorMessage && <p className="text-danger">{usernameErrorMessage}</p>}
                                 </div>
                                 <div className="mb-3">
                                     <p>Current Role: <span className="text-info fw-bold">{currentRole}</span></p>
-                                    <label htmlFor="newRole" className="form-label">new</label>
+                                    <label htmlFor="newRole" className="form-label">New:</label>
                                     <select
                                         id="newRole"
                                         className="form-select"
                                         value={newRole}
-                                        onChange={(e) => setNewRole(e.target.value)}
+                                        onChange={e => setNewRole(e.target.value)}
                                     >
                                         <option value="user">User</option>
                                         <option value="admin">Admin</option>
@@ -79,6 +111,8 @@ const EditUserModal = ({ userData }) => {
                                 </div>
                                 <button type="submit" className="btn btn-primary mt-3" data-bs-dismiss="modal">Save changes</button>
                             </form>
+                            <hr />
+                            <button onClick={handleDelete} type="button" className="btn btn-danger my-3" data-bs-dismiss="modal">Delete User</button>
                         </div>
                     </div>
                 </div>

@@ -73,9 +73,15 @@ const AdminProvider = ({ children }) => {
         try {
             const message = await deleteUser(userId);
             setUsers(prev => prev.filter(user => user._id !== userId));
-            alert(message);
+            setAlertMessage(message);
+            setTimeout(() => {
+                setAlertMessage(null);
+            }, 3000);
         } catch (err) {
-            throw err;
+            setAlertMessage(err.message);
+            setTimeout(() => {
+                setAlertMessage(null);
+            }, 3000);
         }
     }
 
