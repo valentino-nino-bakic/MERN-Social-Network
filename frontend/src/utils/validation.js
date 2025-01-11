@@ -1,5 +1,5 @@
 const isUsernameValid = username => {
-    return username.trim().length > 3 && username.trim().length < 20;
+    return username.trim().length > 3 && username.trim().length < 21;
 }
 
 const isEmailValid = email => {

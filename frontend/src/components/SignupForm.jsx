@@ -7,7 +7,7 @@ import useAuth from '../hooks/useAuth';
 
 
 
-const SignupForm = ({greeting = 'Sign Up'}) => {
+const SignupForm = ({ greeting = 'Sign Up' }) => {
     const { user, signup, loading, error } = useAuth();
     const [formData, setFormData] = useState({
         'signup-username': '',
@@ -16,6 +16,11 @@ const SignupForm = ({greeting = 'Sign Up'}) => {
     });
     const navigate = useNavigate();
 
+    const [formErrors, setFormErrors] = useState({
+        usernameErrorMessage: '',
+        passwordErrorMessage: ''
+    });
+
 
     const handleChange = e => {
         const { name, value } = e.target;
@@ -23,6 +28,34 @@ const SignupForm = ({greeting = 'Sign Up'}) => {
             ...prev,
             [name]: value
         }));
+
+        if (name === 'signup-username') {
+            if (!isUsernameValid(value)) {
+                setFormErrors(prev => ({
+                    ...prev,
+                    usernameErrorMessage: 'Username must have minimum 4 and maximum 20 characters'
+                }));
+            } else {
+                setFormErrors(prev => ({
+                    ...prev,
+                    usernameErrorMessage: ''
+                }));
+            }
+        }
+
+        if (name === 'signup-password') {
+            if (!isPasswordValid(value)) {
+                setFormErrors(prev => ({
+                    ...prev,
+                    passwordErrorMessage: 'Password must be at least 8 characters'
+                }));
+            } else {
+                setFormErrors(prev => ({
+                    ...prev,
+                    passwordErrorMessage: ''
+                }));
+            }
+        }
     }
 
 
@@ -61,6 +94,7 @@ const SignupForm = ({greeting = 'Sign Up'}) => {
                             onChange={handleChange}
                             className="form-control form-control-lg"
                         />
+                        {formErrors['usernameErrorMessage'] && <p className="text-danger">{formErrors['usernameErrorMessage']}</p>}
                     </div>
                     <div data-mdb-input-init className="form-outline mb-4">
                         <label className="form-label" htmlFor="signup-email">Email address</label>
@@ -83,6 +117,7 @@ const SignupForm = ({greeting = 'Sign Up'}) => {
                             onChange={handleChange}
                             className="form-control form-control-lg"
                         />
+                        {formErrors['passwordErrorMessage'] && <p className="text-danger">{formErrors['passwordErrorMessage']}</p>}
                     </div>
                     <div className="pt-1 mb-4">
                         <Button type="submit" className="btn btn-primary btn-lg btn-block w-100" disabled={loading}>SIGNUP</Button>
