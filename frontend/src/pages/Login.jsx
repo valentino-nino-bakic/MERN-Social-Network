@@ -15,6 +15,10 @@ const Login = () => {
     });
     const { user, login, loading, error } = useAuth();
 
+    const [formErrors, setFormErrors] = useState({
+        usernameOrEmailErrorMessage: '',
+        passwordErrorMessage: ''
+    });
 
     const handleChange = e => {
         const { name, value } = e.target;
@@ -22,15 +26,42 @@ const Login = () => {
             ...prev,
             [name]: value
         }));
+        if (name === 'login-username-or-email') {
+            if (value.length < 4) {
+                setFormErrors(prev => ({
+                    ...prev,
+                    usernameOrEmailErrorMessage: 'Field too short'
+                }));
+            } else {
+                setFormErrors(prev => ({
+                    ...prev,
+                    usernameOrEmailErrorMessage: ''
+                }));
+            }
+        }
+
+        if (name === 'login-password') {
+            if (!isPasswordValid(value)) {
+                setFormErrors(prev => ({
+                    ...prev,
+                    passwordErrorMessage: 'Password must be at least 8 characters'
+                }));
+            } else {
+                setFormErrors(prev => ({
+                    ...prev,
+                    passwordErrorMessage: ''
+                }));
+            }
+        }
     }
 
 
     const handleSubmit = e => {
         e.preventDefault();
-        if (isPasswordValid(formData['login-password'])) {
+        if (isPasswordValid(formData['login-password']) && formData['login-username-or-email'].length > 3) {
             login(formData['login-username-or-email'], formData['login-password']);
         } else {
-            alert('Your password seems to be too short');
+            alert('Make sure your inputs are valid');
         }
     }
 
@@ -64,6 +95,7 @@ const Login = () => {
                                             onChange={handleChange}
                                             className="form-control form-control-lg"
                                         />
+                                        {formErrors['usernameOrEmailErrorMessage'] && <p className="text-danger">{formErrors['usernameOrEmailErrorMessage']}</p>}
                                     </div>
                                     <div data-mdb-input-init className="form-outline mb-4">
                                         <label className="form-label" htmlFor="login-password">Password</label>
@@ -75,6 +107,7 @@ const Login = () => {
                                             onChange={handleChange}
                                             className="form-control form-control-lg"
                                         />
+                                        {formErrors['passwordErrorMessage'] && <p className="text-danger">{formErrors['passwordErrorMessage']}</p>}
                                     </div>
                                     <div className="pt-1 mb-4">
                                         <Button type="submit" className="btn btn-primary btn-lg btn-block w-100" disabled={loading}>LOGIN</Button>
