@@ -1,12 +1,12 @@
-const formatDate = (dateString) => {
-    const options = {
-        weekday: 'short',
-        year: 'numeric',
-        month: 'short',
-        day: 'numeric'
-    };
-    return new Date(dateString).toLocaleDateString('en-US', options);
-};
+import dayjs from 'dayjs';
+import relativeTime from 'dayjs/plugin/relativeTime';
+
+dayjs.extend(relativeTime);
+
+
+const formatDate = dateString => {
+    return dayjs(dateString).fromNow();
+}
 
 
 

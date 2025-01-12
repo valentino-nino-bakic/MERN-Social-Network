@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 const User = mongoose.model('User', {
-    username: { type: String, required: true, unique: true, minlength: 4, maxlength: 15 },
+    username: { type: String, required: true, unique: true, minlength: 4, maxlength: 20 },
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true, minlength: 8 },
     role: {

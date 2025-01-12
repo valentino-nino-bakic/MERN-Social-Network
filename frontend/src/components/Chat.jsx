@@ -2,6 +2,7 @@
 import { useState, useEffect } from 'react';
 import { jwtDecode } from 'jwt-decode';
 
+import formatDate from '../utils/formatDate';
 
 
 
@@ -88,7 +89,8 @@ const Chat = ({ user, selectedFriend, socket, getMessages, sendMessage }) => {
                     <hr />
                     {messages.map((message, index) => (
                         <div key={index} className={`${message.senderId === jwtDecode(user).id ? 'align-self-end' : 'align-self-start'}`}>
-                            <div className="d-flex">
+                            <small className="text-muted">{formatDate(message.createdAt)}</small>
+                            <div className="d-flex align-items-center">
                                 {message.senderId === selectedFriend._id && <img src={selectedFriend.profileImageUrl} alt="profile" className="rounded-circle" style={{ height: '35px', width: '35px', objectFit: 'cover' }} />}
                                 <p className={`message ${message.senderId === jwtDecode(user).id ? 'my-message' : 'friend-message'}`}>{message.content}</p>
                             </div>
