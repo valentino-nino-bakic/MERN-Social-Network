@@ -216,7 +216,19 @@ const SocketController = {
                 ],
             }).sort({ createdAt: 1 });
 
-            socket.emit('fetchMessagesResponse', { success: true, messages: messageHistory });
+
+            const groupedMessages = messageHistory.reduce((groups, message) => {
+                const messageDate = message.createdAt.toISOString().split('T')[0];
+                if (!groups[messageDate]) {
+                    groups[messageDate] = [];
+                }
+                groups[messageDate].push(message);
+                
+                return groups;
+            }, {});
+
+
+            socket.emit('fetchMessagesResponse', { success: true, messages: groupedMessages });
         } catch (error) {
             socket.emit('fetchMessagesResponse', { success: false, message: error.message });
         }

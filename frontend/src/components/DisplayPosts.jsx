@@ -6,7 +6,7 @@ import { jwtDecode } from 'jwt-decode';
 import useAuth from '../hooks/useAuth';
 import useComment from '../hooks/useComment';
 import useLike from '../hooks/useLike';
-import formatDate from '../utils/formatDate';
+import { formatDate } from '../utils/formatDate';
 
 
 
