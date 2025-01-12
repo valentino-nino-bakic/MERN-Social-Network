@@ -15,7 +15,7 @@ const Chat = ({ user, selectedFriend, socket, getMessages, sendMessage }) => {
         e.preventDefault();
         sendMessage(jwtDecode(user).id, selectedFriend._id, message);
         setMessage('');
-        setMessages([...messages, { senderId: jwtDecode(user).id, content: message }]);
+        setMessages([...messages, { senderId: jwtDecode(user).id, content: message, createdAt: Date.now() }]);
     }
 
 
@@ -50,10 +50,10 @@ const Chat = ({ user, selectedFriend, socket, getMessages, sendMessage }) => {
             if (socket) {
                 try {
                     socket.on('receivePrivateMessage', data => {
-                        const { senderId, message } = data;
+                        const { senderId, message, createdAt } = data;
                         console.log(`Received message from user ${senderId}:`, message);
                         if (senderId === selectedFriend._id) {
-                            setMessages(prev => ([...prev, { senderId: senderId, content: message }]));
+                            setMessages(prev => ([...prev, { senderId: senderId, content: message, createdAt: createdAt }]));
                         }
                     });
                 } catch (error) {
@@ -75,6 +75,21 @@ const Chat = ({ user, selectedFriend, socket, getMessages, sendMessage }) => {
         };
 
     }, [selectedFriend, myID, socket]);
+
+
+
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setMessages(prev => {
+                return prev.map(message => ({
+                    ...message,
+                    createdAt: new Date(message.createdAt)
+                }));
+            });
+        }, 1000);
+
+        return () => clearInterval(interval);
+    }, []);
 
 
 
