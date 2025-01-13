@@ -1,15 +1,28 @@
 
 import { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
 import { jwtDecode } from 'jwt-decode';
+
+import useAuth from '../hooks/useAuth';
+import useSocket from '../hooks/useSocket';
 
 import { formatDate, formatGroupedMessagesDate } from '../utils/formatDate';
 
 
 
-const Chat = ({ user, selectedFriend, socket, getMessages, sendMessage }) => {
+const Chat = () => {
+    const { username } = useParams();
+
+    const [selectedFriend, setSelectedFriend] = useState(null);
     const [message, setMessage] = useState('');
     const [messages, setMessages] = useState({});
     const [myID, setMyID] = useState(null);
+
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+
+    const { user, getUserByUsername } = useAuth();
+    const { socket, getMessages, sendMessage } = useSocket();
 
     const handleSendMessage = e => {
         e.preventDefault();
@@ -22,6 +35,29 @@ const Chat = ({ user, selectedFriend, socket, getMessages, sendMessage }) => {
     useEffect(() => {
         setMyID(jwtDecode(user).id);
     }, [user]);
+
+
+
+    useEffect(() => {
+        const fetchUser = async () => {
+            setLoading(true);
+            setError(null);
+            try {
+                const data = await getUserByUsername(username);
+                setSelectedFriend(data);
+            } catch (err) {
+                setError(err.message);
+            } finally {
+                setLoading(false);
+            }
+        }
+        if (username) {
+            fetchUser();
+        } else {
+            setSelectedFriend(null);
+            setLoading(false);
+        }
+    }, [username, getUserByUsername]);
 
 
     useEffect(() => {
@@ -93,6 +129,14 @@ const Chat = ({ user, selectedFriend, socket, getMessages, sendMessage }) => {
     // }, []);
 
 
+    if (loading) {
+        return <div>Loading...</div>
+    }
+
+    if (error) {
+        return <div>Error: {error}</div>
+    }
+
 
     return (
         <>
@@ -103,7 +147,7 @@ const Chat = ({ user, selectedFriend, socket, getMessages, sendMessage }) => {
                         <img src={selectedFriend.profileImageUrl} alt="profile" className="rounded-circle mx-2" style={{ height: '50px', width: '50px', objectFit: 'cover' }} />
                         <p className="fw-bold">{selectedFriend.username}</p>
                     </div>
-                    
+
                     {Object.keys(messages).map(date => (
                         <div className="d-flex flex-column" key={date}>
                             <p className="text-center" style={{ color: 'rgba(33, 37, 41, 0.33)' }}>{formatGroupedMessagesDate(date)}</p>

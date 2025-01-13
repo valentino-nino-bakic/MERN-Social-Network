@@ -1,18 +1,19 @@
 
 import { useState, useEffect } from 'react';
+import { useNavigate, Outlet } from 'react-router-dom';
 import { jwtDecode } from 'jwt-decode';
 
 import useSocket from '../hooks/useSocket';
 import useAuth from '../hooks/useAuth';
 
-import Chat from '../components/Chat';
 
 
 const Messages = () => {
+    const navigate = useNavigate();
     const [friends, setFriends] = useState([]);
     const [selectedFriend, setSelectedFriend] = useState(null);
     const { user } = useAuth();
-    const { socket, getFriends, getMessages, sendMessage } = useSocket();
+    const { socket, getFriends } = useSocket();
 
 
     useEffect(() => {
@@ -32,7 +33,8 @@ const Messages = () => {
     }, [getFriends, user, socket]);
 
 
-    const handleSelectFriend = (friend) => {
+    const handleOpenPrivateChat = friend => {
+        navigate(`/home/messages/${friend}`);
         setSelectedFriend(friend);
     }
 
@@ -73,7 +75,7 @@ const Messages = () => {
                                                         {friend.username}
                                                     </button>
                                                 </div>
-                                                <button className="btn btn-outline-primary btn-sm" onClick={() => handleSelectFriend(friend)}>Message</button>
+                                                <button className="btn btn-outline-primary btn-sm" onClick={() => handleOpenPrivateChat(friend.username)}>Message</button>
                                             </li>
                                         ))}
                                     </ul>
@@ -82,13 +84,7 @@ const Messages = () => {
                         </div>
                     </div>
                     <div className="col-md-8">
-                        <Chat
-                            user={user}
-                            selectedFriend={selectedFriend}
-                            socket={socket}
-                            getMessages={getMessages}
-                            sendMessage={sendMessage}
-                        />
+                        <Outlet />
                     </div>
                 </div>
             </div>

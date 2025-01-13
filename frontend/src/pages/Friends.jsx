@@ -41,6 +41,12 @@ const Friends = () => {
     }
 
 
+    const handleGoToFriendChat = e => {
+        const username = e.target.getAttribute('data-user-username');
+        navigate(`/home/messages/${username}`);
+    }
+
+
     console.log('friends', friends);
     return (
         <div className="container py-5">
@@ -80,7 +86,13 @@ const Friends = () => {
                                                     {friend.username}
                                                 </button>
                                             </div>
-                                            <button className="btn btn-outline-primary btn-sm">Message</button>
+                                            <button
+                                                data-user-username={friend.username}
+                                                onClick={handleGoToFriendChat}
+                                                className="btn btn-outline-primary btn-sm"
+                                            >
+                                                Message
+                                            </button>
                                         </li>
                                     ))}
                                 </ul>
