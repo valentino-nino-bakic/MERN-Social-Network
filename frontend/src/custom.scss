@@ -235,3 +235,11 @@ form {
     padding: 10px 0;
     text-align: center;
 }
+
+
+.message-input {
+    border-top: 1px solid rgba(67, 67, 67, 0.04);
+    width: calc(100% + 32px);
+    margin-right: -16px;
+    margin-left: -16px;
+}
