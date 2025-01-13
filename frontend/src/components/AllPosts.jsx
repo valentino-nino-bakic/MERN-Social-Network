@@ -19,8 +19,15 @@ const AllPosts = () => {
     }, [getPosts]);
 
 
+
     if (postLoading) {
-        return <p>Loading posts...</p>;
+        return (
+            <div className="d-flex justify-content-center align-items-center position-absolute top-0 vh-100 w-100">
+                <div className="spinner-border" role="status">
+                    <span className="sr-only">Loading...</span>
+                </div>
+            </div>
+        );
     }
 
     if (postError) {
@@ -41,7 +48,7 @@ const AllPosts = () => {
                 </div>
                 <div className="col-6">
                     <CreatePost />
-                    <DisplayPosts posts={posts}/>
+                    <DisplayPosts posts={posts} />
                 </div>
                 <div className="col-3"></div>
             </div>

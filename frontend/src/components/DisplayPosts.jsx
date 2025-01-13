@@ -76,7 +76,7 @@ const DisplayPosts = ({ posts }) => {
 
                             <div className="container d-flex justify-content-between">
                                 <div>
-                                    {likeLoading && <p>Loading likes...</p>}
+                                    {/* {likeLoading && <p>Loading likes...</p>} */}
                                     {likeError && <p>Error loading likes: {likeError}</p>}
                                     {likes[post._id] && likes[post._id].length > 0 ? (
                                         <button
@@ -158,7 +158,7 @@ const DisplayPosts = ({ posts }) => {
 
 
                             <div className="comments px-4">
-                                {commentLoading && <p>Loading comments...</p>}
+                                {/* {commentLoading && <p>Loading comments...</p>} */}
                                 {commentError && <p>Error loading comments: {commentError}</p>}
 
                                 {comments[post._id] && comments[post._id].map(comment => (

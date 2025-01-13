@@ -15,6 +15,7 @@ const Messages = () => {
     const { user } = useAuth();
     const { socket, getFriends } = useSocket();
 
+    const [friendsLoading, setFriendsLoading] = useState(true);
 
     useEffect(() => {
         const fetchAllFriends = async (sockety, userId) => {
@@ -24,9 +25,12 @@ const Messages = () => {
                     setFriends(allFriends);
                 } catch (error) {
                     console.log('Error fetching friends:', error);
+                } finally {
+                    setFriendsLoading(false);
                 }
             } else {
                 console.log('Socket not initialized')
+                setFriendsLoading(false);
             }
         };
         fetchAllFriends(socket, jwtDecode(user).id);
@@ -48,8 +52,14 @@ const Messages = () => {
                     <div className="col-md-4">
                         <div className="card shadow-sm mb-4">
                             <div className="card-body">
-                                <p className="card-title mb-4">Friends</p>
-                                {friends.length === 0 ? (
+                                <p className="card-title mb-4">Chats</p>
+                                {friendsLoading ? (
+                                    <div className="text-center">
+                                        <div className="spinner-border" role="status">
+                                            <span className="sr-only">Loading...</span>
+                                        </div>
+                                    </div>
+                                ) : friends.length === 0 ? (
                                     <div className="alert alert-info" role="alert">
                                         You don't have any friends yet
                                     </div>
@@ -58,7 +68,7 @@ const Messages = () => {
                                         {friends.map((friend) => (
                                             <li
                                                 key={friend._id}
-                                                className={`list-group-item d-flex justify-content-between align-items-center ${selectedFriend?._id === friend._id ? 'bg-warning' : '' }`}
+                                                className={`list-group-item d-flex justify-content-between align-items-center ${selectedFriend?._id === friend._id ? 'bg-warning' : ''}`}
                                             >
                                                 <div>
                                                     <img

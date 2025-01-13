@@ -17,6 +17,8 @@ const Friends = () => {
     const { user } = useAuth();
     const { socket, getFriends } = useSocket();
 
+    const [friendsLoading, setFriendsLoading] = useState(true);
+
 
     useEffect(() => {
         const fetchAllFriends = async (sockety, userId) => {
@@ -26,9 +28,12 @@ const Friends = () => {
                     setFriends(allFriends);
                 } catch (error) {
                     console.log('Error fetching friends:', error);
+                } finally {
+                    setFriendsLoading(false);
                 }
             } else {
-                console.log('Socket not initialized')
+                console.log('Socket not initialized');
+                setFriendsLoading(false);
             }
         };
         fetchAllFriends(socket, jwtDecode(user).id);
@@ -63,7 +68,13 @@ const Friends = () => {
                     <div className="card shadow-sm mb-4">
                         <div className="card-body">
                             <h3 className="card-title mb-4">Friends</h3>
-                            {friends.length === 0 ? (
+                            {friendsLoading ? (
+                                <div className="text-center">
+                                    <div className="spinner-border" role="status">
+                                        <span className="sr-only">Loading...</span>
+                                    </div>
+                                </div>
+                            ) : friends.length === 0 ? (
                                 <div className="alert alert-info" role="alert">
                                     You don't have any friends yet
                                 </div>
