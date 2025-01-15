@@ -12,6 +12,7 @@ import { CommentProvider } from './contexts/CommentContext';
 import { LikeProvider } from './contexts/LikeContext';
 import { ThemeProvider } from './contexts/ThemeContext';
 import { AdminProvider } from './contexts/AdminContext';
+import { ModalProvider } from './contexts/ModalContext';
 
 
 
@@ -19,17 +20,19 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
     // <React.StrictMode>
         <ThemeProvider>
-            <AuthProvider>
-                <PostProvider>
-                    <CommentProvider>
-                        <LikeProvider>
-                            <AdminProvider>
-                                <App />
-                            </AdminProvider>
-                        </LikeProvider>
-                    </CommentProvider>
-                </PostProvider>
-            </AuthProvider>
+            <ModalProvider>
+                <AuthProvider>
+                    <PostProvider>
+                        <CommentProvider>
+                            <LikeProvider>
+                                <AdminProvider>
+                                    <App />
+                                </AdminProvider>
+                            </LikeProvider>
+                        </CommentProvider>
+                    </PostProvider>
+                </AuthProvider>
+            </ModalProvider>
         </ThemeProvider>
     // </React.StrictMode>
 );
