@@ -22,7 +22,7 @@ const DisplayPosts = ({ posts }) => {
 
 
     const { openModal } = useModal();
-    
+
     const handleOpenModal = post => {
         openModal(
             <PostModal
@@ -156,7 +156,13 @@ const DisplayPosts = ({ posts }) => {
                                     </div>
                                 </div>
                                 <div>
-                                    {comments[post._id] && comments[post._id].length > 0 ? <p className="text-muted" onClick={() => handleOpenModal(post)}>{comments[post._id].length} comments</p> : <p></p>}
+                                    {comments[post._id] && comments[post._id].length > 0 ? (
+                                        <p className="text-muted custom-modal-trigger-p" onClick={() => handleOpenModal(post)}>
+                                            {comments[post._id].length} comments
+                                        </p>
+                                    ) : (
+                                        <p></p>
+                                    )}
                                 </div>
                             </div>
 

@@ -140,7 +140,7 @@ body.dark-theme {
 
 
 footer {
-    height: 30vh;
+    height: 20vh;
     position: relative;
     bottom: 0;
     left: 0;
@@ -246,24 +246,43 @@ form {
 
 
 .custom-modal-overlay {
+    z-index: 1021;
     position: fixed;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
-    background: rgba(0, 0, 0, 0.1);
+    background: rgba(195, 195, 195, 0.144);
     display: flex;
     justify-content: center;
     align-items: center;
 
     .custom-modal-content {
         position: relative;
-        width: 50%;
+        width: 935px;
         background: white;
         padding: 14px 0;
-        border-radius: 5px;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(185, 185, 185, 0.1);
+
+        .comment-form {
+            border-top: 1px solid rgba(67, 67, 67, 0.04);
+            width: calc(100% + 80px);
+            margin-right: -40px;
+            margin-left: -40px;
+
+            &input {
+                border-radius: 25px;
+            }
+
+            &button {
+                width: 40px;
+                height: 40px;
+            }
+        }
 
         .close-custom-modal-btn {
+            font-stretch: expanded;
             position: absolute;
             top: 8px;
             right: 8px;
@@ -274,10 +293,18 @@ form {
             color: rgb(114, 114, 114);
             font-weight: 300;
             font-size: 20px;
-            
+
             &:hover {
-                background: rgba(0, 0, 0, 0.122)
+                background: rgba(148, 148, 148, 0.122)
             }
         }
+    }
+}
+
+.custom-modal-trigger-p {
+    cursor: pointer;
+
+    &:hover {
+        text-decoration: underline;
     }
 }
