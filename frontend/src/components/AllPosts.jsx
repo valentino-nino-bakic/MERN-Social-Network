@@ -46,11 +46,12 @@ const AllPosts = () => {
                         </div>
                     </div>
                 </div>
-                <div className="col-6">
+                <div className="col-1"></div>
+                <div className="col-4">
                     <CreatePost />
                     <DisplayPosts posts={posts} />
                 </div>
-                <div className="col-3"></div>
+                <div className="col-4"></div>
             </div>
         </div>
     )

@@ -166,9 +166,9 @@ const DisplayPosts = ({ posts }) => {
                                 </div>
                             </div>
 
+                            <hr />
 
-
-                            <div className="container my-4">
+                            <div className="container">
                                 <div className="row">
                                     <div className="col text-center">
                                         <button

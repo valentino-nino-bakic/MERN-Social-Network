@@ -1,6 +1,6 @@
 
 import { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { jwtDecode } from 'jwt-decode';
 
 import useAuth from '../hooks/useAuth';
@@ -12,6 +12,7 @@ import { formatDate, formatGroupedMessagesDate } from '../utils/formatDate';
 
 const Chat = () => {
     const { username } = useParams();
+    const navigate = useNavigate();
 
     const [selectedFriend, setSelectedFriend] = useState(null);
     const [message, setMessage] = useState('');
@@ -114,6 +115,11 @@ const Chat = () => {
     }, [selectedFriend, myID, socket]);
 
 
+    const handleGoToClickedImageProfile = e => {
+        const username = e.target.getAttribute('data-user-username');
+        navigate(`/home/user/${username}`);
+    }
+
 
     // useEffect(() => {
     //     const interval = setInterval(() => {
@@ -141,11 +147,24 @@ const Chat = () => {
     return (
         <>
             {selectedFriend ? (
-                <div className="container-fluid d-flex flex-column border shadow-sm rounded px-3 overflow-auto" style={{ height: '75vh' }}>
+                <div className="container-fluid d-flex flex-column border shadow-sm rounded px-3 overflow-auto bg-light" style={{ height: '75vh' }}>
 
                     <div className="d-flex position-sticky top-0 bg-white border-bottom py-2" style={{ margin: '0 -16px 30px -16px' }}>
-                        <img src={selectedFriend.profileImageUrl} alt="profile" className="rounded-circle mx-2" style={{ height: '50px', width: '50px', objectFit: 'cover' }} />
-                        <p className="fw-bold">{selectedFriend.username}</p>
+                        <img
+                            src={selectedFriend.profileImageUrl}
+                            alt="profile" className="rounded-circle mx-2"
+                            data-user-username={selectedFriend.username}
+                            onClick={handleGoToClickedImageProfile}
+                            style={{ height: '50px', width: '50px', objectFit: 'cover', cursor: 'pointer' }}
+                        />
+                        <p
+                            className="fw-bold"
+                            data-user-username={selectedFriend.username}
+                            onClick={handleGoToClickedImageProfile}
+                            style={{ cursor: 'pointer' }}
+                        >
+                            {selectedFriend.username}
+                        </p>
                     </div>
 
                     {Object.keys(messages).map(date => (

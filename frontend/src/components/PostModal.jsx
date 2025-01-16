@@ -105,7 +105,7 @@ const PostModal = ({
                 </div>
             </div>
 
-
+            <hr />
 
             <div className="container my-4">
                 <div className="row">

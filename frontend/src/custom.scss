@@ -27,7 +27,7 @@ body {
 
 
 body {
-    background-color: $light;
+    background-color: rgba(0, 153, 255, 0.015);;
     color: $dark;
 
 
@@ -210,8 +210,7 @@ form {
     }
 
     .active-link {
-        background-color: black;
-        color: #24a6e7;
+        background-color: rgba(113, 113, 113, 0.14);
     }
 }
 
