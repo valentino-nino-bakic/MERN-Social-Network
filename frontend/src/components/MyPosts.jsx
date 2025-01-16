@@ -12,10 +12,10 @@ const MyPosts = () => {
     const { user } = useAuth();
 
     return (
-        <div className="container">
+        <div className="container-fluid">
             <div className="row">
-                <div className="col-2"></div>
-                <div className="col-6">
+                <div className="col-4"></div>
+                <div className="col-4">
                     <div style={{minWidth: '634px'}}>
                         <CreatePost />
                         <SingleUserPosts singleUserId={jwtDecode(user).id} />

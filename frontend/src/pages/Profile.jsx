@@ -2,6 +2,7 @@
 import { useState, useEffect } from 'react';
 import { NavLink, Outlet } from 'react-router-dom';
 import { jwtDecode } from 'jwt-decode';
+import ModalImage from 'react-modal-image';
 
 import useAuth from '../hooks/useAuth';
 
@@ -63,11 +64,11 @@ const Profile = () => {
             <div className="position-relative d-flex align-items-center bg-image-holder">
                 <div className="position-absolute d-flex align-items-center px-5" style={{ bottom: '-80px' }}>
                     <div className="position-relative" style={{ width: '200px', height: '200px' }}>
-                        <img
-                            src={picture}
-                            alt="User"
-                            className="rounded-circle border border-3"
-                            style={{ width: '200px', height: '200px', objectFit: 'cover' }}
+                        <ModalImage
+                            small={picture}
+                            large={picture}
+                            alt={jwtDecode(user).username}
+                            className="rounded-circle border border-3 profile-image"
                         />
                         <i className="fa-solid fa-upload"
                             data-bs-toggle="modal" data-bs-target="#upload-modal"

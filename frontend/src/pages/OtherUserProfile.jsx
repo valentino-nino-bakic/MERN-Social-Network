@@ -2,6 +2,7 @@
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { jwtDecode } from 'jwt-decode';
+import ModalImage from 'react-modal-image';
 
 import useAuth from '../hooks/useAuth';
 import useSocket from '../hooks/useSocket';
@@ -123,11 +124,11 @@ const OtherUserProfile = () => {
                 <div className="position-relative d-flex align-items-center bg-image-holder">
                     <div className="position-absolute d-flex align-items-center px-5" style={{ bottom: '-80px' }}>
                         <div className="position-relative" style={{ width: '200px', height: '200px' }}>
-                            <img
-                                src={profileData.profileImageUrl}
-                                alt="User"
-                                className="rounded-circle border border-3"
-                                style={{ width: '200px', height: '200px', objectFit: 'cover' }}
+                            <ModalImage
+                                small={profileData.profileImageUrl}
+                                large={profileData.profileImageUrl}
+                                alt={profileData.username}
+                                className="rounded-circle border border-3 profile-image"
                             />
                         </div>
                         <h1 className="ms-3 text-white pb-5">{profileData.username}</h1>
@@ -161,11 +162,13 @@ const OtherUserProfile = () => {
                 </div>
 
             </div>
-            <div className="container mt-5">
+            <div className="container-fluid mt-5">
                 <div className="row">
-                    <div className="col-2"></div>
-                    <div className="col-6">
-                        <SingleUserPosts singleUserId={profileData._id} />
+                    <div className="col-4"></div>
+                    <div className="col-4">
+                        <div style={{ minWidth: '634px' }}>
+                            <SingleUserPosts singleUserId={profileData._id} />
+                        </div>
                     </div>
                     <div className="col-4"></div>
                 </div>
