@@ -147,13 +147,18 @@ const PostModal = ({
                         <p>{comment.content}</p>
                     </div>
                 ))}
-                <form className="d-flex align-items-center position-sticky bottom-0 bg-white p-3 comment-form" onSubmit={(e) => {
+                <form className="d-flex align-items-center position-sticky bottom-0 bg-white comment-form" onSubmit={(e) => {
                     e.preventDefault();
                     handleAddComment(user, post._id, jwtDecode(user).id, e.target.elements.commentText.value);
                     e.target.elements.commentText.value = '';
                 }}>
-                    <input className="form-control border-0 rounded-pill shadow-sm" name="commentText" placeholder="Add a comment" />
-                    <button type="submit" className="btn btn btn-primary ms-2 rounded-circle d-flex align-items-center justify-content-center">
+                    <textarea
+                        className="form-control border-0"
+                        name="commentText"
+                        placeholder="Add a comment"
+                    >
+                    </textarea>
+                    <button type="submit" className="btn btn-primary ms-2 rounded-circle d-flex align-items-center justify-content-center">
                         <i className="fa fa-paper-plane"></i>
                     </button>
                 </form>

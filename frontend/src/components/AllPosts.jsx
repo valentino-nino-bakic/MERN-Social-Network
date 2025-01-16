@@ -48,8 +48,10 @@ const AllPosts = () => {
                 </div>
                 <div className="col-1"></div>
                 <div className="col-4">
-                    <CreatePost />
-                    <DisplayPosts posts={posts} />
+                    <div style={{minWidth: '608.98px'}}>
+                        <CreatePost />
+                        <DisplayPosts posts={posts} />
+                    </div>
                 </div>
                 <div className="col-4"></div>
             </div>

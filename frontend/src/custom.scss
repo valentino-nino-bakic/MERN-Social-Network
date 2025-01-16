@@ -27,7 +27,7 @@ body {
 
 
 body {
-    background-color: rgba(0, 153, 255, 0.015);;
+    background-color: rgba(0, 153, 255, 0.015);
     color: $dark;
 
 
@@ -236,11 +236,24 @@ form {
 }
 
 
-.message-input {
-    border-top: 1px solid rgba(67, 67, 67, 0.04);
+.message-form {
+    border-top: 1px solid rgba(67, 67, 67, 0.2);
     width: calc(100% + 32px);
     margin-right: -16px;
     margin-left: -16px;
+    padding-right: 10px;
+
+    textarea {
+        padding: 12px 20px;
+        resize: none;
+        width: 100%;
+        min-height: 40px;
+        max-height: 150px;
+
+        &:focus {
+            box-shadow: none;
+        }
+    }
 }
 
 
@@ -258,23 +271,32 @@ form {
 
     .custom-modal-content {
         position: relative;
-        width: 935px;
+        min-width: 616.98px;
         background: white;
-        padding: 14px 0;
+        padding: 14px 0 0 0;
         border-radius: 8px;
         box-shadow: 0 4px 8px rgba(185, 185, 185, 0.1);
 
         .comment-form {
-            border-top: 1px solid rgba(67, 67, 67, 0.04);
+            border-top: 1px solid rgba(67, 67, 67, 0.2);
             width: calc(100% + 80px);
             margin-right: -40px;
             margin-left: -40px;
+            padding-right: 10px;
 
-            &input {
-                border-radius: 25px;
+            textarea {
+                padding: 12px 20px;
+                resize: none;
+                width: 100%;
+                min-height: 40px;
+                max-height: 150px;
+
+                &:focus {
+                    box-shadow: none;
+                }
             }
 
-            &button {
+            button {
                 width: 40px;
                 height: 40px;
             }

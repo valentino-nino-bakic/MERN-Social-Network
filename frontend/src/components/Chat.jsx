@@ -191,15 +191,15 @@ const Chat = () => {
                         </div>
                     ))}
 
-                    <form onSubmit={handleSendMessage} className="d-flex align-items-center position-sticky bottom-0 bg-white p-3 message-input">
-                        <input
+                    <form onSubmit={handleSendMessage} className="d-flex align-items-center position-sticky bottom-0 bg-white message-form">
+                        <textarea
                             type="text"
                             value={message}
                             onChange={e => setMessage(e.target.value)}
                             placeholder="Type a message..."
-                            className="form-control border-0 rounded-pill shadow-sm"
-                            style={{ borderRadius: '25px', paddingLeft: '20px' }}
-                        />
+                            className="form-control border-0"
+                        >
+                        </textarea>
                         <button type="submit" className="btn btn-primary ms-2 rounded-circle d-flex align-items-center justify-content-center" style={{ width: '40px', height: '40px' }}>
                             <i className="fa fa-paper-plane"></i>
                         </button>

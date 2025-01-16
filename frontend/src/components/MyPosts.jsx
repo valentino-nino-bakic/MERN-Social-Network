@@ -16,8 +16,10 @@ const MyPosts = () => {
             <div className="row">
                 <div className="col-2"></div>
                 <div className="col-6">
-                    <CreatePost />
-                    <SingleUserPosts singleUserId={jwtDecode(user).id} />
+                    <div style={{minWidth: '634px'}}>
+                        <CreatePost />
+                        <SingleUserPosts singleUserId={jwtDecode(user).id} />
+                    </div>
                 </div>
                 <div className="col-4"></div>
             </div>
