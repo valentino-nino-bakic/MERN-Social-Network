@@ -257,9 +257,27 @@ form {
     align-items: center;
 
     .custom-modal-content {
+        position: relative;
         width: 50%;
         background: white;
         padding: 14px 0;
         border-radius: 5px;
+
+        .close-custom-modal-btn {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            padding: 4px 11px;
+            border-radius: 5px;
+            background: transparent;
+            border: none;
+            color: rgb(114, 114, 114);
+            font-weight: 300;
+            font-size: 20px;
+            
+            &:hover {
+                background: rgba(0, 0, 0, 0.122)
+            }
+        }
     }
 }

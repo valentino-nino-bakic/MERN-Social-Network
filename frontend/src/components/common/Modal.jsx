@@ -11,7 +11,7 @@ const Modal = () => {
         <div className="custom-modal-overlay">
             <div className="custom-modal-content">
                 {modalContent}
-                <button onClick={closeModal}>Close Modal</button>
+                <button className="close-custom-modal-btn" onClick={closeModal}>X</button>
             </div>
         </div>
     );
