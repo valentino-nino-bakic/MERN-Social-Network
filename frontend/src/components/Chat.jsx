@@ -27,9 +27,26 @@ const Chat = () => {
 
     const handleSendMessage = e => {
         e.preventDefault();
+
+        const newMessage = {
+            senderId: jwtDecode(user).id,
+            content: message,
+            createdAt: Date.now(),
+        };
+        const messageDate = new Date(newMessage.createdAt).toISOString().split('T')[0];
+
         sendMessage(jwtDecode(user).id, selectedFriend._id, message);
         setMessage('');
-        setMessages([...messages, { senderId: jwtDecode(user).id, content: message, createdAt: Date.now() }]);
+
+        setMessages(prev => {
+            const updatedMessages = { ...prev };
+            if (!updatedMessages[messageDate]) {
+                updatedMessages[messageDate] = [];
+            }
+            updatedMessages[messageDate].push(newMessage);
+
+            return updatedMessages;
+        });
     }
 
 
@@ -63,6 +80,7 @@ const Chat = () => {
 
     useEffect(() => {
         const fetchMessages = async (socket, currentUserId, otherUserId) => {
+            setLoading(true);
             if (socket) {
                 try {
                     const allMessages = await getMessages(socket, currentUserId, otherUserId);
@@ -70,6 +88,8 @@ const Chat = () => {
                     setMessages(allMessages);
                 } catch (error) {
                     console.log('Error fetching messages:', error);
+                } finally {
+                    setLoading(false);
                 }
             } else {
                 console.log('Socket not initialized');
@@ -91,7 +111,16 @@ const Chat = () => {
                         const { senderId, message, createdAt } = data;
                         console.log(`Received message from user ${senderId}:`, message);
                         if (senderId === selectedFriend._id) {
-                            setMessages(prev => ([...prev, { senderId: senderId, content: message, createdAt: createdAt }]));
+                            setMessages(prev => {
+                                const messageDate = new Date(createdAt).toISOString().split('T')[0];
+                                const updatedMessages = { ...prev };
+                                if (!updatedMessages[messageDate]) {
+                                    updatedMessages[messageDate] = [];
+                                }
+                                updatedMessages[messageDate].push({ senderId: senderId, content: message, createdAt: createdAt });
+
+                                return updatedMessages;
+                            });
                         }
                     });
                 } catch (error) {
@@ -115,24 +144,31 @@ const Chat = () => {
     }, [selectedFriend, myID, socket]);
 
 
+
     const handleGoToClickedImageProfile = e => {
         const username = e.target.getAttribute('data-user-username');
         navigate(`/home/user/${username}`);
     }
 
 
-    // useEffect(() => {
-    //     const interval = setInterval(() => {
-    //         setMessages(prev => {
-    //             return prev.map(message => ({
-    //                 ...message,
-    //                 createdAt: new Date(message.createdAt)
-    //             }));
-    //         });
-    //     }, 1000);
 
-    //     return () => clearInterval(interval);
-    // }, []);
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setMessages(prev => {
+                const updatedMessages = { ...prev };
+                Object.keys(updatedMessages).forEach(date => {
+                    updatedMessages[date] = updatedMessages[date].map(message => ({
+                        ...message,
+                        createdAt: new Date(message.createdAt)
+                    }));
+                });
+
+                return updatedMessages;
+            });
+        }, 1000);
+
+        return () => clearInterval(interval);
+    }, []);
 
 
     // if (loading) {
@@ -146,7 +182,7 @@ const Chat = () => {
 
     return (
         <>
-            {selectedFriend ? (
+            {selectedFriend && (
                 <div className="container-fluid d-flex flex-column border shadow-sm rounded px-3 overflow-auto bg-light" style={{ height: '75vh' }}>
 
                     <div className="d-flex position-sticky top-0 bg-white border-bottom py-2" style={{ margin: '0 -16px 30px -16px' }}>
@@ -205,14 +241,6 @@ const Chat = () => {
                         </button>
                     </form>
 
-                </div>
-            ) : (
-                <div className="container">
-                    <div className="row">
-                        <div className="col-md-8 offset-md-2">
-                            <h1 className="text-center">You must select a friend from your friendlist first...</h1>
-                        </div>
-                    </div>
                 </div>
             )}
         </>
